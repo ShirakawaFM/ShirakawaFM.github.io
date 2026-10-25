@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="白川 FM">
+  <rect width="64" height="64" fill="#12120f"/>
+  <text x="10" y="43" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic" fill="#f2efe7">FM</text>
+  <circle cx="51" cy="14" r="4" fill="#d63a12"/>
+  <path d="M8 52h48" stroke="#f2efe7" stroke-opacity=".25" stroke-width="1"/>
+</svg>

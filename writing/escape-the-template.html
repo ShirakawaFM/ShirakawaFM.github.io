@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>把博客从模板里救出来 · ShirakawaFM</title>
+<meta name="description" content="一次反 AI 味的设计重写：从概念、字体、网格到动效原则，以及为什么先删掉那些渐变。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把博客从模板里救出来：一次反 AI 味的设计重写">
+<meta property="og:description" content="从概念、字体、网格到动效原则，以及为什么先删掉那些渐变。">
+<meta property="og:url" content="https://shirakawafm.github.io/writing/escape-the-template.html">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/writing/escape-the-template.html">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
+    <a href="/about/">关于<sup>03</sup></a>
+  </nav>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
+</div>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="shell">
+      <div class="article-hero__kicker">
+        <a class="mono" href="/writing/">← 写作</a>
+        <span class="tag">设计</span>
+        <span class="mono">2026-10-25 · 7 分钟</span>
+      </div>
+      <h1 class="article-title">把博客从<em>模板</em>里救出来</h1>
+      <p class="article-deck">
+        上一版的整页 HTML 被包在三个反引号里，线上一直把源码当正文显示。
+        修好它只花了一分钟；真正花时间的是承认：那套设计本身就是另一个 bug。
+      </p>
+      <div class="article-meta">
+        <span>作者 ShirakawaFM</span>
+        <span>约 2400 字</span>
+        <span>设计 · 前端</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell article-layout">
+    <article class="prose">
+      <p>
+        打开线上的个人主页，会看到最上面一行是 <code>```html</code>，最下面一行是 <code>```</code>，
+        中间是完整的 HTML 源码。浏览器把整页当成纯文本渲染，没有任何样式。
+      </p>
+      <p>
+        原因很普通：代码是从对话窗口里复制的，当时整段内容被包在 Markdown 代码围栏里，
+        粘贴时把围栏也带上了。但更值得记录的是它为什么能上线——因为我只检查了「文件存在」，
+        没有检查「页面渲染出来是什么样」。
+      </p>
+
+      <h2 id="s1">AI 味的配方</h2>
+      <p>
+        事故修好之后，页面依然不对。它长这样：黑色背景上飘着紫、蓝、绿三团模糊光斑，
+        顶部是胶囊形的毛玻璃导航，中间是渐变大标题、圆角卡片、三个等宽项目格、三个等宽文章格，
+        每个标题前面一个 emoji，文案是「Developer · Creator · AI Explorer」。
+      </p>
+      <p>
+        这套东西之所以看起来「像 AI 做的」，不是因为它丑，而是因为它<strong>没有做选择</strong>：
+      </p>
+      <ul>
+        <li>颜色是默认的：紫蓝渐变、青色高光，和任何产品都无关；</li>
+        <li>结构是默认的：三张等宽卡片，仿佛内容天然长成三列；</li>
+        <li>文案是默认的：三个抽象名词排成一行，没有具体的人、事、数字；</li>
+        <li>动效是默认的：卡片上浮十像素，或者一串模糊光斑缓慢呼吸。</li>
+      </ul>
+      <p>
+        默认值堆出来的页面，不会犯错，但也不会被记住。反 AI 味的起点不是「手写」，而是「具体」。
+      </p>
+
+      <h2 id="s2">先问这个站点是谁的</h2>
+      <p>
+        第二版我犯了一个更隐蔽的错：给站点定了一个「电台」的概念，理由是名字里有 FM，
+        而我又喜欢那种不定期、没有推荐算法的发布方式。视觉上确实成立——波形、频率、开关，
+        一整套语言都很完整。
+      </p>
+      <p>
+        但它不诚实。<strong>FM 只是名字的一部分，不是隐喻。</strong>把一个人的名字硬解释成一种媒介，
+        页面就会开始表演一个并不存在的身份：它是电台，可这里没有节目、没有主播、没有频率。
+        设计越完整，这个错误越明显。
+      </p>
+      <p>
+        第三版先确认一件事：这个站点属于一个叫 ShirakawaFM 的开发者。于是结构从「身份」出发——
+        作品、写作、关于，三个索引；视觉从「证据」出发——真实项目、真实版本号、真实限制。
+        首页保留一条会随滚动和指针变化的线，但它不再假装是载波，只是页面自己的一点动静。
+      </p>
+      <blockquote>
+        <p>概念不该从名字的谐音里长出来，而该从这个人正在做什么里长出来。</p>
+      </blockquote>
+
+      <h2 id="s3">字体、网格、一个强调色</h2>
+      <p>
+        排版是这次改动里最有效的一步。标题用 Instrument Serif——一种有编辑感、笔画对比明显的衬线体，
+        数字和拉丁字母在大字号下很有存在感；中文回退到系统无衬线，靠字号、字距和留白建立秩序。
+        标签、日期、编号统一用 IBM Plex Mono，让「技术信息」和「正文」在视觉上分层。
+      </p>
+      <p>
+        颜色只保留三组：纸色背景、墨色文字、一个朱红强调色。强调色只出现在编号、悬停、
+        声音开关和需要被注意的瞬间；其余地方全部是黑白灰。限制颜色数量，比配色技巧更能拉开质感。
+      </p>
+      <p>
+        网格是十二列，但刻意不对称：首页英雄区 8:4 分栏，作品列表把年份信息推到右侧，
+        关于页把身份卡做成 sticky 的窄栏。对齐是严格的，比例是不均匀的——这两件事同时成立，
+        页面才会有编辑感而不是模板感。
+      </p>
+
+      <h2 id="s4">动效只做三件事</h2>
+      <p>
+        「丝滑」不是动画多，而是动画不打断人。我给自己定了三条规矩：
+      </p>
+      <ul>
+        <li><strong>只动 transform 和 opacity</strong>，避免触发布局与重绘；</li>
+        <li><strong>统一缓动</strong>，主用 <code>cubic-bezier(.16,1,.3,1)</code>，让元素「先快后慢」地落位；</li>
+        <li><strong>不劫持滚动</strong>。原生滚动已经足够好，额外做惯性滚动往往更卡，还会破坏锚点与无障碍。</li>
+      </ul>
+      <p>
+        具体的动效只有几类：标题逐行上移、内容进入视口时轻微上浮、指针悬停时列表行展开细节、
+        自定义光标跟随、首页那条线随滚动速度起伏。每一类都很轻，叠在一起才形成节奏。
+      </p>
+      <pre><code>.hero__title .line > span {
+  transform: translateY(105%);
+  transition: transform 1.1s cubic-bezier(.16, 1, .3, 1);
+}
+.is-loaded .hero__title .line > span {
+  transform: translateY(0);
+}</code></pre>
+      <p>
+        另外两件事必须做：<code>prefers-reduced-motion</code> 下全部动画退化为静态；
+        环境音默认关闭，只有用户主动打开声音开关才会用 WebAudio 生成一段低频氛围。
+        默认安静，是这个站点最重要的交互决定。
+      </p>
+
+      <h2 id="s5">无框架的工程</h2>
+      <p>
+        全站没有框架、没有构建步骤、没有 npm 依赖。结构是：
+      </p>
+      <ul>
+        <li>一份 CSS：设计变量、排版、组件、响应式与减少动态偏好；</li>
+        <li>两份 JS：站点行为（主题、时钟、光标、菜单、声音、阅读进度）与首页波形；</li>
+        <li>四个自托管字体文件，合计约 70 KB；</li>
+        <li>没有第三方请求，没有统计脚本，没有 Cookie。</li>
+      </ul>
+      <p>
+        代价是要自己处理一些框架免费给的东西：页面间共享的头部要复制到每个文件、
+        文章目录要手写 anchor、主题切换要防闪烁（在 <code>&lt;head&gt;</code> 里同步读 localStorage）。
+        好处是每一行代码都知道为什么存在，以及整站可以离线打开。
+      </p>
+
+      <h2 id="s6">取舍</h2>
+      <p>
+        这版依然有妥协：文章是手写 HTML，写第三篇时就开始想念 Markdown；
+        自定义光标在触屏上必须关闭；深色模式下白色图片会显得突兀（所以这版没有插图）；
+        首页的 canvas 在低端设备上需要限制像素比。
+      </p>
+      <p>
+        但至少现在，这个站点看起来像一个具体的人做的：它有名字、有证据、有纸的质感，
+        也有说得清楚的限制。模板可以生成一个「不错的网站」，但生成不了这些。
+      </p>
+
+      <div class="article-foot">
+        <a class="article-foot__next" href="/writing/">
+          <span>回到</span>
+          <strong>写作归档 ↗</strong>
+        </a>
+        <a class="link-line" href="/">回到首页 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <aside class="article-aside">
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="文章目录">
+        <a href="#s1">AI 味的配方</a>
+        <a href="#s2">先问这个站点是谁的</a>
+        <a href="#s3">字体、网格、一个强调色</a>
+        <a href="#s4">动效只做三件事</a>
+        <a href="#s5">无框架的工程</a>
+        <a href="#s6">取舍</a>
+      </nav>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

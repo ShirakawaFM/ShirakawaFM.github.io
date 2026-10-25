@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>让发版自己发生 · ShirakawaFM</title>
+<meta name="description" content="一个浏览器扩展的 GitHub Actions 流水线：版本守卫、打包边界、本地预演，以及三个真实踩过的坑。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线">
+<meta property="og:description" content="版本守卫、打包边界、本地预演，以及三个真实踩过的坑。">
+<meta property="og:url" content="https://shirakawafm.github.io/writing/release-pipeline.html">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/writing/release-pipeline.html">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
+    <a href="/about/">关于<sup>03</sup></a>
+  </nav>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
+</div>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="shell">
+      <div class="article-hero__kicker">
+        <a class="mono" href="/writing/">← 写作</a>
+        <span class="tag">发布</span>
+        <span class="mono">2026-10-25 · 8 分钟</span>
+      </div>
+      <h1 class="article-title">让发版<em>自己发生</em></h1>
+      <p class="article-deck">
+        一个只有十九个文件的仓库，没有构建步骤，也没有依赖。但它有两条流水线：
+        一条在每次提交时说不，一条在打标签时把包做好。
+      </p>
+      <div class="article-meta">
+        <span>作者 ShirakawaFM</span>
+        <span>约 2600 字</span>
+        <span>GitHub Actions · 静态文件</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell article-layout">
+    <article class="prose">
+      <p>
+        发布一个浏览器扩展，本来只需要三步：改版本号、压缩文件夹、上传到 Release。
+        手动做过几次之后，我发现每次都会在某个环节出错，而且错法几乎是一样的。
+      </p>
+
+      <h2 id="s1">手动发版的三个漏洞</h2>
+      <ul>
+        <li><strong>版本漂移</strong>：改了 <code>manifest.json</code>，忘了改 README 徽章，或者反过来；</li>
+        <li><strong>包内旧文件</strong>：压缩时顺手把工作目录打进去，包里的内容和你以为的不一样；</li>
+        <li><strong>忘记附件</strong>：Release 写完了，但 zip 没传，用户点下载发现是空的。</li>
+      </ul>
+      <p>
+        这三件事都不难防，难的是每次都记得。于是我把它们交给流水线：能自动判断的，不再靠人。
+      </p>
+
+      <h2 id="s2">两个工作流，两种职责</h2>
+      <p>
+        <code>.github/workflows/validate.yml</code> 在每次推送和 PR 时运行，只做检查，不产物：
+      </p>
+      <ul>
+        <li>解析 <code>manifest.json</code>，确认 <code>manifest_version</code> 是 3、版本号格式合法；</li>
+        <li>遍历 manifest 引用的每个文件，确认它们真的存在；</li>
+        <li>对每个 <code>.js</code> 跑 <code>node --check</code>；</li>
+        <li>检查 <code>popup.html</code> 里的本地资源路径；</li>
+        <li>确认仓库里没有提交 zip / crx / pem。</li>
+      </ul>
+      <p>
+        最后一条看起来小题大做，但它最有价值：打包产物一旦进仓库，历史里就永远多出几 MB，
+        而 GitHub 的单文件上限是 100 MB——踩到一次就很难看。
+      </p>
+
+      <h2 id="s3">版本守卫：让 tag 与文件互相证明</h2>
+      <p>
+        <code>release.yml</code> 只在推送 <code>v*</code> 标签时运行。第一步不是打包，而是拒绝：
+      </p>
+      <pre><code>TAG="${GITHUB_REF_NAME#v}"
+MANIFEST_VERSION="$(node -p "require('./manifest.json').version")"
+if [ "$TAG" != "$MANIFEST_VERSION" ]; then
+  echo "::error::Tag v${TAG} does not match manifest ${MANIFEST_VERSION}"
+  exit 1
+fi</code></pre>
+      <p>
+        这条判断消灭了「tag 是 v2.4.4、包内还是 2.4.3」的问题。它也有一个副作用：
+        如果你先打标签、后改版本号，工作流会失败。这个副作用是好的——版本号必须在打标签之前就确定，
+        而不是在失败之后补。
+      </p>
+
+      <h2 id="s4">只打包该打包的</h2>
+      <p>
+        扩展的运行时文件只有五个：<code>manifest.json</code>、<code>content.js</code>、
+        <code>popup.html</code>、<code>popup.css</code>、<code>popup.js</code>。
+        文档和许可证可以带上，但 <code>.git</code>、<code>docs/</code>、<code>node_modules/</code> 不该进包。
+      </p>
+      <pre><code>mkdir -p dist/douyin-auto-hd
+cp manifest.json content.js popup.html popup.css popup.js dist/douyin-auto-hd/
+cp README.md README_EN.md LICENSE CHANGELOG.md dist/douyin-auto-hd/
+(cd dist && zip -r -9 "douyin-auto-hd-v${VERSION}.zip" douyin-auto-hd > /dev/null)
+(cd dist && sha256sum "douyin-auto-hd-v${VERSION}.zip" > SHA256SUMS.txt)</code></pre>
+      <p>
+        关键是 zip 的根目录结构：<code>manifest.json</code> 必须位于压缩包第一层，
+        这样用户解压后可以直接在 <code>chrome://extensions/</code> 里选文件夹。
+        如果多包一层目录，很多人会选错层级，然后看到「清单文件缺失」。
+      </p>
+
+      <h2 id="s5">在本地预演流水线</h2>
+      <p>
+        Actions 的反馈通常要等几十秒，调试起来很慢。Git for Windows 自带 Git Bash，
+        可以先把工作流里的 <code>run</code> 脚本抽出来，在本地真实执行一遍。
+      </p>
+      <pre><code>import yaml, pathlib
+data = yaml.safe_load(pathlib.Path(".github/workflows/validate.yml").read_text())
+for job in data["jobs"].values():
+    for step in job["steps"]:
+        if "run" in step:
+            print(step["name"], "→", len(step["run"]), "chars")</code></pre>
+      <p>
+        把脚本拼成一个 shell 文件，用 <code>bash</code> 跑。这比读一遍 YAML 可靠得多：
+        它会真实地暴露路径错误、变量未定义、以及「本地能过、runner 上不能过」的差异。
+        这套做法后来也成了我改工作流的标准流程。
+      </p>
+
+      <h2 id="s6">三个真实的坑</h2>
+      <h3>1. tag 打在了错误的提交上</h3>
+      <p>
+        第一次发版时，我先提交代码再打标签，中间又补了一个文档提交。结果 tag 指向旧提交，
+        Release 里的 README 还是上一版。教训不是「别改文档」，而是发版顺序要固定：
+        先确定提交、再打标签、最后推送 tag。
+      </p>
+      <h3>2. Git 不走系统代理</h3>
+      <p>
+        浏览器能打开 GitHub，<code>git push</code> 却报 <code>Recv failure: Connection was reset</code>。
+        原因是 Clash 的系统代理只对浏览器生效，Git 默认直连。给单次命令加代理即可：
+      </p>
+      <pre><code>git -c http.proxy=http://127.0.0.1:7890 push origin main</code></pre>
+      <h3>3. Actions 没有写权限</h3>
+      <p>
+        工作流在创建 Release 时报 <code>Resource not accessible by integration</code>。
+        需要在 Settings → Actions → General 里把 Workflow permissions 改成
+        Read and write。这个设置默认是只读的，第一次发版几乎必踩。
+      </p>
+
+      <h2 id="s7">发布的成本决定发布频率</h2>
+      <p>
+        流水线本身不产出功能，但它改变了一个更重要的东西：发版的边际成本。
+        当发布只需要 <code>git tag</code> 和一次推送，你会更愿意发小版本，而不是攒一个大的。
+        小版本意味着更小的变更面、更容易回滚、更少的「这次改了太多」。
+      </p>
+      <p>
+        现在这个仓库的发布流程是：改版本号、写 CHANGELOG、提交、打标签、推送。
+        剩下的事情——校验、打包、算 SHA-256、创建 Release——都不需要我看着。
+      </p>
+
+      <div class="article-foot">
+        <a class="article-foot__next" href="/writing/escape-the-template.html">
+          <span>下一篇</span>
+          <strong>把博客从模板里救出来 ↗</strong>
+        </a>
+        <a class="link-line" href="/writing/">返回写作 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <aside class="article-aside">
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="文章目录">
+        <a href="#s1">手动发版的三个漏洞</a>
+        <a href="#s2">两个工作流，两种职责</a>
+        <a href="#s3">版本守卫：让 tag 与文件互相证明</a>
+        <a href="#s4">只打包该打包的</a>
+        <a href="#s5">在本地预演流水线</a>
+        <a href="#s6">三个真实的坑</a>
+        <a href="#s7">发布的成本决定发布频率</a>
+      </nav>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>最小权限的代价 · ShirakawaFM</title>
+<meta name="description" content="一个只申请了三个权限的浏览器扩展，如何在真实页面里完成画质切换；以及为此付出的 13 次迭代。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最小权限的代价：给抖音网页版做画质自动化的 13 次迭代">
+<meta property="og:description" content="一个只申请了三个权限的扩展，如何在真实页面里完成画质切换。">
+<meta property="og:url" content="https://shirakawafm.github.io/writing/minimal-permissions.html">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/writing/minimal-permissions.html">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
+    <a href="/about/">关于<sup>03</sup></a>
+  </nav>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
+</div>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="shell">
+      <div class="article-hero__kicker">
+        <a class="mono" href="/writing/">← 写作</a>
+        <span class="tag">工程</span>
+        <span class="mono">2026-10-25 · 11 分钟</span>
+      </div>
+      <h1 class="article-title">最小权限的<em>代价</em></h1>
+      <p class="article-deck">
+        一个只申请了三个权限的浏览器扩展，要在别人的页面里完成画质切换。它做到了，但用了十三次迭代，
+        而且每一次都不是因为「功能不够」，而是因为假设错了。
+      </p>
+      <div class="article-meta">
+        <span>作者 ShirakawaFM</span>
+        <span>约 4200 字</span>
+        <span>Manifest V3 · Chrome 88+</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell article-layout">
+    <article class="prose">
+      <p>
+        每天打开抖音网页版，想看清晰一点的版本，需要把鼠标移到右下角，等控制栏浮出来，点开「清晰度」，
+        再在一列档位里找到最高那一个。整个过程大概四秒。真正让人烦躁的不是这四秒，而是它每天要重复很多次，
+        并且每次切换视频之后，画质都可能回到默认值。
+      </p>
+      <p>
+        于是我写了一个扩展。目标很简单：视频出现时，自动切到当前可用的最高档。它现在叫
+        <a href="https://github.com/ShirakawaFM/douyin-auto-hd">douyin-auto-hd</a>，版本 2.4.3，
+        只申请了 <code>storage</code>、<code>activeTab</code> 和抖音域名的 host 权限。
+      </p>
+      <p>
+        这篇文章记录的不是「如何写一个扩展」，而是十三次迭代里那些被现实推翻的假设。它们大多与权限无关，
+        却都源于同一件事：我以为我能控制页面。
+      </p>
+
+      <h2 id="s1">第一个假设：播放器应该有 API</h2>
+      <p>
+        最自然的做法是拿到播放器实例，调用它的画质切换方法。抖音网页版用的是 xgplayer，理论上存在这样的 API。
+        但 content script 运行在隔离世界（isolated world）里，能访问 DOM，却访问不到页面主世界闭包里的变量。
+      </p>
+      <p>
+        v1.0.12 我写了一段探测：从 <code>&lt;video&gt;</code> 元素向上找十层父节点，读取所有 expando 属性，
+        试图找到被挂在 DOM 上的播放器实例。结果是空的。实例确实存在，只是不在我能碰到的地方。
+      </p>
+      <p>
+        这一步其实可以更早结束。如果当时接受「拿不到实例」，就会更早走到下一个发现，而不是在 API 上多花几个版本。
+        这也是我后来做技术判断时常用的一个问题：<strong>这条路径如果走不通，我什么时候会知道？</strong>
+        如果答案是「很久以后」，那它大概率不值得先走。
+      </p>
+
+      <h2 id="s2">意外：选项一直存在，只是被藏起来</h2>
+      <p>
+        转机来自一次诊断日志。我把页面上所有短文本、疑似画质的元素全部打印出来，发现了一个反常现象：
+        画质菜单明明没有展开，但「1080P」「720P」「标清」这些选项已经在 DOM 里，状态是
+        <code>vis=n</code>（不可见）、<code>clk=y</code>（可点击）。
+      </p>
+      <p>
+        也就是说，抖音没有在打开菜单时才渲染选项，而是常驻 DOM、仅做视觉隐藏。对用户来说这无所谓；
+        对自动化来说，这意味着可以<strong>跳过「打开菜单」这一步，直接对隐藏选项派发点击</strong>。
+      </p>
+      <pre><code>const options = findAllQualityOptions(trigger); // 不按可见性过滤
+const best = pickBestUnderCeiling(options, targetCeilingScore());
+safeClick(findClickableUp(best.el, 5) || best.el);</code></pre>
+      <p>
+        v1.0.13 改成这套逻辑后，扩展第一次做到了「无感」：不需要悬停，不需要等控制栏出现，
+        视频一加载就完成切换。它也顺带解决了另一个问题——控制栏在无鼠标悬停时是
+        <code>opacity: 0</code> 且 <code>pointer-events: none</code>，合成鼠标事件根本唤不醒它。
+      </p>
+
+      <h2 id="s3">合成事件的副作用</h2>
+      <p>
+        在此之前，v1.0.11 曾尝试用 <code>mousemove</code>、<code>mouseover</code> 强制唤出控制栏。
+        这个方案在开发时是有效的，但上线后收到了「进度条抽搐、回跳」的反馈：
+        用户拖动进度条 seek 的同时，扩展派发的合成鼠标事件也在触发控制栏状态变化，两者打架。
+      </p>
+      <p>
+        最后在 v2.4.3 里把这套合成事件整个删掉了。删除比增加更难——它意味着承认之前的一版是在给问题打补丁，
+        而不是解决问题。删掉之后，切换依然正常，因为「直接点隐藏选项」这条路已经不依赖控制栏。
+      </p>
+      <blockquote>
+        <p>在别人的页面上做自动化，最贵的不是写代码，是判断哪些交互是「页面真的需要」，哪些只是你以为它需要。</p>
+      </blockquote>
+
+      <h2 id="s4">文本匹配的脆弱性</h2>
+      <p>
+        没有稳定的选择器，就只能靠文本。扩展里有一张画质规则表，按分值排序，匹配前统一转大写、去掉空白：
+      </p>
+      <pre><code>const QUALITY_RULES = [
+  { score: 4000, label: '4K',    re: /^(4K|超清4K)$/ },
+  { score: 2160, label: '2160P', re: /^2160P$/ },
+  { score: 1500, label: '臻彩',  re: /^臻彩$/ },
+  { score: 1440, label: '2K',    re: /^(2K|超清2K)$/ },
+  { score: 1200, label: '蓝光',  re: /^蓝光$/ },
+  { score: 1080, label: '1080P', re: /^(1080P|高清1080P|超清)$/ },
+  // ...
+];</code></pre>
+      <p>
+        早期版本用的是「包含」匹配。结果在 v2.4.3 之前出现过一个很难查的 bug：视频标题或搜索推荐词里含有
+        「超高清」「4K」时，扩展会把标题当成画质选项点下去，页面直接跳到搜索结果。
+      </p>
+      <p>
+        修复方式是把所有正则改成<strong>整段锚定</strong>（<code>^...$</code>），只认「整段文本恰好是一个画质标签」的元素。
+        这个改动很小，但它把误识别从「概率问题」变成了「结构问题」：只有真正长得像画质选项的节点才会被选中。
+      </p>
+
+      <h2 id="s5">权限账本</h2>
+      <p>
+        这个扩展的权限申请如下，没有隐藏项：
+      </p>
+      <pre><code>{
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://*.douyin.com/*",
+    "https://douyin.com/*"
+  ]
+}</code></pre>
+      <p>
+        <code>storage</code> 用来保存开关与目标清晰度；host 权限只覆盖抖音域名，用于注入 content script；
+        <code>activeTab</code> 只在用户点击图标时临时授予，用于弹窗判断当前页是不是抖音。
+      </p>
+      <p>
+        刻意没有申请的东西同样重要：没有 <code>tabs</code>（不需要读所有标签页）、没有
+        <code>&lt;all_urls&gt;</code>（不接触别的网站）、没有后台 service worker（不常驻）、
+        没有 <code>webRequest</code>（不读也不改请求）。这不是道德姿态，而是产品约束：
+        权限越少，用户越容易信任；同时它也逼着实现必须更克制。
+      </p>
+      <p>
+        代价是多出来的工程复杂度。没有 <code>tabs</code> 权限，弹窗就拿不到完整标签页信息，
+        只能靠 host 权限覆盖的域名判断；没有后台脚本，弹窗和页面之间的状态同步就只能靠
+        <code>chrome.storage.onChanged</code> 和消息通道，刷新页面时还要自己重建观察器。
+      </p>
+
+      <h2 id="s6">现在的边界</h2>
+      <p>
+        它仍然不是一个「完美」的扩展，边界很清楚：
+      </p>
+      <ul>
+        <li>画质高于当前账号可见范围时，它无能为力——页面不提供的选项，点击也不存在；</li>
+        <li>直播直接跳过。用域名、路径和视频时长做启发式判断，不保证覆盖所有直播形态；</li>
+        <li>抖音改文案就会失效。规则表和入口识别都写在 <code>content.js</code> 顶部，改起来不难，但需要有人改；</li>
+        <li>「当前画质」是从按钮文本推断的，没有稳定 API 时，它可能与真实分辨率存在偏差。</li>
+      </ul>
+      <p>
+        这些限制我选择写在 README 里，而不是等用户来发现。一个工具的可信度，很大程度上取决于它是否愿意
+        提前说出自己做不到什么。
+      </p>
+
+      <h2 id="s7">代价与收获</h2>
+      <p>
+        十三次迭代里，真正增加功能的版本不多，大部分是在修「我以为」：以为有 API、以为合成事件无害、
+        以为菜单需要先打开、以为文本包含就够了。最小权限没有让实现变简单，它只是把复杂度从「向平台要权限」
+        转移到了「在自己的代码里解决问题」。
+      </p>
+      <p>
+        但它换来了一个我更喜欢的结果：安装时不需要向用户解释为什么要读所有网站，代码里也没有一行是多余的权限。
+        自动化最好的状态是消失——用户只记得画质变清楚了，不记得有一个扩展在跑。
+      </p>
+
+      <div class="article-foot">
+        <a class="article-foot__next" href="/writing/release-pipeline.html">
+          <span>下一篇</span>
+          <strong>让发版自己发生 ↗</strong>
+        </a>
+        <a class="link-line" href="/writing/">返回写作 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <aside class="article-aside">
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="文章目录">
+        <a href="#s1">第一个假设：播放器应该有 API</a>
+        <a href="#s2">意外：选项一直存在，只是被藏起来</a>
+        <a href="#s3">合成事件的副作用</a>
+        <a href="#s4">文本匹配的脆弱性</a>
+        <a href="#s5">权限账本</a>
+        <a href="#s6">现在的边界</a>
+        <a href="#s7">代价与收获</a>
+      </nav>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

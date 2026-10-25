@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>写作 · ShirakawaFM</title>
+<meta name="description" content="ShirakawaFM 的写作归档：浏览器扩展、发布流程、设计与工程笔记。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="website">
+<meta property="og:title" content="写作 · ShirakawaFM">
+<meta property="og:description" content="关于工程、发布与设计的笔记。">
+<meta property="og:url" content="https://shirakawafm.github.io/writing/">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/writing/">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
+    <a href="/about/">关于<sup>03</sup></a>
+  </nav>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
+</div>
+
+<main id="main">
+  <header class="page-head">
+    <div class="shell">
+      <div class="page-head__top">
+        <span class="mono">02 / Writing</span>
+        <span class="mono">2026 —</span>
+      </div>
+      <h1 class="page-title">写<em>作</em></h1>
+      <p class="page-deck">
+        关于工程、发布与设计的笔记。不是教程合集，更像工作台边的草稿：
+        记录一个决定为什么被做出，以及它在真实环境里付出了什么代价。
+      </p>
+    </div>
+  </header>
+
+  <div class="shell archive">
+    <div class="archive__year">
+      <span>2026</span>
+      <span>3 篇</span>
+    </div>
+
+    <div class="archive__row" data-reveal>
+      <time datetime="2026-10-25">10.25</time>
+      <a href="/writing/minimal-permissions.html">最小权限的代价：给抖音网页版做画质自动化的 13 次迭代</a>
+      <span>工程 / 11 min</span>
+    </div>
+
+    <div class="archive__row" data-reveal>
+      <time datetime="2026-10-25">10.25</time>
+      <a href="/writing/release-pipeline.html">让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线</a>
+      <span>发布 / 8 min</span>
+    </div>
+
+    <div class="archive__row" data-reveal>
+      <time datetime="2026-10-25">10.25</time>
+      <a href="/writing/escape-the-template.html">把博客从模板里救出来：一次反 AI 味的设计重写</a>
+      <span>设计 / 7 min</span>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

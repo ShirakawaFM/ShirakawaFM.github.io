@@ -1,384 +1,309 @@
-```html
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ShirakawaFM</title>
-
-<style>
-:root{
---bg:#000;
---card:rgba(255,255,255,.06);
---border:rgba(255,255,255,.12);
---text:#fff;
---sub:#a1a1aa;
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-font-family:-apple-system,BlinkMacSystemFont,
-"SF Pro Display","PingFang SC",sans-serif;
-background:#000;
-color:white;
-overflow-x:hidden;
-}
-
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%,rgba(0,122,255,.35),transparent 40%),
-radial-gradient(circle at 80% 30%,rgba(175,82,222,.35),transparent 40%),
-radial-gradient(circle at 50% 80%,rgba(52,199,89,.20),transparent 50%);
-filter:blur(80px);
-z-index:-1;
-animation:float 12s infinite alternate ease-in-out;
-}
-
-@keyframes float{
-from{transform:translateY(-40px);}
-to{transform:translateY(40px);}
-}
-
-nav{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-width:min(95%,1000px);
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px 24px;
-backdrop-filter:blur(25px);
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.1);
-border-radius:999px;
-z-index:1000;
-}
-
-.logo{
-font-weight:700;
-font-size:1rem;
-}
-
-nav ul{
-display:flex;
-gap:24px;
-list-style:none;
-}
-
-nav a{
-text-decoration:none;
-color:white;
-opacity:.8;
-transition:.3s;
-}
-
-nav a:hover{
-opacity:1;
-}
-
-.hero{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-text-align:center;
-padding:20px;
-}
-
-.hero h1{
-font-size:clamp(4rem,12vw,9rem);
-letter-spacing:-0.06em;
-line-height:.9;
-}
-
-.gradient{
-background:linear-gradient(
-90deg,
-#fff,
-#7dd3fc,
-#c084fc,
-#fff
-);
-background-size:300%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:shine 8s linear infinite;
-}
-
-@keyframes shine{
-to{
-background-position:300%;
-}
-}
-
-.hero p{
-margin-top:20px;
-font-size:clamp(1.2rem,2vw,2rem);
-color:#aaa;
-max-width:700px;
-}
-
-.scroll{
-margin-top:40px;
-opacity:.7;
-animation:bounce 2s infinite;
-}
-
-@keyframes bounce{
-50%{
-transform:translateY(10px);
-}
-}
-
-section{
-max-width:1100px;
-margin:auto;
-padding:100px 20px;
-}
-
-.section-title{
-font-size:3rem;
-margin-bottom:40px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:24px;
-}
-
-.card{
-background:var(--card);
-backdrop-filter:blur(25px);
-border:1px solid var(--border);
-border-radius:30px;
-padding:30px;
-transition:.4s;
-}
-
-.card:hover{
-transform:translateY(-10px);
-border-color:rgba(255,255,255,.25);
-}
-
-.card h3{
-font-size:1.4rem;
-margin-bottom:12px;
-}
-
-.card p{
-color:#b4b4b4;
-}
-
-.about{
-font-size:1.2rem;
-line-height:1.8;
-color:#d4d4d8;
-max-width:800px;
-}
-
-footer{
-padding:60px 20px;
-text-align:center;
-color:#777;
-}
-
-.button{
-display:inline-block;
-margin-top:20px;
-padding:12px 24px;
-border-radius:999px;
-background:white;
-color:black;
-text-decoration:none;
-font-weight:600;
-}
-
-@media(max-width:768px){
-
-nav ul{
-display:none;
-}
-
-.section-title{
-font-size:2rem;
-}
-
-.hero h1{
-font-size:4rem;
-}
-
-}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ShirakawaFM — 作品与笔记</title>
+<meta name="description" content="ShirakawaFM 的个人站点：浏览器扩展、AI 影像工作流与 Minecraft 模组的作品与笔记。手写的网站，安静的技术记录。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ShirakawaFM — Works & Notes">
+<meta property="og:description" content="把复杂的东西，做得安静。浏览器扩展、AI 影像与 Minecraft 模组的作品与笔记。">
+<meta property="og:url" content="https://shirakawafm.github.io/">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/instrument-serif-400-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
+  } catch (e) {}
+})();
+</script>
 </head>
-
 <body>
 
-<nav>
-<div class="logo">ShirakawaFM</div>
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
 
-<ul>
-<li><a href="#projects">项目</a></li>
-<li><a href="#blog">博客</a></li>
-<li><a href="#about">关于</a></li>
-</ul>
-</nav>
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
 
-<section class="hero">
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/">写作<sup>02</sup></a>
+    <a href="/about/">关于<sup>03</sup></a>
+  </nav>
 
-<h1 class="gradient">
-ShirakawaFM
-</h1>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
 
-<p>
-Developer · Creator · AI Explorer
-<br>
-探索 AI、编程与数字创作的无限可能
-</p>
-
-<a href="#projects" class="button">
-开始探索
-</a>
-
-<div class="scroll">
-↓ Scroll
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
 </div>
 
-</section>
+<main id="main">
 
-<section id="projects">
+  <section class="hero">
+    <div class="shell hero__grid">
+      <div class="hero__main">
+        <p class="hero__eyebrow mono">独立开发者 / 浏览器扩展 / 影像实验</p>
 
-<h2 class="section-title">
-精选项目
-</h2>
+        <h1 class="hero__title">
+          <span class="line"><span>Shirakawa</span></span>
+          <span class="line"><span><em>FM</em></span></span>
+        </h1>
 
-<div class="grid">
+        <p class="hero__role mono">Independent developer / Browser extensions &amp; motion</p>
 
-<div class="card">
-<h3>AI Video Studio</h3>
-<p>
-AI 自动生成电影级视频内容工作流。
-</p>
-</div>
+        <p class="hero__statement">
+          把复杂的东西，做得安静。这里记录浏览器扩展、AI 影像工作流与 Minecraft 模组——
+          一个开发者的作品、笔记，以及一些还没想清楚的问题。
+        </p>
 
-<div class="card">
-<h3>HyperFrames</h3>
-<p>
-高质量 AI 视频脚本与动画工程系统。
-</p>
-</div>
+        <div class="hero__actions">
+          <a class="link-line" href="#work">查看作品 <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="link-line" href="/writing/">读点东西 <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
 
-<div class="card">
-<h3>Minecraft Mods</h3>
-<p>
-生存、枪械与玩法增强模组开发。
-</p>
-</div>
+      <aside class="trace" aria-label="实时轨迹">
+        <div class="trace__top">
+          <span class="mono">Live trace</span>
+          <span class="mono">Reactive</span>
+        </div>
+        <div class="trace__canvas-wrap">
+          <canvas id="trace" aria-hidden="true"></canvas>
+        </div>
+        <div class="trace__readout">
+          <span>Timecode <strong data-trace-time>00:00</strong></span>
+          <span>Pointer / Scroll</span>
+        </div>
+        <p class="trace__caption">一条随滚动速度与指针位置变化的线。它不解释什么，只是让页面保持一点呼吸。</p>
+      </aside>
+    </div>
 
-</div>
+    <div class="shell hero__foot">
+      <a class="scroll-cue" href="#work">向下滚动</a>
+      <p class="hero__coords">
+        UTC+8 / CN<br>
+        Index 001<br>
+        Est. 2026
+      </p>
+    </div>
+  </section>
 
-</section>
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <div class="ticker__group">
+        <span>Minimal permissions</span><span>Manifest V3</span><span>4K quality</span><span>AI video</span><span>Minecraft modding</span><span>Hand-written CSS</span><span>No third-party requests</span>
+      </div>
+      <div class="ticker__group">
+        <span>Minimal permissions</span><span>Manifest V3</span><span>4K quality</span><span>AI video</span><span>Minecraft modding</span><span>Hand-written CSS</span><span>No third-party requests</span>
+      </div>
+    </div>
+  </div>
 
-<section id="blog">
+  <section class="section" id="work">
+    <div class="shell">
+      <header class="section__head" data-reveal>
+        <span class="section__index mono">01 / Work</span>
+        <h2 class="section__title">选中的<em>作品</em></h2>
+        <p class="section__meta">2025 — 2026<br>Open source</p>
+      </header>
 
-<h2 class="section-title">
-最新文章
-</h2>
+      <ol class="work-list">
+        <li>
+          <a class="work" href="https://github.com/ShirakawaFM/douyin-auto-hd" data-reveal style="--i:0">
+            <span class="work__idx">01</span>
+            <div class="work__body">
+              <div class="work__title">douyin-auto-hd <span class="zh">抖音网页版 · 自动最高画质</span></div>
+              <div class="work__detail">
+                <p>最小权限的 Manifest V3 扩展：靠文本锚定识别画质、直接点击 DOM 里的隐藏选项、适配 SPA 切换与直播跳过。13 次迭代，当前 v2.4.3。</p>
+              </div>
+            </div>
+            <div class="work__meta"><b>Chrome Extension</b>2026 · v2.4.3</div>
+            <span class="work__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
 
-<div class="grid">
+        <li>
+          <a class="work" href="https://github.com/ShirakawaFM/FM-S-Blogs" data-reveal style="--i:1">
+            <span class="work__idx">02</span>
+            <div class="work__body">
+              <div class="work__title">FM-S-Blogs <span class="zh">Next.js 写作系统</span></div>
+              <div class="work__detail">
+                <p>自带本地后台的 Markdown 博客系统：草稿管理、图床配置、无损更新器与一键部署。文档比代码更长，也更难写。</p>
+              </div>
+            </div>
+            <div class="work__meta"><b>Next.js</b>2025 — 2026 · v0.3.1</div>
+            <span class="work__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
 
-<div class="card">
-<h3>ChatGPT 建站指南</h3>
-<p>
-从零开始搭建属于自己的博客。
-</p>
-</div>
+        <li>
+          <a class="work" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" data-reveal style="--i:2">
+            <span class="work__idx">03</span>
+            <div class="work__body">
+              <div class="work__title">ShirakawaFM <span class="zh">本站 · 个人站点</span></div>
+              <div class="work__detail">
+                <p>手写 HTML / CSS / JS 的个人站点。一个样式表、两个脚本、自托管字体；没有框架、没有构建、没有第三方请求。</p>
+              </div>
+            </div>
+            <div class="work__meta"><b>Static site</b>2026 · Ongoing</div>
+            <span class="work__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
 
-<div class="card">
-<h3>Vibe Coding</h3>
-<p>
-AI 时代的新型开发方式。
-</p>
-</div>
+        <li>
+          <div class="work" data-reveal style="--i:3">
+            <span class="work__idx">04</span>
+            <div class="work__body">
+              <div class="work__title">Video Lab <span class="zh">AI 影像工作流</span></div>
+              <div class="work__detail">
+                <p>用 Remotion 与自建流水线做短片：脚本、分镜、配音、字幕、渲染。还在实验，暂时不公开仓库。</p>
+              </div>
+            </div>
+            <div class="work__meta"><b>In progress</b>Remotion · FFmpeg</div>
+            <span class="work__arrow" aria-hidden="true">·</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-<div class="card">
-<h3>Remotion 实战</h3>
-<p>
-用代码制作电影级视频。
-</p>
-</div>
+  <section class="section" id="writing">
+    <div class="shell">
+      <header class="section__head" data-reveal>
+        <span class="section__index mono">02 / Writing</span>
+        <h2 class="section__title">最近的<em>写作</em></h2>
+        <p class="section__meta">Notes on craft<br>不定期更新</p>
+      </header>
 
-</div>
+      <div class="write-list">
+        <a class="write" href="/writing/minimal-permissions.html" data-reveal style="--i:0">
+          <time class="write__date" datetime="2026-10-25">2026-10-25</time>
+          <span class="write__title">最小权限的代价：给抖音网页版做画质自动化的 13 次迭代</span>
+          <span class="write__tag">工程 · 11 分钟</span>
+          <span class="write__arrow" aria-hidden="true">↗</span>
+        </a>
 
-</section>
+        <a class="write" href="/writing/release-pipeline.html" data-reveal style="--i:1">
+          <time class="write__date" datetime="2026-10-25">2026-10-25</time>
+          <span class="write__title">让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线</span>
+          <span class="write__tag">发布 · 8 分钟</span>
+          <span class="write__arrow" aria-hidden="true">↗</span>
+        </a>
 
-<section id="about">
+        <a class="write" href="/writing/escape-the-template.html" data-reveal style="--i:2">
+          <time class="write__date" datetime="2026-10-25">2026-10-25</time>
+          <span class="write__title">把博客从模板里救出来：一次反 AI 味的设计重写</span>
+          <span class="write__tag">设计 · 7 分钟</span>
+          <span class="write__arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-<h2 class="section-title">
-关于我
-</h2>
+  <section class="section" id="about">
+    <div class="shell">
+      <header class="section__head" data-reveal>
+        <span class="section__index mono">03 / About</span>
+        <h2 class="section__title">关于<em>这个人</em></h2>
+        <p class="section__meta">Independent<br>UTC+8</p>
+      </header>
 
-<p class="about">
-你好，我是 ShirakawaFM。
+      <div class="about-teaser">
+        <div class="about-teaser__label" data-reveal>
+          <p class="about-teaser__quote">“先把东西做对，再让它好看。”</p>
+          <a class="link-line" href="/about/">完整自述 <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
 
-专注于 AI、自动化工作流、视频创作以及软件开发。
+        <div class="about-teaser__body" data-reveal style="--i:1">
+          <p>
+            我是 ShirakawaFM，一名独立开发者。白天写浏览器扩展与自动化脚本，晚上研究 AI 影像工作流、
+            Minecraft 模组和一些没什么用但很好玩的东西。
+          </p>
+          <p>
+            这个站点是一份公开的索引：不定期更新正在做的项目、踩过的坑，以及关于工具与审美的想法。
+            没有算法推荐，也没有订阅弹窗。
+          </p>
+          <ul class="stack" aria-label="常用技术">
+            <li>TypeScript</li>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>Java</li>
+            <li>Remotion</li>
+            <li>FFmpeg</li>
+            <li>Next.js</li>
+            <li>Manifest V3</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-这里记录我的项目、思考和创造过程。
+</main>
 
-希望通过技术与创意，让复杂的事情变得简单而有趣。
-</p>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
 
-</section>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
 
-<footer>
-© 2026 ShirakawaFM · Built with GitHub Pages
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
 </footer>
 
-<script>
-
-const observer = new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.animate(
-[
-{
-opacity:0,
-transform:'translateY(40px)'
-},
-{
-opacity:1,
-transform:'translateY(0)'
-}
-],
-{
-duration:800,
-fill:'forwards'
-}
-)
-}
-})
-})
-
-document.querySelectorAll('.card,.section-title,.about')
-.forEach(el=>observer.observe(el))
-
-</script>
-
+<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/home.js" defer></script>
 </body>
 </html>
-```
