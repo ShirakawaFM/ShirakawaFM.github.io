@@ -137,19 +137,6 @@
 | 2026-10-25 | [让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线](https://shirakawafm.github.io/writing/release-pipeline.html) | 发布 |
 | 2026-10-25 | [把博客从模板里救出来：一次反 AI 味的设计重写](https://shirakawafm.github.io/writing/escape-the-template.html) | 设计 |
 
-## 🐍 贡献图
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ShirakawaFM/ShirakawaFM.github.io/output/github-snake-dark.svg?v=2" />
-  <img alt="Contribution snake" src="https://raw.githubusercontent.com/ShirakawaFM/ShirakawaFM.github.io/output/github-snake.svg?v=2" />
-</picture>
-
-<sub>由 GitHub Actions 每 12 小时生成一次。</sub>
-
-</div>
-
 ## 💭 我怎么做东西
 
 1. **先问能不能不要。** 能少一个依赖、少一个权限、少一层抽象，就先减掉。
