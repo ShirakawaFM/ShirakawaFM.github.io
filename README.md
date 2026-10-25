@@ -116,7 +116,7 @@
     </td>
     <td width="50%">
       <a href="https://github.com/ShirakawaFM/FM-S-Blogs">
-        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=FM-S-Blogs&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F" alt="FM-S-Blogs" width="420" />
+        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=FM-S-Blogs&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F&amp;hide_description=true" alt="FM-S-Blogs" width="420" />
       </a>
     </td>
   </tr>
@@ -191,7 +191,7 @@ I care about quiet tools: fast, predictable, and honest about their limits. More
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&amp;color=0:D63A12,55:12120F,100:12120F&amp;height=110&amp;section=footer" alt="" width="100%" />
+<img src="assets/readme-footer.svg" alt="ShirakawaFM footer" width="100%" />
 
 <sub>这个仓库托管 <a href="https://shirakawafm.github.io">shirakawafm.github.io</a> 的源码：手写 HTML / CSS / JS，无框架、无构建。站点说明见 <a href="https://shirakawafm.github.io/about/">关于页</a>。</sub>
 
