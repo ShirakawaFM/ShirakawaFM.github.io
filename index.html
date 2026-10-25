@@ -26,9 +26,12 @@
     var saved = localStorage.getItem('fm-theme');
     var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.dataset.theme = saved || 'night';
-    document.documentElement.dataset.letter = localStorage.getItem('fm-letter') === 'open' ? 'open' : 'sealed';
+    var proDone = localStorage.getItem('fm-prologue') === 'done';
+    document.documentElement.dataset.prologue = proDone ? 'done' : 'on';
+    document.documentElement.dataset.letter = (proDone || localStorage.getItem('fm-letter') === 'open') ? 'open' : 'sealed';
   } catch (e) {
     document.documentElement.dataset.theme = 'light';
+    document.documentElement.dataset.prologue = 'on';
     document.documentElement.dataset.letter = 'sealed';
   }
   window.setTimeout(function () {
@@ -38,6 +41,116 @@
 </script>
 </head>
 <body>
+
+<div class="prologue" data-prologue aria-label="序章：一层一层拆开这封信">
+  <div class="prologue__grain" aria-hidden="true"></div>
+
+  <header class="prologue__hud">
+    <span class="mono" data-step-label>01 / 06 · SEALED</span>
+    <button class="prologue__skip mono" type="button" data-skip>跳过序章 ↗</button>
+  </header>
+
+  <div class="prologue__progress" aria-hidden="true">
+    <i class="is-on"></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <section class="pro-layer is-active" data-layer="seal">
+    <div class="pro-card pro-card--center">
+      <span class="pro-kicker mono">A LETTER / SEALED</span>
+      <h1 class="pro-title">先别滚动。</h1>
+      <p class="pro-sub">这封信，要一层一层拆。</p>
+      <button class="seal" type="button" data-seal aria-label="按住火漆，拆开这封信">
+        <span class="seal__ring" aria-hidden="true"></span>
+        <span class="seal__s" aria-hidden="true">S</span>
+      </button>
+      <span class="pro-hint mono">按住火漆 · 直到裂开</span>
+    </div>
+  </section>
+
+  <section class="pro-layer" data-layer="pull" hidden>
+    <div class="pro-card pro-card--center">
+      <span class="pro-kicker mono">02 / PULL</span>
+      <h2 class="pro-title">把信纸抽出来。</h2>
+      <div class="pull" data-pull>
+        <div class="pull__paper" data-pull-paper>
+          <span class="mono">FROM SHIRAKAWAFM · UTC+8</span>
+          <p>致打开这个页面的人</p>
+          <small>向上拖动</small>
+        </div>
+        <span class="pull__edge" aria-hidden="true"></span>
+      </div>
+      <button class="pro-next mono" type="button" data-pull-fallback>也可以点这里抽出 ↗</button>
+    </div>
+  </section>
+
+  <section class="pro-layer" data-layer="read" hidden>
+    <div class="pro-card">
+      <span class="pro-kicker mono">03 / READ · PAGE 01</span>
+      <div class="pro-letter">
+        <p class="pro-letter__salute">致打开这个页面的人：</p>
+        <p>你可能不认识我。<strong>没关系。</strong></p>
+        <p>
+          我是 ShirakawaFM。写浏览器扩展、影像工具，
+          和一些没有 deadline 的 Minecraft 模组。
+        </p>
+        <p>多数时候我在做减法：少一个权限，少一层抽象，少一句废话。</p>
+      </div>
+      <div class="pro-actions">
+        <button class="pro-next" type="button" data-next>读第二页 <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pro-layer" data-layer="choose" hidden>
+    <div class="pro-card">
+      <span class="pro-kicker mono">04 / CHOOSE · PAGE 02</span>
+      <div class="pro-letter">
+        <p>这封信没有目的。</p>
+        <p>不是让你注册、购买或者订阅。只是想让你知道，屏幕另一边有一个具体的人。</p>
+        <p class="pro-letter__ask">散页有很多张。你想先看哪一张？</p>
+      </div>
+      <div class="pro-choices" data-choices>
+        <button type="button" data-choice="work"><span class="mono">01</span> 作品</button>
+        <button type="button" data-choice="writing"><span class="mono">02</span> 写作</button>
+        <button type="button" data-choice="about"><span class="mono">03</span> 关于</button>
+      </div>
+      <p class="pro-response mono" data-response></p>
+      <div class="pro-actions">
+        <button class="pro-next" type="button" data-after-choice hidden>继续 <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pro-layer" data-layer="play" hidden>
+    <div class="pro-card">
+      <span class="pro-kicker mono">05 / PLAY</span>
+      <h2 class="pro-title pro-title--sm">关掉三个 bug，<br>最后一层才会松开。</h2>
+      <div class="pro-game" data-pro-game>
+        <div class="pro-game__hud mono">
+          <span>CLOSED <strong data-pro-closed>0 / 3</strong></span>
+          <span>NO TELEMETRY</span>
+        </div>
+        <button class="pro-bug" type="button" data-bug hidden aria-label="关闭 bug">×</button>
+      </div>
+      <p class="pro-hint mono" data-pro-game-hint>点掉随机出现的三个 bug</p>
+      <div class="pro-actions">
+        <button class="pro-next" type="button" data-after-game hidden>最后一层 <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pro-layer" data-layer="end" hidden>
+    <div class="pro-card pro-card--center">
+      <span class="pro-kicker mono">06 / UNSEALED</span>
+      <h2 class="pro-title">信读完了。</h2>
+      <p class="pro-sub">下面是散页：作品、写作、一个游戏、一张刮刮卡。</p>
+      <div class="pro-actions pro-actions--center">
+        <button class="pro-next" type="button" data-enter>拆开最后一层 <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+
 
 <a class="skip-link" href="#main">跳到正文</a>
 <div class="cursor" aria-hidden="true"></div>
@@ -460,6 +573,7 @@
       <span>© <span data-year>2026</span> ShirakawaFM</span>
       <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
       <span>UTC+8 <span data-clock>--:--:--</span></span>
+      <button class="prologue-replay mono" type="button" data-replay>重读序章</button>
     </div>
   </div>
 </footer>
@@ -476,6 +590,7 @@
   </div>
 </div>
 
+<script src="/assets/js/prologue.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
 <script src="/assets/js/letter.js" defer></script>
 <script src="/assets/js/gh.js" defer></script>
