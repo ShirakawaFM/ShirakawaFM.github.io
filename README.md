@@ -2,19 +2,19 @@
 
 <img src="assets/readme-banner.svg" alt="ShirakawaFM — independent developer" width="100%" />
 
-<img src="https://readme-typing-svg.vercel.app?font=Fira+Code&amp;weight=500&amp;size=20&amp;duration=3000&amp;pause=800&amp;color=D63A12&amp;center=true&amp;vCenter=true&amp;width=780&amp;lines=Independent+developer;Browser+extensions+%26+motion;AI+video+workflows;Minecraft+modding;Quiet+tools%2C+minimal+permissions" alt="Independent developer / Browser extensions &amp; motion / AI video workflows / Minecraft modding" />
+<img src="https://readme-typing-svg.vercel.app?font=Fira+Code&amp;weight=500&amp;size=20&amp;duration=3000&amp;pause=800&amp;color=3FB950&amp;center=true&amp;vCenter=true&amp;width=780&amp;lines=Independent+developer;Browser+extensions+%26+motion;AI+video+workflows;Minecraft+modding;Quiet+tools%2C+minimal+permissions" alt="Independent developer / Browser extensions &amp; motion / AI video workflows / Minecraft modding" />
 
 <br />
 
-<a href="https://shirakawafm.github.io"><img src="https://img.shields.io/badge/SITE-shirakawafm.github.io-D63A12?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=F2EFE7" alt="Website" /></a>
-<a href="mailto:shirakawafm@outlook.com"><img src="https://img.shields.io/badge/MAIL-shirakawafm%40outlook.com-12120F?style=for-the-badge&amp;logo=maildotru&amp;logoColor=F2EFE7" alt="Email" /></a>
+<a href="https://shirakawafm.github.io"><img src="https://img.shields.io/badge/SITE-shirakawafm.github.io-3FB950?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=F2EFE7" alt="Website" /></a>
+<a href="mailto:shirakawafm@outlook.com"><img src="https://img.shields.io/badge/MAIL-shirakawafm%40outlook.com-0D1117?style=for-the-badge&amp;logo=maildotru&amp;logoColor=F2EFE7" alt="Email" /></a>
 <a href="https://space.bilibili.com/209300529"><img src="https://img.shields.io/badge/BILIBILI-SPACE-00A1D6?style=for-the-badge&amp;logo=bilibili&amp;logoColor=white" alt="Bilibili" /></a>
 
 <br /><br />
 
-<img src="https://komarev.com/ghpvc/?username=ShirakawaFM&amp;style=for-the-badge&amp;color=D63A12&amp;label=PROFILE+VIEWS" alt="Profile views" />
-<img src="https://img.shields.io/github/followers/ShirakawaFM?style=for-the-badge&amp;color=12120F&amp;label=FOLLOWERS" alt="Followers" />
-<img src="https://img.shields.io/github/stars/ShirakawaFM?style=for-the-badge&amp;color=D63A12&amp;label=STARS" alt="Stars" />
+<img src="https://komarev.com/ghpvc/?username=ShirakawaFM&amp;style=for-the-badge&amp;color=3FB950&amp;label=PROFILE+VIEWS" alt="Profile views" />
+<img src="https://img.shields.io/github/followers/ShirakawaFM?style=for-the-badge&amp;color=0D1117&amp;label=FOLLOWERS" alt="Followers" />
+<img src="https://img.shields.io/github/stars/ShirakawaFM?style=for-the-badge&amp;color=3FB950&amp;label=STARS" alt="Stars" />
 
 </div>
 
@@ -27,6 +27,8 @@
 我喜欢把复杂的东西做小：一个只申请三个权限的 Chrome 扩展、一条从打 tag 到 Release 的自动化流水线、一个不用框架的个人网站。**把东西做出来不难，难的是做完之后还能把它解释清楚。**
 
 这个 GitHub 主要放正在维护的项目与实验。我的写作、设计笔记和完整作品索引在 **[shirakawafm.github.io](https://shirakawafm.github.io)**。
+
+首页现在是一封可以拆开的信：火漆、Issue 头、真实的提交热力图、`⌘K` 命令面板，还有一个十秒关闭 bug 的小游戏。
 
 <table>
   <tr>
@@ -70,16 +72,16 @@
 
 <br /><br />
 
-<img src="https://img.shields.io/badge/Remotion-12120F?style=flat-square" alt="Remotion" />
-<img src="https://img.shields.io/badge/FFmpeg-12120F?style=flat-square" alt="FFmpeg" />
-<img src="https://img.shields.io/badge/Manifest_V3-D63A12?style=flat-square" alt="Manifest V3" />
-<img src="https://img.shields.io/badge/Chrome_Extensions-D63A12?style=flat-square" alt="Chrome Extensions" />
-<img src="https://img.shields.io/badge/Claude-12120F?style=flat-square" alt="Claude" />
-<img src="https://img.shields.io/badge/ChatGPT-12120F?style=flat-square" alt="ChatGPT" />
-<img src="https://img.shields.io/badge/Gemini-12120F?style=flat-square" alt="Gemini" />
-<img src="https://img.shields.io/badge/DeepSeek-12120F?style=flat-square" alt="DeepSeek" />
-<img src="https://img.shields.io/badge/Premiere_Pro-12120F?style=flat-square" alt="Premiere Pro" />
-<img src="https://img.shields.io/badge/CapCut-12120F?style=flat-square" alt="CapCut" />
+<img src="https://img.shields.io/badge/Remotion-0D1117?style=flat-square" alt="Remotion" />
+<img src="https://img.shields.io/badge/FFmpeg-0D1117?style=flat-square" alt="FFmpeg" />
+<img src="https://img.shields.io/badge/Manifest_V3-3FB950?style=flat-square" alt="Manifest V3" />
+<img src="https://img.shields.io/badge/Chrome_Extensions-3FB950?style=flat-square" alt="Chrome Extensions" />
+<img src="https://img.shields.io/badge/Claude-0D1117?style=flat-square" alt="Claude" />
+<img src="https://img.shields.io/badge/ChatGPT-0D1117?style=flat-square" alt="ChatGPT" />
+<img src="https://img.shields.io/badge/Gemini-0D1117?style=flat-square" alt="Gemini" />
+<img src="https://img.shields.io/badge/DeepSeek-0D1117?style=flat-square" alt="DeepSeek" />
+<img src="https://img.shields.io/badge/Premiere_Pro-0D1117?style=flat-square" alt="Premiere Pro" />
+<img src="https://img.shields.io/badge/CapCut-0D1117?style=flat-square" alt="CapCut" />
 
 </div>
 
@@ -90,15 +92,15 @@
 <table>
   <tr>
     <td>
-      <img src="https://github-readme-stats.vercel.app/api?username=ShirakawaFM&amp;show_icons=true&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F&amp;include_all_commits=true&amp;count_private=true" alt="GitHub stats" width="420" />
+      <img src="https://github-readme-stats.vercel.app/api?username=ShirakawaFM&amp;show_icons=true&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=3FB950&amp;icon_color=3FB950&amp;text_color=0D1117&amp;include_all_commits=true&amp;count_private=true" alt="GitHub stats" width="420" />
     </td>
     <td>
-      <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ShirakawaFM&amp;layout=compact&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;text_color=12120F&amp;langs_count=8" alt="Top languages" width="380" />
+      <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ShirakawaFM&amp;layout=compact&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=3FB950&amp;text_color=0D1117&amp;langs_count=8" alt="Top languages" width="380" />
     </td>
   </tr>
 </table>
 
-<img src="https://streak-stats.demolab.com?user=ShirakawaFM&amp;hide_border=true&amp;background=F2EFE7&amp;ring=D63A12&amp;fire=D63A12&amp;currStreakLabel=12120F&amp;sideLabels=6F6A60&amp;dates=6F6A60&amp;currStreakNum=12120F&amp;sideNums=12120F" alt="GitHub streak" width="820" />
+<img src="https://streak-stats.demolab.com?user=ShirakawaFM&amp;hide_border=true&amp;background=F2EFE7&amp;ring=3FB950&amp;fire=3FB950&amp;currStreakLabel=0D1117&amp;sideLabels=6F6A60&amp;dates=6F6A60&amp;currStreakNum=0D1117&amp;sideNums=0D1117" alt="GitHub streak" width="820" />
 
 </div>
 
@@ -110,12 +112,12 @@
   <tr>
     <td width="50%">
       <a href="https://github.com/ShirakawaFM/douyin-auto-hd">
-        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=douyin-auto-hd&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F" alt="douyin-auto-hd" width="420" />
+        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=douyin-auto-hd&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=3FB950&amp;icon_color=3FB950&amp;text_color=0D1117" alt="douyin-auto-hd" width="420" />
       </a>
     </td>
     <td width="50%">
       <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">
-        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=ShirakawaFM.github.io&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F" alt="ShirakawaFM.github.io" width="420" />
+        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=ShirakawaFM.github.io&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=3FB950&amp;icon_color=3FB950&amp;text_color=0D1117" alt="ShirakawaFM.github.io" width="420" />
       </a>
     </td>
   </tr>
@@ -148,10 +150,10 @@
 
 <div align="center">
 
-<a href="https://github.com/ShirakawaFM"><img src="https://img.shields.io/badge/GitHub-ShirakawaFM-12120F?style=for-the-badge&amp;logo=github&amp;logoColor=F2EFE7" alt="GitHub" /></a>
-<a href="mailto:shirakawafm@outlook.com"><img src="https://img.shields.io/badge/Email-shirakawafm%40outlook.com-D63A12?style=for-the-badge&amp;logo=maildotru&amp;logoColor=F2EFE7" alt="Email" /></a>
+<a href="https://github.com/ShirakawaFM"><img src="https://img.shields.io/badge/GitHub-ShirakawaFM-0D1117?style=for-the-badge&amp;logo=github&amp;logoColor=F2EFE7" alt="GitHub" /></a>
+<a href="mailto:shirakawafm@outlook.com"><img src="https://img.shields.io/badge/Email-shirakawafm%40outlook.com-3FB950?style=for-the-badge&amp;logo=maildotru&amp;logoColor=F2EFE7" alt="Email" /></a>
 <a href="https://space.bilibili.com/209300529"><img src="https://img.shields.io/badge/Bilibili-209300529-00A1D6?style=for-the-badge&amp;logo=bilibili&amp;logoColor=white" alt="Bilibili" /></a>
-<a href="https://shirakawafm.github.io"><img src="https://img.shields.io/badge/Website-shirakawafm.github.io-F2EFE7?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=12120F" alt="Website" /></a>
+<a href="https://shirakawafm.github.io"><img src="https://img.shields.io/badge/Website-shirakawafm.github.io-F2EFE7?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=0D1117" alt="Website" /></a>
 
 </div>
 

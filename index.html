@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="night">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,7 @@
   try {
     var saved = localStorage.getItem('fm-theme');
     var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
+    document.documentElement.dataset.theme = saved || 'night';
     document.documentElement.dataset.letter = localStorage.getItem('fm-letter') === 'open' ? 'open' : 'sealed';
   } catch (e) {
     document.documentElement.dataset.theme = 'light';
@@ -78,10 +78,48 @@
   </div>
 </div>
 
+<div class="gh-shell">
+  <div class="shell gh-repo">
+    <div class="gh-repo__id">
+      <svg class="gh-repo__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25ZM1.5 1.75v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Z"></path><path d="M4.25 3.5A.75.75 0 0 0 3.5 4.25V6h1.5V5h6v1h1.5V4.25a.75.75 0 0 0-.75-.75Z"></path></svg>
+      <a href="https://github.com/ShirakawaFM">ShirakawaFM</a>
+      <span class="gh-repo__slash">/</span>
+      <strong>ShirakawaFM.github.io</strong>
+      <span class="pill">Public</span>
+    </div>
+    <div class="gh-repo__actions">
+      <button class="gh-btn" type="button" data-cmdk><span class="mono">⌘K</span> Command</button>
+      <a class="gh-btn" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">☆ Star</a>
+    </div>
+  </div>
+  <nav class="shell gh-tabs" aria-label="仓库导航">
+    <a href="/">Code</a>
+    <a class="is-active" href="#letter">Letter <span class="gh-badge">1</span></a>
+    <a href="#game">Playground</a>
+    <a href="#activity">Activity</a>
+    <a href="/writing/">Writing</a>
+    <a href="/about/">About</a>
+    <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">GitHub ↗</a>
+  </nav>
+</div>
+
 <main id="main">
 
   <section class="letter" id="letter">
     <div class="shell">
+      <div class="issue-head">
+        <div class="issue-head__title">
+          <span class="issue-state"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path></svg> Open</span>
+          <h1>致打开这个页面的人 <span class="issue-num">#1</span></h1>
+        </div>
+        <p class="issue-head__meta">
+          <span class="avatar avatar--tiny">S</span>
+          <strong>ShirakawaFM</strong> opened this issue · 1 comment ·
+          <span class="label">letter</span>
+          <span class="label label--green">good first read</span>
+          <span class="label">utc+8</span>
+        </p>
+      </div>
 
       <div class="envelope" data-envelope>
         <div class="envelope__flap" aria-hidden="true"></div>
@@ -138,6 +176,29 @@
           <span class="stamp stamp--a">NO FRAMEWORK<br>NO TRACKING</span>
           <span class="stamp stamp--b">MADE BY HAND<br>100% HUMAN</span>
         </div>
+
+        <div class="issue-foot" data-issue-foot>
+          <div class="reactions" data-reactions>
+            <button type="button" data-reaction="👍" aria-label="点赞">👍 <span>0</span></button>
+            <button type="button" data-reaction="❤️" aria-label="喜欢">❤️ <span>0</span></button>
+            <button type="button" data-reaction="🚀" aria-label="酷">🚀 <span>0</span></button>
+            <button type="button" data-reaction="👀" aria-label="在看">👀 <span>0</span></button>
+          </div>
+          <button class="gh-btn gh-btn--green" type="button" data-close-issue>Close as completed</button>
+        </div>
+
+        <div class="issue-comment">
+          <span class="avatar">S</span>
+          <div class="issue-comment__body">
+            <p class="issue-comment__meta"><strong>ShirakawaFM</strong> commented · just now</p>
+            <textarea data-comment rows="2" placeholder="Leave a comment（只保存在你的浏览器里）"></textarea>
+            <div class="issue-comment__actions">
+              <button class="gh-btn gh-btn--green" type="button" data-comment-save>Comment</button>
+              <span class="mono" data-comment-status></span>
+            </div>
+            <p class="issue-comment__saved" data-comment-saved hidden></p>
+          </div>
+        </div>
       </article>
 
       <p class="letter__sealed-note mono" data-sealed-note>信是封着的。火漆上有一个 S。</p>
@@ -154,6 +215,31 @@
       </div>
     </div>
   </div>
+
+  <section class="gh-panel" id="activity">
+    <div class="shell">
+      <div class="gh-panel__head">
+        <h2><span class="mono">##</span> activity</h2>
+        <span class="mono">365 days · this repository only</span>
+      </div>
+      <div class="contrib" data-contrib aria-label="本仓库最近一年的提交热力图"></div>
+      <div class="contrib__legend mono">
+        <span>Less</span><i class="contrib__cell l0"></i><i class="contrib__cell l1"></i><i class="contrib__cell l2"></i><i class="contrib__cell l3"></i><i class="contrib__cell l4"></i><span>More</span>
+      </div>
+      <p class="gh-note mono">只统计这个仓库的提交，不代表整个 GitHub 账号。数据生成于 <span data-generated>—</span>。</p>
+    </div>
+  </section>
+
+  <section class="gh-panel" id="commits">
+    <div class="shell">
+      <div class="gh-panel__head">
+        <h2><span class="mono">##</span> recent commits</h2>
+        <span class="mono">main branch</span>
+      </div>
+      <ol class="commit-list" data-commits></ol>
+      <a class="gh-link mono" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io/commits/main">View all commits ↗</a>
+    </div>
+  </section>
 
   <section class="section" id="work">
     <div class="shell">
@@ -247,24 +333,25 @@
   <section class="section game-section" id="game">
     <div class="shell">
       <header class="section__head" data-reveal>
-        <span class="section__index mono">03 / Play</span>
-        <h2 class="section__title">陪我玩<em>十秒</em></h2>
-        <p class="section__meta">Ten ink dots<br>No leaderboard</p>
+        <span class="section__index mono">03 / Playground</span>
+        <h2 class="section__title">关闭十个<em>Bug</em></h2>
+        <p class="section__meta">10 bugs · no leaderboard<br>Run workflow</p>
       </header>
 
       <div class="game" data-game>
+        <div class="game__labels"><span class="label">bug</span><span class="label label--green">good first issue</span><span class="label">no backend</span></div>
         <div class="game__hud">
-          <span class="mono">TIME <strong data-game-time>0.00</strong></span>
-          <span class="mono">HIT <strong data-game-hit>0 / 10</strong></span>
+          <span class="mono">ELAPSED <strong data-game-time>0.00</strong></span>
+          <span class="mono">CLOSED <strong data-game-hit>0 / 10</strong></span>
           <span class="mono">BEST <strong data-game-best>—</strong></span>
         </div>
 
         <div class="game__stage" data-game-stage>
           <button class="game__start" type="button" data-game-start>
-            开始 · 点掉十个墨点
-            <span class="mono">点得越快越好，没有惩罚</span>
+            开始运行 · 关闭十个 bug
+            <span class="mono">点得越快越好，CI 不会等你</span>
           </button>
-          <button class="game__dot" type="button" data-game-dot hidden aria-label="墨点">×</button>
+          <button class="game__dot" type="button" data-game-dot hidden aria-label="关闭 bug">×</button>
           <div class="game__result" data-game-result hidden>
             <p class="game__final"><strong data-game-final>0.00</strong><span>s</span></p>
             <p class="game__verdict" data-game-verdict></p>
@@ -272,7 +359,7 @@
           </div>
         </div>
 
-        <p class="game__note mono">最好成绩只存在你的浏览器里。没有排行榜，也没有分享按钮。</p>
+        <p class="game__note mono">成绩只写入 localStorage。没有排行榜、没有 telemetry、也没有分享按钮。</p>
       </div>
     </div>
   </section>
@@ -280,9 +367,9 @@
   <section class="section scratch-section" id="scratch">
     <div class="shell">
       <header class="section__head" data-reveal>
-        <span class="section__index mono">04 / Secret</span>
-        <h2 class="section__title">刮开<em>这一行</em></h2>
-        <p class="section__meta">Scratch card<br>真的可以刮</p>
+        <span class="section__index mono">04 / Secret gist</span>
+        <h2 class="section__title">刮开这个<em>gist</em></h2>
+        <p class="section__meta">scratch card<br>client-side only</p>
       </header>
 
       <div class="scratch" data-scratch>
@@ -303,7 +390,7 @@
   <section class="section" id="about">
     <div class="shell">
       <header class="section__head" data-reveal>
-        <span class="section__index mono">05 / Reply</span>
+        <span class="section__index mono">05 / Contact</span>
         <h2 class="section__title">回信<em>地址</em></h2>
         <p class="section__meta">Independent<br>UTC+8</p>
       </header>
@@ -377,7 +464,20 @@
   </div>
 </footer>
 
+<div class="palette" data-palette hidden>
+  <div class="palette__backdrop" data-palette-close></div>
+  <div class="palette__box" role="dialog" aria-modal="true" aria-label="命令面板">
+    <div class="palette__search">
+      <span class="mono">⌘K</span>
+      <input data-palette-input type="text" placeholder="搜索页面、链接、命令…" autocomplete="off" spellcheck="false">
+    </div>
+    <ul class="palette__list" data-palette-list></ul>
+    <div class="palette__foot mono">↑↓ 选择 · Enter 打开 · Esc 关闭</div>
+  </div>
+</div>
+
 <script src="/assets/js/site.js" defer></script>
 <script src="/assets/js/letter.js" defer></script>
+<script src="/assets/js/gh.js" defer></script>
 </body>
 </html>
