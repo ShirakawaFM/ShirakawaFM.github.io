@@ -163,6 +163,9 @@
         breakSeal();
       }
     });
+    seal.addEventListener('click', () => {
+      if (!broken && isOn()) breakSeal();
+    });
   }
 
   /* ------------------------------------------------------------------ */
@@ -218,9 +221,9 @@
   if (next) next.addEventListener('click', () => advance('choose'));
 
   const choiceCopy = {
-    work: '好。先看作品。散页会停在作品那一层。',
-    writing: '好。先看写作。散页会停在文字那一层。',
-    about: '好。先认识我。散页会停在自述那一层。',
+    work: '好。先看作品。',
+    writing: '好。先看写作。',
+    about: '好。先认识我。',
   };
 
   $$('[data-choice]', pro).forEach((btn) => {
@@ -305,22 +308,13 @@
     } catch (e) {}
     root.dataset.letter = 'open';
     lockPage(false);
-
     pro.classList.add('is-gone');
+
     window.setTimeout(
       () => {
         root.dataset.prologue = 'done';
         pro.hidden = true;
         window.scrollTo({ top: 0, behavior: 'auto' });
-        if (!skipped && choice) {
-          const target = doc.getElementById(choice === 'about' ? 'about' : choice);
-          if (target) {
-            window.setTimeout(() => {
-              const top = target.getBoundingClientRect().top + window.scrollY - 76;
-              window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
-            }, 240);
-          }
-        }
       },
       reduced.matches ? 20 : 620
     );
@@ -373,6 +367,9 @@
     if (!isOn()) return;
     if (e.target.closest('textarea, input')) return;
     if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'].includes(e.key)) {
+      e.preventDefault();
+    }
+    if (e.key === ' ' && !e.target.closest('button, a')) {
       e.preventDefault();
     }
   });
