@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ShirakawaFM — 作品与笔记</title>
-<meta name="description" content="ShirakawaFM 的个人站点：浏览器扩展、AI 影像工作流与 Minecraft 模组的作品与笔记。手写的网站，安静的技术记录。">
+<title>ShirakawaFM — 一封写给你的信</title>
+<meta name="description" content="一封不长的信，几件作品，一个十秒小游戏，和一张需要刮开的卡片。来自 ShirakawaFM。">
 <meta name="theme-color" content="#f2efe7">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ShirakawaFM — Works & Notes">
-<meta property="og:description" content="把复杂的东西，做得安静。浏览器扩展、AI 影像与 Minecraft 模组的作品与笔记。">
+<meta property="og:title" content="ShirakawaFM — 一封写给你的信">
+<meta property="og:description" content="一封不长的信，几件作品，一个十秒小游戏，和一张需要刮开的卡片。">
 <meta property="og:url" content="https://shirakawafm.github.io/">
 <meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -26,7 +26,14 @@
     var saved = localStorage.getItem('fm-theme');
     var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.dataset.theme = saved || (dark ? 'night' : 'light');
-  } catch (e) {}
+    document.documentElement.dataset.letter = localStorage.getItem('fm-letter') === 'open' ? 'open' : 'sealed';
+  } catch (e) {
+    document.documentElement.dataset.theme = 'light';
+    document.documentElement.dataset.letter = 'sealed';
+  }
+  window.setTimeout(function () {
+    if (!window.__fmLetterReady) document.documentElement.dataset.letter = 'open';
+  }, 1800);
 })();
 </script>
 </head>
@@ -39,7 +46,7 @@
 <header class="site-header">
   <a class="brand" href="/" aria-label="ShirakawaFM 首页">
     <span class="brand__mark">Shirakawa<em>FM</em></span>
-    <span class="brand__sub">Work & Notes</span>
+    <span class="brand__sub">Work &amp; Notes</span>
   </a>
 
   <nav class="nav" aria-label="主导航">
@@ -63,7 +70,7 @@
   <nav class="menu__list" aria-label="移动导航">
     <a href="/#work" style="--i:0">作品<sup>01</sup></a>
     <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
-    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+    <a href="/about/" style="--i:1">关于<sup>03</sup></a>
   </nav>
   <div class="menu__foot">
     <span>ShirakawaFM · 2026</span>
@@ -73,62 +80,77 @@
 
 <main id="main">
 
-  <section class="hero">
-    <div class="shell hero__grid">
-      <div class="hero__main">
-        <p class="hero__eyebrow mono">独立开发者 / 浏览器扩展 / 影像实验</p>
+  <section class="letter" id="letter">
+    <div class="shell">
 
-        <h1 class="hero__title">
-          <span class="line"><span>Shirakawa</span></span>
-          <span class="line"><span><em>FM</em></span></span>
-        </h1>
-
-        <p class="hero__role mono">Independent developer / Browser extensions &amp; motion</p>
-
-        <p class="hero__statement">
-          把复杂的东西，做得安静。这里记录浏览器扩展、AI 影像工作流与 Minecraft 模组——
-          一个开发者的作品、笔记，以及一些还没想清楚的问题。
-        </p>
-
-        <div class="hero__actions">
-          <a class="link-line" href="#work">查看作品 <span class="arrow" aria-hidden="true">↗</span></a>
-          <a class="link-line" href="/writing/">读点东西 <span class="arrow" aria-hidden="true">↗</span></a>
+      <div class="envelope" data-envelope>
+        <div class="envelope__flap" aria-hidden="true"></div>
+        <div class="envelope__face">
+          <span class="envelope__meta mono">FROM SHIRAKAWAFM · UTC+8 · 2026</span>
+          <p class="envelope__to">致打开这个页面的人</p>
+          <p class="envelope__teaser">一封不长的信。关于我在做什么，以及为什么这个站点长这样。</p>
+          <span class="envelope__hint mono" data-envelope-hint>点击火漆封印 · 拆开</span>
         </div>
+        <button class="wax" type="button" data-open-letter aria-label="拆开这封信">
+          <span class="wax__monogram" aria-hidden="true">S</span>
+          <span class="wax__label">拆开</span>
+        </button>
+        <span class="envelope__shadow" aria-hidden="true"></span>
       </div>
 
-      <aside class="trace" aria-label="实时轨迹">
-        <div class="trace__top">
-          <span class="mono">Live trace</span>
-          <span class="mono">Reactive</span>
-        </div>
-        <div class="trace__canvas-wrap">
-          <canvas id="trace" aria-hidden="true"></canvas>
-        </div>
-        <div class="trace__readout">
-          <span>Timecode <strong data-trace-time>00:00</strong></span>
-          <span>Pointer / Scroll</span>
-        </div>
-        <p class="trace__caption">一条随滚动速度与指针位置变化的线。它不解释什么，只是让页面保持一点呼吸。</p>
-      </aside>
-    </div>
+      <article class="letter-body" id="letter-body" data-letter-body>
+        <header class="letter-body__head">
+          <span class="mono">00 / A LETTER</span>
+          <span class="mono">一页 · 约 1 分钟</span>
+        </header>
 
-    <div class="shell hero__foot">
-      <a class="scroll-cue" href="#work">向下滚动</a>
-      <p class="hero__coords">
-        UTC+8 / CN<br>
-        Index 001<br>
-        Est. 2026
-      </p>
+        <p class="letter-body__salutation">致打开这个页面的人：</p>
+
+        <p>你可能不认识我。<strong>没关系。</strong></p>
+
+        <p>
+          我是 ShirakawaFM，一个把时间花在浏览器扩展、影像工具和 Minecraft 模组上的独立开发者。
+          多数时候在做减法：一个只申请三个权限的扩展、一条从打 tag 到 Release 的流水线、
+          一个不用框架的网站。
+        </p>
+
+        <p>
+          这封信没有目的。不是让你注册、购买或者订阅——只是想让你知道，
+          屏幕另一边有一个具体的人，在认真地做一些<strong>安静的东西</strong>，
+          并且愿意把它们摊开给你看。
+        </p>
+
+        <p>
+          如果你愿意，往下走几步：看看我最近在做什么，读一两篇写得很慢的文章，
+          或者，陪我玩一个十秒钟的小游戏。
+        </p>
+
+        <p class="letter-body__ps">
+          P.S. 信末有一张刮刮卡。刮开它，才算真的读完。
+        </p>
+
+        <footer class="letter-body__sign">
+          <p class="letter-body__name">ShirakawaFM</p>
+          <p class="mono">2026 · UTC+8 · 手写于一个普通的下午</p>
+        </footer>
+
+        <div class="letter-body__stamps" aria-hidden="true">
+          <span class="stamp stamp--a">NO FRAMEWORK<br>NO TRACKING</span>
+          <span class="stamp stamp--b">MADE BY HAND<br>100% HUMAN</span>
+        </div>
+      </article>
+
+      <p class="letter__sealed-note mono" data-sealed-note>信是封着的。火漆上有一个 S。</p>
     </div>
   </section>
 
   <div class="ticker" aria-hidden="true">
     <div class="ticker__track">
       <div class="ticker__group">
-        <span>Minimal permissions</span><span>Manifest V3</span><span>4K quality</span><span>AI video</span><span>Minecraft modding</span><span>Hand-written CSS</span><span>No third-party requests</span>
+        <span>A letter</span><span>Ten-second game</span><span>Scratch to reveal</span><span>Minimal permissions</span><span>Hand-written CSS</span><span>No third-party requests</span>
       </div>
       <div class="ticker__group">
-        <span>Minimal permissions</span><span>Manifest V3</span><span>4K quality</span><span>AI video</span><span>Minecraft modding</span><span>Hand-written CSS</span><span>No third-party requests</span>
+        <span>A letter</span><span>Ten-second game</span><span>Scratch to reveal</span><span>Minimal permissions</span><span>Hand-written CSS</span><span>No third-party requests</span>
       </div>
     </div>
   </div>
@@ -136,8 +158,8 @@
   <section class="section" id="work">
     <div class="shell">
       <header class="section__head" data-reveal>
-        <span class="section__index mono">01 / Work</span>
-        <h2 class="section__title">选中的<em>作品</em></h2>
+        <span class="section__index mono">01 / Enclosed</span>
+        <h2 class="section__title">随信附上<em>几件作品</em></h2>
         <p class="section__meta">2025 — 2026<br>Open source</p>
       </header>
 
@@ -156,27 +178,15 @@
           </a>
         </li>
 
-        <li>
-          <a class="work" href="https://github.com/ShirakawaFM/FM-S-Blogs" data-reveal style="--i:1">
-            <span class="work__idx">02</span>
-            <div class="work__body">
-              <div class="work__title">FM-S-Blogs <span class="zh">Next.js 写作系统</span></div>
-              <div class="work__detail">
-                <p>自带本地后台的 Markdown 博客系统：草稿管理、图床配置、无损更新器与一键部署。文档比代码更长，也更难写。</p>
-              </div>
-            </div>
-            <div class="work__meta"><b>Next.js</b>2025 — 2026 · v0.3.1</div>
-            <span class="work__arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
+        
 
         <li>
-          <a class="work" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" data-reveal style="--i:2">
-            <span class="work__idx">03</span>
+          <a class="work" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" data-reveal style="--i:1">
+            <span class="work__idx">02</span>
             <div class="work__body">
-              <div class="work__title">ShirakawaFM <span class="zh">本站 · 个人站点</span></div>
+              <div class="work__title">ShirakawaFM <span class="zh">本站 · 一封信</span></div>
               <div class="work__detail">
-                <p>手写 HTML / CSS / JS 的个人站点。一个样式表、两个脚本、自托管字体；没有框架、没有构建、没有第三方请求。</p>
+                <p>手写 HTML / CSS / JS 的个人站点。一封信、一个十秒游戏、一张刮刮卡；没有框架、没有构建、没有第三方请求。</p>
               </div>
             </div>
             <div class="work__meta"><b>Static site</b>2026 · Ongoing</div>
@@ -185,8 +195,8 @@
         </li>
 
         <li>
-          <div class="work" data-reveal style="--i:3">
-            <span class="work__idx">04</span>
+          <div class="work" data-reveal style="--i:2">
+            <span class="work__idx">03</span>
             <div class="work__body">
               <div class="work__title">Video Lab <span class="zh">AI 影像工作流</span></div>
               <div class="work__detail">
@@ -205,7 +215,7 @@
     <div class="shell">
       <header class="section__head" data-reveal>
         <span class="section__index mono">02 / Writing</span>
-        <h2 class="section__title">最近的<em>写作</em></h2>
+        <h2 class="section__title">随手写的<em>几页</em></h2>
         <p class="section__meta">Notes on craft<br>不定期更新</p>
       </header>
 
@@ -224,7 +234,7 @@
           <span class="write__arrow" aria-hidden="true">↗</span>
         </a>
 
-        <a class="write" href="/writing/escape-the-template.html" data-reveal style="--i:2">
+        <a class="write" href="/writing/escape-the-template.html" data-reveal style="--i:1">
           <time class="write__date" datetime="2026-10-25">2026-10-25</time>
           <span class="write__title">把博客从模板里救出来：一次反 AI 味的设计重写</span>
           <span class="write__tag">设计 · 7 分钟</span>
@@ -234,41 +244,104 @@
     </div>
   </section>
 
+  <section class="section game-section" id="game">
+    <div class="shell">
+      <header class="section__head" data-reveal>
+        <span class="section__index mono">03 / Play</span>
+        <h2 class="section__title">陪我玩<em>十秒</em></h2>
+        <p class="section__meta">Ten ink dots<br>No leaderboard</p>
+      </header>
+
+      <div class="game" data-game>
+        <div class="game__hud">
+          <span class="mono">TIME <strong data-game-time>0.00</strong></span>
+          <span class="mono">HIT <strong data-game-hit>0 / 10</strong></span>
+          <span class="mono">BEST <strong data-game-best>—</strong></span>
+        </div>
+
+        <div class="game__stage" data-game-stage>
+          <button class="game__start" type="button" data-game-start>
+            开始 · 点掉十个墨点
+            <span class="mono">点得越快越好，没有惩罚</span>
+          </button>
+          <button class="game__dot" type="button" data-game-dot hidden aria-label="墨点">×</button>
+          <div class="game__result" data-game-result hidden>
+            <p class="game__final"><strong data-game-final>0.00</strong><span>s</span></p>
+            <p class="game__verdict" data-game-verdict></p>
+            <button class="link-line" type="button" data-game-restart>再来一次 <span class="arrow" aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+
+        <p class="game__note mono">最好成绩只存在你的浏览器里。没有排行榜，也没有分享按钮。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section scratch-section" id="scratch">
+    <div class="shell">
+      <header class="section__head" data-reveal>
+        <span class="section__index mono">04 / Secret</span>
+        <h2 class="section__title">刮开<em>这一行</em></h2>
+        <p class="section__meta">Scratch card<br>真的可以刮</p>
+      </header>
+
+      <div class="scratch" data-scratch>
+        <div class="scratch__reveal" data-scratch-reveal>
+          <span class="mono">YOU MADE IT</span>
+          <p class="scratch__message">谢谢你读到这里。<br>这封信没有附件，只有一句：<em>去做你真正想做的那件事。</em></p>
+          <span class="scratch__sign">— ShirakawaFM</span>
+        </div>
+        <canvas class="scratch__canvas" data-scratch-canvas aria-label="刮开涂层，查看隐藏的话"></canvas>
+      </div>
+
+      <p class="scratch__fallback">
+        <button class="link-line" type="button" data-scratch-skip>不刮了，直接揭开 <span class="arrow" aria-hidden="true">↗</span></button>
+      </p>
+    </div>
+  </section>
+
   <section class="section" id="about">
     <div class="shell">
       <header class="section__head" data-reveal>
-        <span class="section__index mono">03 / About</span>
-        <h2 class="section__title">关于<em>这个人</em></h2>
+        <span class="section__index mono">05 / Reply</span>
+        <h2 class="section__title">回信<em>地址</em></h2>
         <p class="section__meta">Independent<br>UTC+8</p>
       </header>
 
-      <div class="about-teaser">
-        <div class="about-teaser__label" data-reveal>
-          <p class="about-teaser__quote">“先把东西做对，再让它好看。”</p>
+      <div class="reply">
+        <div class="reply__note" data-reveal>
+          <p class="reply__quote">“如果你也在做一件安静的事，欢迎写信告诉我。”</p>
+          <p class="reply__body">
+            我是 ShirakawaFM，一名独立开发者。白天写浏览器扩展与自动化脚本，
+            晚上研究 AI 影像工作流、Minecraft 模组和一些没什么用但很好玩的东西。
+            这封信写完了，回信地址在下面。
+          </p>
           <a class="link-line" href="/about/">完整自述 <span class="arrow" aria-hidden="true">↗</span></a>
         </div>
 
-        <div class="about-teaser__body" data-reveal style="--i:1">
-          <p>
-            我是 ShirakawaFM，一名独立开发者。白天写浏览器扩展与自动化脚本，晚上研究 AI 影像工作流、
-            Minecraft 模组和一些没什么用但很好玩的东西。
-          </p>
-          <p>
-            这个站点是一份公开的索引：不定期更新正在做的项目、踩过的坑，以及关于工具与审美的想法。
-            没有算法推荐，也没有订阅弹窗。
-          </p>
-          <ul class="stack" aria-label="常用技术">
-            <li>TypeScript</li>
-            <li>JavaScript</li>
-            <li>Python</li>
-            <li>Java</li>
-            <li>Remotion</li>
-            <li>FFmpeg</li>
-            <li>Next.js</li>
-            <li>Manifest V3</li>
-          </ul>
+        <div class="reply__card" data-reveal style="--i:1">
+          <a class="reply__mail" href="mailto:shirakawafm@outlook.com">
+            写回信<br><em>Say hi</em>
+          </a>
+          <div class="reply__links">
+            <a href="https://github.com/ShirakawaFM">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="https://space.bilibili.com/209300529">Bilibili <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">站点源码 <span aria-hidden="true">↗</span></a>
+          </div>
+          <span class="stamp stamp--c" aria-hidden="true">REPLY<br>INSIDE</span>
         </div>
       </div>
+
+      <ul class="stack reply__stack" aria-label="常用技术">
+        <li>TypeScript</li>
+        <li>JavaScript</li>
+        <li>Python</li>
+        <li>Java</li>
+        <li>Remotion</li>
+        <li>FFmpeg</li>
+        <li>Next.js</li>
+        <li>Manifest V3</li>
+      </ul>
     </div>
   </section>
 
@@ -284,6 +357,7 @@
           <h3>Index</h3>
           <a href="/#work">作品</a>
           <a href="/writing/">写作</a>
+          <a href="/#game">小游戏</a>
           <a href="/about/">关于</a>
         </div>
         <div class="footer__col">
@@ -304,6 +378,6 @@
 </footer>
 
 <script src="/assets/js/site.js" defer></script>
-<script src="/assets/js/home.js" defer></script>
+<script src="/assets/js/letter.js" defer></script>
 </body>
 </html>

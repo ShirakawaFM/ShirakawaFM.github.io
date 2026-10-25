@@ -34,7 +34,6 @@
       <h3>🚀 现在</h3>
       <ul>
         <li><b>douyin-auto-hd</b><br />抖音网页版自动最高画质</li>
-        <li><b>FM-S-Blogs</b><br />Next.js 写作系统</li>
         <li><b>Video Lab</b><br />Remotion + FFmpeg 影像实验</li>
         <li><b>个人站点</b><br />手写 HTML / CSS / JS</li>
       </ul>
@@ -125,7 +124,6 @@
 </div>
 
 **[douyin-auto-hd](https://github.com/ShirakawaFM/douyin-auto-hd)** — 最小权限的 Chrome 扩展，访问抖音网页版时自动切到当前可用的最高画质。22 次迭代，大部分时间在删掉错误的假设。  
-**[FM-S-Blogs](https://github.com/ShirakawaFM/FM-S-Blogs)** — 带本地后台的 Next.js 写作系统：Markdown、草稿、图床、一键部署。  
 **[ShirakawaFM.github.io](https://github.com/ShirakawaFM/ShirakawaFM.github.io)** — 手写的个人站点：一份 CSS、两份 JS、自托管字体，无框架、无第三方请求。  
 **Video Lab** — Remotion + FFmpeg 的影像实验：脚本、分镜、配音、字幕、渲染。还在实验阶段。
 
@@ -166,7 +164,6 @@
 occasional Minecraft mod, usually by removing things rather than adding them.
 
 - **[douyin-auto-hd](https://github.com/ShirakawaFM/douyin-auto-hd)** — a minimal-permission Chrome extension that switches Douyin web videos to the highest available quality.
-- **[FM-S-Blogs](https://github.com/ShirakawaFM/FM-S-Blogs)** — a Next.js writing system with a local admin panel, Markdown editing and one-click deployment.
 - **[shirakawafm.github.io](https://shirakawafm.github.io)** — a hand-written personal site: no framework, no build step, no third-party requests.
 
 I care about quiet tools: fast, predictable, and honest about their limits. More writing at
