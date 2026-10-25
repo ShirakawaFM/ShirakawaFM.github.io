@@ -115,8 +115,8 @@
       </a>
     </td>
     <td width="50%">
-      <a href="https://github.com/ShirakawaFM/FM-S-Blogs">
-        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=FM-S-Blogs&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F&amp;hide_description=true" alt="FM-S-Blogs" width="420" />
+      <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">
+        <img src="https://github-readme-stats.vercel.app/api/pin/?username=ShirakawaFM&amp;repo=ShirakawaFM.github.io&amp;hide_border=true&amp;bg_color=F2EFE7&amp;title_color=D63A12&amp;icon_color=D63A12&amp;text_color=12120F" alt="ShirakawaFM.github.io" width="420" />
       </a>
     </td>
   </tr>
@@ -142,8 +142,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ShirakawaFM/ShirakawaFM.github.io/output/github-snake-dark.svg" />
-  <img alt="Contribution snake" src="https://raw.githubusercontent.com/ShirakawaFM/ShirakawaFM.github.io/output/github-snake.svg" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ShirakawaFM/ShirakawaFM.github.io/output/github-snake-dark.svg?v=2" />
+  <img alt="Contribution snake" src="https://raw.githubusercontent.com/ShirakawaFM/ShirakawaFM.github.io/output/github-snake.svg?v=2" />
 </picture>
 
 <sub>由 GitHub Actions 每 12 小时生成一次。</sub>
