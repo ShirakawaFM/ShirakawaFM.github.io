@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="night">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,7 @@
   try {
     var saved = localStorage.getItem('fm-theme');
     var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.dataset.theme = saved || 'night';
+    document.documentElement.dataset.theme = saved || 'light';
     var proDone = localStorage.getItem('fm-prologue') === 'done';
     document.documentElement.dataset.prologue = proDone ? 'done' : 'on';
     document.documentElement.dataset.letter = (proDone || localStorage.getItem('fm-letter') === 'open') ? 'open' : 'sealed';
@@ -39,6 +39,7 @@
   }, 1800);
 })();
 </script>
+<link rel="stylesheet" href="/assets/css/apple-ui.css">
 </head>
 <body>
 
