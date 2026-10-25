@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="night">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,11 +14,10 @@
   try {
     var saved = localStorage.getItem('fm-theme');
     var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.dataset.theme = saved || 'light';
+    document.documentElement.dataset.theme = saved || 'night';
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="/assets/css/apple-ui.css">
 </head>
 <body>
 
