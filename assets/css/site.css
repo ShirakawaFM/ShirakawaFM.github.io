@@ -5265,3 +5265,22 @@ html[data-prologue="on"] body {
   overflow: visible !important;
   height: auto !important;
 }
+
+
+/* header brand must read on the glass pill over aurora */
+.brand__mark em {
+  color: var(--ink);
+  opacity: 0.62;
+}
+
+[data-theme="light"] .brand__mark em {
+  color: var(--ink);
+  opacity: 0.55;
+}
+
+.site-header .nav a,
+.site-header .clock,
+.site-header .brand__sub {
+  color: var(--ink-soft);
+  opacity: 0.78;
+}
