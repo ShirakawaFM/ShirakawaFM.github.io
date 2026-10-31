@@ -1,13 +1,56 @@
 {
-  "generated": "2026-10-25",
+  "generated": "2026-10-31",
   "repo": "ShirakawaFM/ShirakawaFM.github.io",
-  "total": 12,
+  "total": 19,
   "days": {
     "2026-06-01": 2,
     "2026-10-01": 1,
-    "2026-10-25": 9
+    "2026-10-25": 15,
+    "2026-10-31": 1
   },
   "commits": [
+    {
+      "hash": "5b7b3c0",
+      "date": "2026-10-31",
+      "subject": "feat: 加一页「现在」，补两篇长文与两个项目",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/5b7b3c0"
+    },
+    {
+      "hash": "46f9e63",
+      "date": "2026-10-25",
+      "subject": "revert: roll back to the GitHub geek version",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/46f9e63"
+    },
+    {
+      "hash": "7574cf4",
+      "date": "2026-10-25",
+      "subject": "style: rebuild the interface with the Apple UI design system",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/7574cf4"
+    },
+    {
+      "hash": "1ef1808",
+      "date": "2026-10-25",
+      "subject": "style: keep the wordmark readable on the glass header",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/1ef1808"
+    },
+    {
+      "hash": "64a0fa1",
+      "date": "2026-10-25",
+      "subject": "style: switch the site to an iOS glass skin with PingFang bold and rounded surfaces",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/64a0fa1"
+    },
+    {
+      "hash": "13ba41a",
+      "date": "2026-10-25",
+      "subject": "feat: add a layered no-scroll prologue before the site",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/13ba41a"
+    },
+    {
+      "hash": "22e4509",
+      "date": "2026-10-25",
+      "subject": "feat: rebuild the site as a GitHub-style interactive letter",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/22e4509"
+    },
     {
       "hash": "2177da0",
       "date": "2026-10-25",
@@ -37,48 +80,6 @@
       "date": "2026-10-25",
       "subject": "ci: use documented snake colour syntax",
       "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/4ae9abf"
-    },
-    {
-      "hash": "252fddf",
-      "date": "2026-10-25",
-      "subject": "docs: polish README cards, footer and snake colours",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/252fddf"
-    },
-    {
-      "hash": "dc75e99",
-      "date": "2026-10-25",
-      "subject": "docs: make the README rich with stats, cards and a contribution snake",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/dc75e99"
-    },
-    {
-      "hash": "70143c2",
-      "date": "2026-10-25",
-      "subject": "docs: rewrite README as a personal introduction",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/70143c2"
-    },
-    {
-      "hash": "62bea7b",
-      "date": "2026-10-25",
-      "subject": "feat: rebuild the site as a hand-written editorial index",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/62bea7b"
-    },
-    {
-      "hash": "7da5d43",
-      "date": "2026-10-01",
-      "subject": "Update README.md",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/7da5d43"
-    },
-    {
-      "hash": "6efc2c3",
-      "date": "2026-06-01",
-      "subject": "完成页面编辑和滚动动画",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/6efc2c3"
-    },
-    {
-      "hash": "eebea5c",
-      "date": "2026-06-01",
-      "subject": "Initial commit",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/eebea5c"
     }
   ]
 }
