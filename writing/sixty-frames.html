@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六十帧 · ShirakawaFM</title>
+<meta name="description" content="一个课后总结弹窗的动画重写：为什么 16 毫秒的定时器做不出丝滑动画，垂直同步又是怎么救回来的。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="六十帧：把一节课的呼吸放进一个弹窗">
+<meta property="og:description" content="为什么 16 毫秒的定时器做不出丝滑动画，以及换掉之后冒出来的新问题。">
+<meta property="og:url" content="https://shirakawafm.github.io/writing/sixty-frames.html">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/writing/sixty-frames.html">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    if (saved) document.documentElement.dataset.theme = saved;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
+    <a href="/now/">现在<sup>03</sup></a>
+    <a href="/about/">关于<sup>04</sup></a>
+  </nav>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/now/" style="--i:2">现在<sup>03</sup></a>
+    <a href="/about/" style="--i:3">关于<sup>04</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
+</div>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="shell">
+      <div class="article-hero__kicker">
+        <a class="mono" href="/writing/">← 写作</a>
+        <span class="tag">前端</span>
+        <span class="mono">2026-10-31 · 9 分钟</span>
+      </div>
+      <h1 class="article-title">六十<em>帧</em></h1>
+      <p class="article-deck">
+        一个下课后自动弹出的总结窗口。第一版宣称自己是 60 帧的：定时器每 16 毫秒响一次，动画依旧一顿一顿。
+        这篇记录我怎么把驱动换掉，以及换掉之后才发现的一堆新问题。
+      </p>
+      <div class="article-meta">
+        <span>作者 ShirakawaFM</span>
+        <span>约 3200 字</span>
+        <span>Avalonia · .NET 10</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell article-layout">
+    <article class="prose">
+      <p>
+        下课的瞬间，屏幕上会先跳一条提醒，一秒之后弹出一个总结：这节课谁睡了、睡了多久、人数怎么变化。
+        它本该是「看一眼就懂」的东西，但第一版看的时候总觉得卡。不是明显的卡，是那种说不清哪里不对的涩——
+        数字往上滚的时候会顿一下，柱子长出来的时候像被谁揪住了。
+      </p>
+      <p>
+        我一开始以为这是「动画太多」。删了两个次要动效，还是涩。后来才想明白：
+        问题不在动画数量，在驱动它们的东西。
+      </p>
+
+      <h2 id="s1">十六毫秒的错觉</h2>
+      <p>
+        第一版用的是最常见的做法：一个间隔 16 毫秒的定时器，每响一次推进一次动画进度。
+        16 毫秒对应 62.5 帧，纸面上比 60 帧还快。
+      </p>
+      <pre><code>var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
+timer.Tick += (_, _) =&gt; Advance(1.0 / 60);
+timer.Start();</code></pre>
+      <p>
+        问题在于，这个定时器排队在 UI 线程的消息队列里，和布局、绘制、输入事件一起排。
+        它从来不会准时在 16 毫秒响，而是「不早于 16 毫秒」。当一帧的绘制刚好占了 8 毫秒，
+        定时器就滑到下一个空闲窗口，实际间隔变成 24 或 32 毫秒。
+      </p>
+      <p>
+        更糟的是它和屏幕刷新没有关系。显示器在 16.67 毫秒的节拍上取一幅画面，
+        而定时器在另一个完全无关的节拍上改状态。两个节拍错开时，一帧里可能改了两次状态，
+        也可能一次都没改——于是同样的位移，有的帧要跨 2 格，有的帧原地不动。
+        这就是那种「涩」的来源：<strong>不是慢，是不匀</strong>。
+      </p>
+
+      <h2 id="s2">换掉驱动</h2>
+      <p>
+        Avalonia 提供了 <code>TopLevel.RequestAnimationFrame</code>：回调发生在每次合成之前，
+        和显示器的垂直同步对齐。这才是动画该待的地方。
+      </p>
+      <pre><code>void Frame(TimeSpan elapsed)
+{
+    var delta = (elapsed - _last).TotalSeconds;
+    _last = elapsed;
+
+    // 切窗口、拖窗口、系统卡一下，都可能让某一帧变得极长，
+    // 那一帧不该被算进动画，否则会出现一次肉眼可见的跳变
+    if (delta is &lt; 0 or &gt; 0.5) delta = 1.0 / 60;
+
+    _age += delta;
+    Animate(_age / EnterSeconds);
+
+    _requested = true;
+    _top.RequestAnimationFrame(Frame);
+}</code></pre>
+      <p>
+        换完的第一感觉是「安静了」。没有更快，但每一步的间隔一致，眼睛立刻不再抗议。
+        这件事让我记住一个区别：<strong>60 帧是一个结果，垂直同步是一个机制。</strong>
+        想让结果稳定，得先让机制对齐。
+      </p>
+
+      <h2 id="s3">掉帧不该让动画变慢</h2>
+      <p>
+        上一段代码里有个 <code>delta</code>。第一版没有它——每帧固定推进 <code>1/60</code> 秒。
+        这看起来更「稳定」，其实是个陷阱：机器跑 40 帧时，动画的真实时长会被拉长到 1.5 倍，
+        一个 0.7 秒的入场变成 1 秒；机器跑 120 帧时，动画又会提前结束。
+      </p>
+      <p>
+        用真实帧时间推进，掉帧就只是少画几帧，动画本身的节奏不变。用户感觉到的是「有点顿」，
+        而不是「这个动画怎么慢吞吞的」——后者更像是程序坏了。
+      </p>
+      <p>
+        顺带一个必须处理的边界：窗口最小化再恢复、拖动窗口、系统休眠，都会让某一帧的
+        <code>elapsed</code> 突然跳出一个巨大的间隔。如果不做这个判断，恢复后的第一帧会把整段动画一次性播完，
+        用户看到的是「一闪就过了」。所以超过 0.5 秒的间隔一律按一帧处理。
+      </p>
+
+      <h2 id="s4">柱子要一根一根长</h2>
+      <p>
+        曲线是一列像素柱。第一版让它们整体从零长上来：进度 0 到 1 线性映射到柱高。
+        结果很平——所有柱子一起升高，像电梯，不像数据。
+      </p>
+      <p>
+        改成错峰弹出，每根柱子占时间轴的一小段：
+      </p>
+      <pre><code>var stagger = count &gt; 1 ? 0.58 / (count - 1) : 0;
+
+for (var i = 0; i &lt; count; i++)
+{
+    var local = Ease.OutCubic(Ease.Segment(progress, i * stagger, i * stagger + 0.42));
+    DrawBar(i, local);
+}</code></pre>
+      <p>
+        起点间距铺满 58% 的时间轴，每根柱子自己用 42% 长完，重叠出「一道 wave 从左扫过去」的效果。
+        关键在分母：<code>0.58 / (count - 1)</code> 而不是 <code>0.42 / (count - 1)</code>。
+        早期用的是后者，柱子之间的间隔太密，进度到一半时右边的柱子也长完了，扫过去的动作根本看不见。
+      </p>
+      <p>
+        还有两个小决定：
+      </p>
+      <ul>
+        <li>
+          折线只连<strong>已经长完</strong>的柱子。否则线头会飘在还没长出来的空白里，像 bug。
+        </li>
+        <li>
+          峰值虚线等最后一根长完才亮。它是结论，不该和数据同时出现。
+        </li>
+      </ul>
+      <p>
+        另外，柱子不能用 <code>OutCubic</code> 直接吃总进度。三次缓出在前 1/3 就把大部分位移走完了，
+        一根柱子实际只有 0.24 秒在动，看起来是「弹一下」，不是「长出来」。
+        把缓动放到每一根的局部进度里，总进度保持线性，才能看见生长的过程。
+      </p>
+
+      <h2 id="s5">数字和单位的战争</h2>
+      <p>
+        最贵的一个 bug 出在标题数字上。设计是「一个 112px 的巨型数字 + 右边一行说明」。
+        遇到「累计入睡 147 次」这种带单位的指标时，数字和单位被塞进同一个文本块，
+        112px 的「147 次」宽得离谱，把右侧的标签整个挤出边界。
+      </p>
+      <p>
+        改法是把单位拆出来：数字仍然是 112px，单位单独一个 30px 的文本块，垂直对齐到基线下沿。
+        同时加了一条规则——如果这个值根本不是纯数字（比如「30 小时 21 分」），
+        整块缩到 46px，不再撑大字。
+      </p>
+      <pre><code>// 只有"数字 + 短单位"才配 112px，"一句话"整体降级
+var big = _heroCounts;
+_ui.BigNumber.FontSize = big ? 112 : 46;
+_ui.BigUnit.IsVisible = big &amp;&amp; _unit.Length &gt; 0;</code></pre>
+      <p>
+        数字滚动也要跟着改：原来滚的是「数字 + 单位」整串，现在只滚数字，单位在旁边不动。
+        否则单位会跟着一起跳字，看起来像抽奖。
+      </p>
+
+      <h2 id="s6">剩下的</h2>
+      <p>
+        还有两件事是这一版才想清楚的。
+      </p>
+      <p>
+        第一，<strong>入场进度和翻页节奏必须是两个时间轴。</strong>
+        一开始只有一个 <code>age</code>，既决定什么时候翻页，也决定入场动画播到哪。
+        结果在设置面板里改一个勾选、重排一次内容，整个页面就从零重播一遍动画。
+        拆成 <code>_pageAge</code> 和 <code>_entrance</code> 之后，改配置只是改内容，不动时间。
+      </p>
+      <p>
+        第二，<strong>末页自己关掉。</strong>
+        这个窗口本来就是为了「扫一眼」，看完了还杵在屏幕中间，就变成了打扰。
+        现在末页停 4.5 秒自动关闭，前面的页按 7 秒往下走——顺手也把「用户是不是读完了」这个问题丢掉了。
+      </p>
+      <p>
+        从外面看，这个改动只是「弹窗变顺了」。但真正动过的地方是驱动方式、时间基准、
+        错峰节奏和两个时间轴。写动画的时间大部分不在调参数，在于搞清楚
+        <strong>是谁在推动这次变化</strong>——如果不是垂直同步，那它就永远不可能匀。
+      </p>
+
+      <div class="article-foot">
+        <a class="article-foot__next" href="/writing/ascii-alignment.html">
+          <span>下一篇</span>
+          <strong>等宽字体里的中文 ↗</strong>
+        </a>
+        <a class="link-line" href="/writing/">返回写作 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <aside class="article-aside">
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="文章目录">
+        <a href="#s1">十六毫秒的错觉</a>
+        <a href="#s2">换掉驱动</a>
+        <a href="#s3">掉帧不该让动画变慢</a>
+        <a href="#s4">柱子要一根一根长</a>
+        <a href="#s5">数字和单位的战争</a>
+        <a href="#s6">剩下的</a>
+      </nav>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/now/">现在</a>
+          <a href="/#game">小游戏</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

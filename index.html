@@ -24,11 +24,10 @@
 (function () {
   try {
     var saved = localStorage.getItem('fm-theme');
-    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.dataset.theme = saved || 'night';
-    document.documentElement.dataset.letter = localStorage.getItem('fm-letter') === 'open' ? 'open' : 'sealed';
+    if (saved) document.documentElement.dataset.theme = saved;
+    document.documentElement.dataset.letter =
+      localStorage.getItem('fm-letter') === 'open' ? 'open' : 'sealed';
   } catch (e) {
-    document.documentElement.dataset.theme = 'light';
     document.documentElement.dataset.letter = 'sealed';
   }
   window.setTimeout(function () {
@@ -52,7 +51,8 @@
   <nav class="nav" aria-label="主导航">
     <a href="/#work">作品<sup>01</sup></a>
     <a href="/writing/">写作<sup>02</sup></a>
-    <a href="/about/">关于<sup>03</sup></a>
+    <a href="/now/">现在<sup>03</sup></a>
+    <a href="/about/">关于<sup>04</sup></a>
   </nav>
 
   <div class="header-tools">
@@ -70,7 +70,8 @@
   <nav class="menu__list" aria-label="移动导航">
     <a href="/#work" style="--i:0">作品<sup>01</sup></a>
     <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
-    <a href="/about/" style="--i:1">关于<sup>03</sup></a>
+    <a href="/now/" style="--i:2">现在<sup>03</sup></a>
+    <a href="/about/" style="--i:3">关于<sup>04</sup></a>
   </nav>
   <div class="menu__foot">
     <span>ShirakawaFM · 2026</span>
@@ -98,6 +99,7 @@
     <a href="#game">Playground</a>
     <a href="#activity">Activity</a>
     <a href="/writing/">Writing</a>
+    <a href="/now/">Now</a>
     <a href="/about/">About</a>
     <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">GitHub ↗</a>
   </nav>
@@ -264,11 +266,37 @@
           </a>
         </li>
 
-        
+        <li>
+          <a class="work" href="https://github.com/ShirakawaFM/ClassIsland.SleepWatch" data-reveal style="--i:1">
+            <span class="work__idx">02</span>
+            <div class="work__body">
+              <div class="work__title">SleepWatch <span class="zh">课堂睡意监测 · ClassIsland 插件</span></div>
+              <div class="work__detail">
+                <p>教室摄像头 + YOLOv8n-pose：认出趴桌与长时间闭眼，主界面只显示一个数字。下课按课表自动结算，弹一页 60fps 的课后总结。C# · Avalonia · ONNX，v1.3.0。</p>
+              </div>
+            </div>
+            <div class="work__meta"><b>ClassIsland plugin</b>2026 · v1.3.0</div>
+            <span class="work__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
 
         <li>
-          <a class="work" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" data-reveal style="--i:1">
-            <span class="work__idx">02</span>
+          <a class="work" href="https://github.com/ShirakawaFM/family-lan-printer" data-reveal style="--i:2">
+            <span class="work__idx">03</span>
+            <div class="work__body">
+              <div class="work__title">family-lan-printer <span class="zh">家庭内网打印 · 微信扫码</span></div>
+              <div class="work__detail">
+                <p>让家里人也会用的打印入口：手机连同一个 WiFi，扫码、输密码、打字或选照片，预览后一键出纸。Flask 单服务，内容不出局域网，打印完 30 秒删临时文件。v1.0.2。</p>
+              </div>
+            </div>
+            <div class="work__meta"><b>Python · Flask</b>2026 · v1.0.2</div>
+            <span class="work__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+
+        <li>
+          <a class="work" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" data-reveal style="--i:3">
+            <span class="work__idx">04</span>
             <div class="work__body">
               <div class="work__title">ShirakawaFM <span class="zh">本站 · 一封信</span></div>
               <div class="work__detail">
@@ -281,8 +309,8 @@
         </li>
 
         <li>
-          <div class="work" data-reveal style="--i:2">
-            <span class="work__idx">03</span>
+          <div class="work" data-reveal style="--i:4">
+            <span class="work__idx">05</span>
             <div class="work__body">
               <div class="work__title">Video Lab <span class="zh">AI 影像工作流</span></div>
               <div class="work__detail">
@@ -306,21 +334,35 @@
       </header>
 
       <div class="write-list">
-        <a class="write" href="/writing/minimal-permissions.html" data-reveal style="--i:0">
+        <a class="write" href="/writing/sixty-frames.html" data-reveal style="--i:0">
+          <time class="write__date" datetime="2026-10-31">2026-10-31</time>
+          <span class="write__title">六十帧：把一节课的呼吸放进一个弹窗</span>
+          <span class="write__tag">前端 · 9 分钟</span>
+          <span class="write__arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="write" href="/writing/ascii-alignment.html" data-reveal style="--i:1">
+          <time class="write__date" datetime="2026-10-31">2026-10-31</time>
+          <span class="write__title">等宽字体里的中文：一份 ASCII 图的故障记录</span>
+          <span class="write__tag">排版 · 6 分钟</span>
+          <span class="write__arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="write" href="/writing/minimal-permissions.html" data-reveal style="--i:2">
           <time class="write__date" datetime="2026-10-25">2026-10-25</time>
           <span class="write__title">最小权限的代价：给抖音网页版做画质自动化的 22 次迭代</span>
           <span class="write__tag">工程 · 11 分钟</span>
           <span class="write__arrow" aria-hidden="true">↗</span>
         </a>
 
-        <a class="write" href="/writing/release-pipeline.html" data-reveal style="--i:1">
+        <a class="write" href="/writing/release-pipeline.html" data-reveal style="--i:3">
           <time class="write__date" datetime="2026-10-25">2026-10-25</time>
           <span class="write__title">让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线</span>
           <span class="write__tag">发布 · 8 分钟</span>
           <span class="write__arrow" aria-hidden="true">↗</span>
         </a>
 
-        <a class="write" href="/writing/escape-the-template.html" data-reveal style="--i:1">
+        <a class="write" href="/writing/escape-the-template.html" data-reveal style="--i:4">
           <time class="write__date" datetime="2026-10-25">2026-10-25</time>
           <span class="write__title">把博客从模板里救出来：一次反 AI 味的设计重写</span>
           <span class="write__tag">设计 · 7 分钟</span>
@@ -444,6 +486,7 @@
           <h3>Index</h3>
           <a href="/#work">作品</a>
           <a href="/writing/">写作</a>
+          <a href="/now/">现在</a>
           <a href="/#game">小游戏</a>
           <a href="/about/">关于</a>
         </div>

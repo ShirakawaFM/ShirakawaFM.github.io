@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>等宽字体里的中文 · ShirakawaFM</title>
+<meta name="description" content="一份 README 里的 ASCII 示意图为什么会散架：块状字符在等宽字体里没有字形，回退成两列宽。">
+<meta name="theme-color" content="#f2efe7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="等宽字体里的中文：一份 ASCII 图的故障记录">
+<meta property="og:description" content="框线是对的，字形却不是。一次由 Unicode 宽度引发的事故。">
+<meta property="og:url" content="https://shirakawafm.github.io/writing/ascii-alignment.html">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://shirakawafm.github.io/writing/ascii-alignment.html">
+<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('fm-theme');
+    if (saved) document.documentElement.dataset.theme = saved;
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
+    <span class="brand__mark">Shirakawa<em>FM</em></span>
+    <span class="brand__sub">Work & Notes</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#work">作品<sup>01</sup></a>
+    <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
+    <a href="/now/">现在<sup>03</sup></a>
+    <a href="/about/">关于<sup>04</sup></a>
+  </nav>
+  <div class="header-tools">
+    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
+    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
+      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
+    </button>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div></div>
+  <nav class="menu__list" aria-label="移动导航">
+    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
+    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
+    <a href="/now/" style="--i:2">现在<sup>03</sup></a>
+    <a href="/about/" style="--i:3">关于<sup>04</sup></a>
+  </nav>
+  <div class="menu__foot">
+    <span>ShirakawaFM · 2026</span>
+    <span>UTC+8</span>
+  </div>
+</div>
+
+<main id="main">
+  <header class="article-hero">
+    <div class="shell">
+      <div class="article-hero__kicker">
+        <a class="mono" href="/writing/">← 写作</a>
+        <span class="tag">排版</span>
+        <span class="mono">2026-10-31 · 6 分钟</span>
+      </div>
+      <h1 class="article-title">等宽字体里的<em>中文</em></h1>
+      <p class="article-deck">
+        我在 README 里画了一个窗口示意图。框线是齐的，第二行的右半边却散到了框外。
+        原因不是手算错了一条边——而是有一个字符，在中文字体里占了两格。
+      </p>
+      <div class="article-meta">
+        <span>作者 ShirakawaFM</span>
+        <span>约 2200 字</span>
+        <span>Unicode · Markdown</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell article-layout">
+    <article class="prose">
+      <p>
+        事情的形状是这样的：一条项目 README 里，我用框线字符画了一个弹窗的版式示意，
+        左边是巨型数字和关键词，右边是曲线和记录。左列对齐得很好，右列的第二行却把
+        <code>(像素柱)</code> 顶到了竖线外面，上下几行的右边框也各走各的。
+      </p>
+      <p>
+        第一反应是「手算错了吧」。但这类图我画过不少，不至于差十格。而且差异只在带
+        <code>▁▃▅</code> 的那一行：其它行的竖线位置是吻合的。
+      </p>
+
+      <h2 id="s1">不是算错了，是字形不存在</h2>
+      <p>
+        <code>▁ ▃ ▅</code> 属于 Unicode 的 Block Elements 区（U+2580–U+259F），
+        原本的用途是画终端里的柱状图和进度条。问题是：
+        <strong>Consolas、Menlo、SF Mono 这些常见的等宽字体里，根本没有这些字符的字形。</strong>
+      </p>
+      <p>
+        字体没有字形，浏览器不会画空白，而是回退（fallback）到下一个能画的字体——
+        通常就是系统里的中文字体。而中文字体把 U+2581 这类「与中文混排的方块字」按全角处理，
+        于是这个字符占了两列的宽度，而不是一列。
+      </p>
+      <p>
+        我补空格时按「中文 2 列、其余 1 列」算的，把 <code>▁</code> 算成了 1 列。
+        那一行有 10 个这样的字符，实际宽度多出 10 列——右半边整体右移，最后那个竖线就跑到框外去了。
+      </p>
+      <p>
+        同一个坑里还埋着几个字符：<code>·</code>（U+00B7）、<code>–</code>（U+2013）、
+        <code>→</code>（U+2192）。它们在 Unicode 里被标为 East Asian Width = Ambiguous，
+        意思是「宽度看上下文」，不同字体给出不同答案。
+      </p>
+      <pre><code>&gt;&gt;&gt; unicodedata.east_asian_width('\u2581')
+'A'          # Ambiguous：全角还是半角，字体说了算
+&gt;&gt;&gt; unicodedata.east_asian_width('中')
+'W'
+&gt;&gt;&gt; unicodedata.east_asian_width('a')
+'Na'</code></pre>
+
+      <h2 id="s2">先把模型算对</h2>
+      <p>
+        第一步不是改图，是让「宽度」这件事变成可以计算的东西，而不是靠肉眼补空格。
+        规则很简单：东亚宽度是 W 或 F 的算 2 列，其余算 1 列。
+      </p>
+      <pre><code>def width(s):
+    return sum(2 if unicodedata.east_asian_width(c) in ('W', 'F') else 1 for c in s)
+
+def pad(s, n):
+    assert width(s) &lt;= n, (s, width(s), n)
+    return s + ' ' * (n - width(s))</code></pre>
+      <p>
+        用它重画之后，每一行的显示宽度都等于 69，框线严丝合缝。
+        顺手加了一句断言：任何一行超宽就直接报错，而不是悄悄错位。
+      </p>
+      <p>
+        同时又写了一个扫描器，把 README 里所有代码块里 East Asian Width = Ambiguous 的字符列出来，
+        一次性看清还有多少地雷：结果 12 种，其中大部分是框线本身和箭头。
+      </p>
+
+      <h2 id="s3">模型对了，渲染还是会歪</h2>
+      <p>
+        这是整件事里最值得记的一段：<strong>算对宽度并不保证对齐。</strong>
+      </p>
+      <p>
+        我算完宽度，开始怀疑另一件事——即使中文字符被当成 2 列算，浏览器是按字体的真实字形宽度绘制的。
+        Consolas 的半角字宽约 0.55 em，而中文字体的一格是 1.0 em。两者比值是 1.82，不是 2.00。
+      </p>
+      <p>
+        也就是说，在一行里塞了 6 个中文的行，和塞了 10 个中文的行，
+        实际渲染宽度的差并不等于「4 个中文字 = 8 个半角」。差值是 4 × (1.0 − 2×0.55) ≈ −0.4 em，
+        大约 0.7 个字符宽。这个误差会随着中文字数的变化漂移，框线照样会歪，只是歪得没那么夸张。
+      </p>
+      <blockquote>
+        <p>用「显示宽度」做计算，只能修掉明显的错位；要彻底对齐，得放弃「用字符画表格」这件事。</p>
+      </blockquote>
+
+      <h2 id="s4">所以改成了表格</h2>
+      <p>
+        最后的决定是把那张 ASCII 图整个删掉，换成 Markdown 表格：三列——位置、放什么、示例。
+        表格由渲染器排版，跟字体、宽度、回退顺序全部无关；在手机、GitHub、编辑器预览里长得一样。
+      </p>
+      <p>
+        代价是少了一点「一眼看到版式」的直观。所以表格下面紧跟着放了真实截图，两者的区域划分一一对应：
+        截图负责好看，表格负责准确。
+      </p>
+      <p>
+        至于那些单列的目录树（<code>├─ 文件名 &nbsp;注释</code>），我保留了原样。
+        它们没有右边框，注释列即使错位一格也只是「不太整齐」，不会出现「内容跑到框外」这种一眼就坏的效果。
+        改动的收益小于风险。
+      </p>
+
+      <h2 id="s5">三条可以带走的</h2>
+      <ul>
+        <li>
+          <strong>中文 README 里画多列框线图，别用 Block Elements 当图元。</strong>
+          <code>█ ▓ ▒ ░ ▁ ▂ ▃</code> 这些字在等宽字体里大概率没有字形，会回退成两列宽。
+        </li>
+        <li>
+          <strong>框线本身（<code>┌ ─ │ └</code>）是安全的。</strong>
+          Consolas、Menlo 自带这些字形，宽度固定为 1。它们属于 Box Drawing 区，和 Block Elements 不是一回事。
+        </li>
+        <li>
+          <strong>要精确对齐，就别用字符排。</strong>
+          用表格、用图片，或者用真正的排版工具。字符对齐只适合「大概齐」的场合。
+        </li>
+      </ul>
+      <p>
+        最后补一个自省的结论：这个 bug 之所以能上线，是因为我验证的时候看的是编辑器里的渲染结果，
+        而它恰好吃的是另一种字体回退顺序。<strong>对齐这种事，必须在你不能控制的渲染环境里检查</strong>——
+        对 README 来说，就是浏览器里的 GitHub。
+      </p>
+
+      <div class="article-foot">
+        <a class="article-foot__next" href="/writing/minimal-permissions.html">
+          <span>下一篇</span>
+          <strong>最小权限的代价 ↗</strong>
+        </a>
+        <a class="link-line" href="/writing/">返回写作 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+
+    <aside class="article-aside">
+      <h2>On this page</h2>
+      <nav class="toc" aria-label="文章目录">
+        <a href="#s1">不是算错了，是字形不存在</a>
+        <a href="#s2">先把模型算对</a>
+        <a href="#s3">模型对了，渲染还是会歪</a>
+        <a href="#s4">所以改成了表格</a>
+        <a href="#s5">三条可以带走的</a>
+      </nav>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer__top">
+      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Index</h3>
+          <a href="/#work">作品</a>
+          <a href="/writing/">写作</a>
+          <a href="/now/">现在</a>
+          <a href="/#game">小游戏</a>
+          <a href="/about/">关于</a>
+        </div>
+        <div class="footer__col">
+          <h3>Elsewhere</h3>
+          <a href="https://github.com/ShirakawaFM">GitHub</a>
+          <a href="https://space.bilibili.com/209300529">Bilibili</a>
+          <a href="mailto:shirakawafm@outlook.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> ShirakawaFM</span>
+      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
+      <span>UTC+8 <span data-clock>--:--:--</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

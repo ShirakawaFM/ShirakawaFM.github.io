@@ -1199,6 +1199,14 @@ ol {
   transform: none;
 }
 
+/* JS 没跑起来时，被它负责显现的内容不能永远藏着 */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1416,6 +1424,14 @@ ol {
   background: none;
   color: inherit;
   font-size: inherit;
+}
+
+/* 浅色主题下 pre 是"深底浅字"；到 night 主题变量一翻转，它就成了整页最亮的一块。
+   代码块面积大，反色只会刺眼，所以这里改成比纸面亮一档的底色。 */
+[data-theme="night"] .prose pre {
+  background: var(--paper-2);
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
 }
 
 .prose figure {

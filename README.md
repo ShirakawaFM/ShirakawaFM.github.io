@@ -28,16 +28,17 @@
 
 这个 GitHub 主要放正在维护的项目与实验。我的写作、设计笔记和完整作品索引在 **[shirakawafm.github.io](https://shirakawafm.github.io)**。
 
-首页现在是一封可以拆开的信：火漆、Issue 头、真实的提交热力图、`⌘K` 命令面板，还有一个十秒关闭 bug 的小游戏。
+首页现在是一封可以拆开的信：火漆、Issue 头、真实的提交热力图、`⌘K` 命令面板，还有一个十秒关闭 bug 的小游戏。另有 [写作归档](https://shirakawafm.github.io/writing/) 与 [现在](https://shirakawafm.github.io/now/) —— 后者只写此刻在做什么，过期也不删。
 
 <table>
   <tr>
     <td width="33%" valign="top">
       <h3>🚀 现在</h3>
       <ul>
+        <li><b>SleepWatch</b><br />ClassIsland 课堂睡意监测插件</li>
         <li><b>douyin-auto-hd</b><br />抖音网页版自动最高画质</li>
+        <li><b>family-lan-printer</b><br />家庭局域网扫码打印</li>
         <li><b>Video Lab</b><br />Remotion + FFmpeg 影像实验</li>
-        <li><b>个人站点</b><br />手写 HTML / CSS / JS</li>
       </ul>
     </td>
     <td width="33%" valign="top">
@@ -127,12 +128,16 @@
 
 **[douyin-auto-hd](https://github.com/ShirakawaFM/douyin-auto-hd)** — 最小权限的 Chrome 扩展，访问抖音网页版时自动切到当前可用的最高画质。22 次迭代，大部分时间在删掉错误的假设。  
 **[ShirakawaFM.github.io](https://github.com/ShirakawaFM/ShirakawaFM.github.io)** — 手写的个人站点：一份 CSS、两份 JS、自托管字体，无框架、无第三方请求。  
+**[ClassIsland.SleepWatch](https://github.com/ShirakawaFM/ClassIsland.SleepWatch)** — 教室摄像头 + YOLOv8n-pose 的课堂睡意监测插件：主界面只显示一个数字，下课按课表结算，弹一页 60fps 的课后总结。  
+**[family-lan-printer](https://github.com/ShirakawaFM/family-lan-printer)** — 家庭内网打印：手机连同一 WiFi、微信扫码、打字或选照片，预览后出纸。内容不出局域网。  
 **Video Lab** — Remotion + FFmpeg 的影像实验：脚本、分镜、配音、字幕、渲染。还在实验阶段。
 
 ## ✍️ 最近写作
 
 | 日期 | 文章 | 主题 |
 | --- | --- | --- |
+| 2026-10-31 | [六十帧：把一节课的呼吸放进一个弹窗](https://shirakawafm.github.io/writing/sixty-frames.html) | 前端 |
+| 2026-10-31 | [等宽字体里的中文：一份 ASCII 图的故障记录](https://shirakawafm.github.io/writing/ascii-alignment.html) | 排版 |
 | 2026-10-25 | [最小权限的代价：给抖音网页版做画质自动化的 22 次迭代](https://shirakawafm.github.io/writing/minimal-permissions.html) | 工程 |
 | 2026-10-25 | [让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线](https://shirakawafm.github.io/writing/release-pipeline.html) | 发布 |
 | 2026-10-25 | [把博客从模板里救出来：一次反 AI 味的设计重写](https://shirakawafm.github.io/writing/escape-the-template.html) | 设计 |
@@ -166,6 +171,8 @@
 occasional Minecraft mod, usually by removing things rather than adding them.
 
 - **[douyin-auto-hd](https://github.com/ShirakawaFM/douyin-auto-hd)** — a minimal-permission Chrome extension that switches Douyin web videos to the highest available quality.
+- **[ClassIsland.SleepWatch](https://github.com/ShirakawaFM/ClassIsland.SleepWatch)** — a ClassIsland plugin that watches a classroom camera and turns it into one number on screen, plus a 60 fps end-of-lesson summary.
+- **[family-lan-printer](https://github.com/ShirakawaFM/family-lan-printer)** — scan a QR code on the same Wi-Fi, print text, photos or files from your phone. Nothing leaves the LAN.
 - **[shirakawafm.github.io](https://shirakawafm.github.io)** — a hand-written personal site: no framework, no build step, no third-party requests.
 
 I care about quiet tools: fast, predictable, and honest about their limits. More writing at
@@ -179,6 +186,6 @@ I care about quiet tools: fast, predictable, and honest about their limits. More
 
 <img src="assets/readme-footer.svg" alt="ShirakawaFM footer" width="100%" />
 
-<sub>这个仓库托管 <a href="https://shirakawafm.github.io">shirakawafm.github.io</a> 的源码：手写 HTML / CSS / JS，无框架、无构建。站点说明见 <a href="https://shirakawafm.github.io/about/">关于页</a>。</sub>
+<sub>这个仓库托管 <a href="https://shirakawafm.github.io">shirakawafm.github.io</a> 的源码：手写 HTML / CSS / JS，无框架、无构建。站点说明见 <a href="https://shirakawafm.github.io/about/">关于页</a>，最近的动向见 <a href="https://shirakawafm.github.io/now/">现在</a>。</sub>
 
 </div>

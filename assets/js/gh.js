@@ -36,13 +36,21 @@
     return 4;
   }
 
+  // 本地日期，不能用 toISOString()：那是 UTC，东八区 0 点到 8 点会整体错一天
+  function ymd(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + d;
+  }
+
   function renderContrib(data) {
     const counts = data.days || {};
     const end = new Date();
     end.setHours(0, 0, 0, 0);
+    // 对齐到本周日，再往回 52 周：53 列，最后一列是本周
     const start = new Date(end);
-    start.setDate(start.getDate() - 364);
-    start.setDate(start.getDate() - start.getDay());
+    start.setDate(start.getDate() - start.getDay() - 52 * 7);
 
     const frag = doc.createDocumentFragment();
     const cursor = new Date(start);
@@ -53,7 +61,7 @@
       for (let d = 0; d < 7; d++) {
         const cell = doc.createElement('i');
         cell.className = 'contrib__cell';
-        const key = cursor.toISOString().slice(0, 10);
+        const key = ymd(cursor);
         const count = counts[key] || 0;
         cell.classList.add('l' + levelFor(count));
         cell.title = key + ' · ' + count + ' commit' + (count === 1 ? '' : 's');
@@ -80,10 +88,12 @@
       const a = doc.createElement('a');
       a.href = c.url;
       a.rel = 'noopener';
+      const esc = (v) =>
+        String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       a.innerHTML =
-        '<code>' + c.hash + '</code>' +
-        '<span>' + c.subject.replace(/</g, '&lt;') + '</span>' +
-        '<time datetime="' + c.date + '">' + c.date + '</time>';
+        '<code>' + esc(c.hash) + '</code>' +
+        '<span>' + esc(c.subject) + '</span>' +
+        '<time datetime="' + esc(c.date) + '">' + esc(c.date) + '</time>';
       li.appendChild(a);
       commitList.appendChild(li);
     });
@@ -153,9 +163,6 @@
       }
       if (closed) store.set(KEY, true);
       else store.set(KEY, false);
-      if (animate && closed) {
-        closeBtn.textContent = 'Closed as completed';
-      }
     }
 
     apply(store.get(KEY, false), false);
@@ -233,6 +240,9 @@
       { label: '信 · Letter #1', hint: '#letter', href: '#letter' },
       { label: '随信附上 · Work', hint: '#work', href: '#work' },
       { label: '写作 · Writing index', hint: '/writing/', href: '/writing/' },
+      { label: '六十帧 · Sixty frames', hint: '/writing/sixty-frames.html', href: '/writing/sixty-frames.html' },
+      { label: '等宽字体里的中文 · ASCII', hint: '/writing/ascii-alignment.html', href: '/writing/ascii-alignment.html' },
+      { label: '现在 · Now', hint: '/now/', href: '/now/' },
       { label: '关于 · About', hint: '/about/', href: '/about/' },
       { label: '小游戏 · Bug hunt', hint: '#game', href: '#game' },
       { label: '刮刮卡 · Secret gist', hint: '#scratch', href: '#scratch' },
@@ -274,6 +284,19 @@
       }
     }
 
+    const foot = $('.palette__foot', palette);
+    const footDefault = foot ? foot.textContent : '';
+    let footTimer = 0;
+
+    function flash(text) {
+      if (!foot) return;
+      foot.textContent = text;
+      window.clearTimeout(footTimer);
+      footTimer = window.setTimeout(() => {
+        foot.textContent = footDefault;
+      }, 1800);
+    }
+
     function run(it) {
       close();
       if (it.action === 'theme') {
@@ -283,17 +306,26 @@
       }
       if (it.action === 'copy-email') {
         const email = 'shirakawafm@outlook.com';
-        if (navigator.clipboard) navigator.clipboard.writeText(email).catch(() => {});
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(email).then(
+            () => flash('已复制 shirakawafm@outlook.com'),
+            () => flash('复制失败，请手动选择')
+          );
+        }
         return;
       }
+      if (!it.href) return;
       if (it.href === '#') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
-      if (it.href && it.href.startsWith('#')) {
+      if (it.href.startsWith('#')) {
         const el = doc.querySelector(it.href);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
       }
+      // mailto: 和站外链接原来走到这里就断了，面板关了但什么也没发生
+      window.location.href = it.href;
     }
 
     function move(delta) {
@@ -307,15 +339,24 @@
       }
     }
 
+    let lastFocus = null;
+
     function open() {
+      lastFocus = doc.activeElement;
       palette.hidden = false;
+      doc.body.style.overflow = 'hidden';
       input.value = '';
       render('');
-      window.setTimeout(() => input.focus(), 20);
+      window.requestAnimationFrame(() => input.focus({ preventScroll: true }));
     }
 
     function close() {
+      if (palette.hidden) return;
       palette.hidden = true;
+      doc.body.style.overflow = '';
+      if (lastFocus && typeof lastFocus.focus === 'function' && !palette.contains(lastFocus)) {
+        lastFocus.focus({ preventScroll: true });
+      }
     }
 
     $$('[data-cmdk]').forEach((btn) => btn.addEventListener('click', open));

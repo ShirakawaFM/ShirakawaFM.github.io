@@ -21,8 +21,7 @@
 (function () {
   try {
     var saved = localStorage.getItem('fm-theme');
-    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.dataset.theme = saved || 'night';
+    if (saved) document.documentElement.dataset.theme = saved;
   } catch (e) {}
 })();
 </script>
@@ -41,7 +40,8 @@
   <nav class="nav" aria-label="主导航">
     <a href="/#work">作品<sup>01</sup></a>
     <a href="/writing/" aria-current="page">写作<sup>02</sup></a>
-    <a href="/about/">关于<sup>03</sup></a>
+    <a href="/now/">现在<sup>03</sup></a>
+    <a href="/about/">关于<sup>04</sup></a>
   </nav>
   <div class="header-tools">
     <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
@@ -58,7 +58,8 @@
   <nav class="menu__list" aria-label="移动导航">
     <a href="/#work" style="--i:0">作品<sup>01</sup></a>
     <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
-    <a href="/about/" style="--i:2">关于<sup>03</sup></a>
+    <a href="/now/" style="--i:2">现在<sup>03</sup></a>
+    <a href="/about/" style="--i:3">关于<sup>04</sup></a>
   </nav>
   <div class="menu__foot">
     <span>ShirakawaFM · 2026</span>
@@ -84,7 +85,19 @@
   <div class="shell archive">
     <div class="archive__year">
       <span>2026</span>
-      <span>3 篇</span>
+      <span>5 篇</span>
+    </div>
+
+    <div class="archive__row" data-reveal>
+      <time datetime="2026-10-31">10.31</time>
+      <a href="/writing/sixty-frames.html">六十帧：把一节课的呼吸放进一个弹窗</a>
+      <span>前端 / 9 min</span>
+    </div>
+
+    <div class="archive__row" data-reveal>
+      <time datetime="2026-10-31">10.31</time>
+      <a href="/writing/ascii-alignment.html">等宽字体里的中文：一份 ASCII 图的故障记录</a>
+      <span>排版 / 6 min</span>
     </div>
 
     <div class="archive__row" data-reveal>
@@ -116,6 +129,7 @@
           <h3>Index</h3>
           <a href="/#work">作品</a>
           <a href="/writing/">写作</a>
+          <a href="/now/">现在</a>
           <a href="/#game">小游戏</a>
           <a href="/about/">关于</a>
         </div>

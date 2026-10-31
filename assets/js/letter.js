@@ -162,8 +162,9 @@
     function placeDot() {
       const width = stage.clientWidth;
       const height = stage.clientHeight;
-      const x = 10 + Math.random() * Math.max(10, width - SIZE - 20);
-      const y = 10 + Math.random() * Math.max(10, height - SIZE - 20);
+      // 320px 窄屏时 width - SIZE - 20 会变成负数，Math.max(10, …) 反而把点推出容器
+      const x = 10 + Math.random() * Math.max(0, width - SIZE - 20);
+      const y = 10 + Math.random() * Math.max(0, height - SIZE - 20);
       dot.style.left = x + 'px';
       dot.style.top = y + 'px';
       dot.focus({ preventScroll: true });
@@ -254,6 +255,7 @@
 
     function paintCover() {
       const rect = scratch.getBoundingClientRect();
+      if (!rect.width || !rect.height) return; // 还没布局，等 ResizeObserver 再来
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
@@ -360,6 +362,7 @@
     canvas.addEventListener('pointerleave', () => {
       drawing = false;
       last = null;
+      checkProgress();
     });
 
     if (skip) skip.addEventListener('click', reveal);
