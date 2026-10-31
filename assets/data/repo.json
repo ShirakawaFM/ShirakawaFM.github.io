@@ -1,85 +1,85 @@
 {
   "generated": "2026-10-31",
   "repo": "ShirakawaFM/ShirakawaFM.github.io",
-  "total": 19,
+  "total": 21,
   "days": {
     "2026-06-01": 2,
     "2026-10-01": 1,
     "2026-10-25": 15,
-    "2026-10-31": 1
+    "2026-10-31": 3
   },
   "commits": [
     {
-      "hash": "5b7b3c0",
+      "hash": "08522fa",
       "date": "2026-10-31",
-      "subject": "feat: 加一页「现在」，补两篇长文与两个项目",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/5b7b3c0"
+      "subject": "热力图数据重算",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/08522fa"
     },
     {
-      "hash": "46f9e63",
-      "date": "2026-10-25",
-      "subject": "revert: roll back to the GitHub geek version",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/46f9e63"
+      "hash": "8d93fe9",
+      "date": "2026-10-31",
+      "subject": "加个 now 页，补两篇文章",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/8d93fe9"
     },
     {
-      "hash": "7574cf4",
+      "hash": "8d38791",
       "date": "2026-10-25",
-      "subject": "style: rebuild the interface with the Apple UI design system",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/7574cf4"
+      "subject": "还是退回原来那版",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/8d38791"
     },
     {
-      "hash": "1ef1808",
+      "hash": "f53f318",
       "date": "2026-10-25",
-      "subject": "style: keep the wordmark readable on the glass header",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/1ef1808"
+      "subject": "照 apple 那套重做一版",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/f53f318"
     },
     {
-      "hash": "64a0fa1",
+      "hash": "71df556",
       "date": "2026-10-25",
-      "subject": "style: switch the site to an iOS glass skin with PingFang bold and rounded surfaces",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/64a0fa1"
+      "subject": "玻璃头上那个字看不清",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/71df556"
     },
     {
-      "hash": "13ba41a",
+      "hash": "d1141cb",
       "date": "2026-10-25",
-      "subject": "feat: add a layered no-scroll prologue before the site",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/13ba41a"
+      "subject": "试了下 ios 那种玻璃质感",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/d1141cb"
     },
     {
-      "hash": "22e4509",
+      "hash": "10aeacb",
       "date": "2026-10-25",
-      "subject": "feat: rebuild the site as a GitHub-style interactive letter",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/22e4509"
+      "subject": "前面加个不滚动的开场",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/10aeacb"
     },
     {
-      "hash": "2177da0",
+      "hash": "0a2a8ca",
       "date": "2026-10-25",
-      "subject": "feat: ship the letter, mini-game and scratch card assets",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/2177da0"
+      "subject": "整站改成 github 那种信",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/0a2a8ca"
     },
     {
-      "hash": "d4f6296",
+      "hash": "6d41d44",
       "date": "2026-10-25",
-      "subject": "content: drop FM-S-Blogs references",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/d4f6296"
+      "subject": "信封、小游戏、刮刮卡",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/6d41d44"
     },
     {
-      "hash": "dc0c0f8",
+      "hash": "50c5790",
       "date": "2026-10-25",
-      "subject": "docs: drop the contribution snake for a cleaner README",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/dc0c0f8"
+      "subject": "去掉旧博客的引用",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/50c5790"
     },
     {
-      "hash": "ebacf9c",
+      "hash": "2cf4877",
       "date": "2026-10-25",
-      "subject": "docs: use the site repo card and refresh snake cache",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/ebacf9c"
+      "subject": "蛇删掉，清净点",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/2cf4877"
     },
     {
-      "hash": "4ae9abf",
+      "hash": "490362b",
       "date": "2026-10-25",
-      "subject": "ci: use documented snake colour syntax",
-      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/4ae9abf"
+      "subject": "换成站点那张卡，顺手刷缓存",
+      "url": "https://github.com/ShirakawaFM/ShirakawaFM.github.io/commit/490362b"
     }
   ]
 }
