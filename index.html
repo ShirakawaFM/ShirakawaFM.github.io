@@ -1,526 +1,750 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="night">
+<html lang="zh-CN" data-mode="red">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ShirakawaFM — 一封写给你的信</title>
-<meta name="description" content="一封不长的信，几件作品，一个十秒小游戏，和一张需要刮开的卡片。来自 ShirakawaFM。">
-<meta name="theme-color" content="#f2efe7">
+<title>ShirakawaFM — Independent Developer</title>
+<meta name="description" content="ShirakawaFM 的个人网站：浏览器扩展、影像工具与一些安静的软件。手写 HTML / CSS / JS，无框架、无追踪。">
+<meta name="theme-color" content="#f40c3f">
+<meta name="color-scheme" content="dark light">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ShirakawaFM — 一封写给你的信">
-<meta property="og:description" content="一封不长的信，几件作品，一个十秒小游戏，和一张需要刮开的卡片。">
+<meta property="og:title" content="ShirakawaFM — Independent Developer">
+<meta property="og:description" content="浏览器扩展、影像工具与一些安静的软件。手写 HTML / CSS / JS，无框架、无追踪。">
 <meta property="og:url" content="https://shirakawafm.github.io/">
-<meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta property="og:image" content="https://shirakawafm.github.io/assets/og-2026.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="twitter:image" content="https://shirakawafm.github.io/assets/og-2026.png">
 <link rel="canonical" href="https://shirakawafm.github.io/">
-<link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/instrument-serif-400-italic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="icon" href="assets/favicon-2026.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/archivo-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/redesign.css">
 <script>
 (function () {
-  try {
-    var saved = localStorage.getItem('fm-theme');
-    if (saved) document.documentElement.dataset.theme = saved;
-    document.documentElement.dataset.letter =
-      localStorage.getItem('fm-letter') === 'open' ? 'open' : 'sealed';
-  } catch (e) {
-    document.documentElement.dataset.letter = 'sealed';
+  document.documentElement.classList.add('js');
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('reduced');
   }
-  window.setTimeout(function () {
-    if (!window.__fmLetterReady) document.documentElement.dataset.letter = 'open';
-  }, 1800);
+  try {
+    var mode = localStorage.getItem('sfm-mode');
+    if (mode === 'contrast') document.documentElement.dataset.mode = 'contrast';
+  } catch (e) {}
 })();
 </script>
+<noscript>
+<style>
+  .boot { display: none !important; }
+  body.is-loading { overflow: auto !important; }
+  [data-reveal],
+  .hero__kicker,
+  .hero__meta,
+  .hero__sub {
+    opacity: 1 !important;
+    translate: 0 0 !important;
+  }
+  .hero__star {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero__title { font-size: clamp(2.4rem, 10.5vw, 12rem) !important; }
+</style>
+</noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "ShirakawaFM",
+  "url": "https://shirakawafm.github.io/",
+  "jobTitle": "Independent Developer",
+  "sameAs": [
+    "https://github.com/ShirakawaFM",
+    "https://space.bilibili.com/209300529"
+  ]
+}
+</script>
 </head>
-<body>
+<body class="is-loading">
 
 <a class="skip-link" href="#main">跳到正文</a>
-<div class="cursor" aria-hidden="true"></div>
-<div class="cursor-dot" aria-hidden="true"></div>
 
-<header class="site-header">
-  <a class="brand" href="/" aria-label="ShirakawaFM 首页">
-    <span class="brand__mark">Shirakawa<em>FM</em></span>
-    <span class="brand__sub">Work &amp; Notes</span>
-  </a>
+<svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-github" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.35.78 1.05.78 2.12v3.14c0 .31.2.66.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/>
+  </symbol>
+  <symbol id="i-bilibili" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m7 2.8 3 3M17 2.8l-3 3"/>
+      <rect x="2.8" y="6" width="18.4" height="14.2" rx="3.2"/>
+      <path d="M9.4 14.5c1.7 1.4 3.5 1.4 5.2 0"/>
+    </g>
+    <circle cx="8.6" cy="10.6" r="1.05" fill="currentColor"/>
+    <circle cx="15.4" cy="10.6" r="1.05" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.8" y="5" width="18.4" height="14" rx="2.4"/>
+      <path d="m3.6 6.4 8.4 6.4 8.4-6.4"/>
+    </g>
+  </symbol>
+  <symbol id="i-contrast" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path fill="currentColor" d="M12 3a9 9 0 0 1 0 18Z"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 0c1.1 6.9 4.1 9.9 11 11-6.9 1.1-9.9 4.1-11 11-1.1-6.9-4.1-9.9-11-11C7.9 9.9 10.9 6.9 12 0Z"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M8 6h10v10"/>
+  </symbol>
+</svg>
 
-  <nav class="nav" aria-label="主导航">
-    <a href="/#work">作品<sup>01</sup></a>
-    <a href="/writing/">写作<sup>02</sup></a>
-    <a href="/now/">现在<sup>03</sup></a>
-    <a href="/about/">关于<sup>04</sup></a>
-  </nav>
-
-  <div class="header-tools">
-    <span class="clock" data-clock aria-label="北京时间">--:--:--</span>
-    <button class="tool-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="开启环境音">
-      <span class="dot" aria-hidden="true"></span><span data-sound-label>SILENT</span>
-    </button>
-    <button class="theme-btn" type="button" data-theme-toggle aria-label="切换主题">◐</button>
-    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">MENU</button>
-  </div>
-</header>
-
-<div class="menu" id="menu" aria-hidden="true">
-  <div></div>
-  <nav class="menu__list" aria-label="移动导航">
-    <a href="/#work" style="--i:0">作品<sup>01</sup></a>
-    <a href="/writing/" style="--i:1">写作<sup>02</sup></a>
-    <a href="/now/" style="--i:2">现在<sup>03</sup></a>
-    <a href="/about/" style="--i:3">关于<sup>04</sup></a>
-  </nav>
-  <div class="menu__foot">
-    <span>ShirakawaFM · 2026</span>
-    <span>UTC+8</span>
+<div class="boot" data-boot aria-hidden="true">
+  <div class="boot__inner">
+    <div class="boot__top">
+      <span class="boot__brand">Shirakawa<em>FM</em></span>
+      <svg class="boot__star" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg>
+    </div>
+    <div class="boot__bar"><i data-boot-bar></i></div>
+    <div class="boot__meta">
+      <span>BOOTING QUIET SOFTWARE</span>
+      <span><b data-boot-count>00</b> / 100</span>
+    </div>
+    <p class="boot__status">NO TRACKERS FOUND · UTC+8 · HAND-WRITTEN</p>
   </div>
 </div>
 
-<div class="gh-shell">
-  <div class="shell gh-repo">
-    <div class="gh-repo__id">
-      <svg class="gh-repo__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25ZM1.5 1.75v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Z"></path><path d="M4.25 3.5A.75.75 0 0 0 3.5 4.25V6h1.5V5h6v1h1.5V4.25a.75.75 0 0 0-.75-.75Z"></path></svg>
-      <a href="https://github.com/ShirakawaFM">ShirakawaFM</a>
-      <span class="gh-repo__slash">/</span>
-      <strong>ShirakawaFM.github.io</strong>
-      <span class="pill">Public</span>
-    </div>
-    <div class="gh-repo__actions">
-      <button class="gh-btn" type="button" data-cmdk><span class="mono">⌘K</span> Command</button>
-      <a class="gh-btn" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">☆ Star</a>
-    </div>
+<div class="scroll-progress" data-progress aria-hidden="true"></div>
+<div class="cursor" data-cursor-layer aria-hidden="true">
+  <div class="cursor__disc"><span class="cursor__label" data-cursor-label></span></div>
+</div>
+<div class="page-noise" aria-hidden="true"></div>
+
+<header class="masthead" data-header>
+  <a class="masthead__logo" href="#top" aria-label="ShirakawaFM — 回到顶部">
+    <svg class="logo-glyph" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M0 0h20v4H4v4h16v12H0v-4h16v-4H0z"/>
+    </svg>
+    <span class="logo-fm" aria-hidden="true">FM</span>
+  </a>
+
+  <div class="masthead__console" aria-hidden="true">
+    <span class="console__line" data-console-line="0">&gt; SHIRAKAWA.FM — INDEPENDENT DEV</span>
+    <span class="console__line" data-console-line="1">&gt; EXTENSIONS / VIDEO / MINECRAFT</span>
+    <span class="console__line" data-console-line="2">&gt; UTC+8 · NO TRACKERS<span class="console__caret"></span></span>
   </div>
-  <nav class="shell gh-tabs" aria-label="仓库导航">
-    <a href="/">Code</a>
-    <a class="is-active" href="#letter">Letter <span class="gh-badge">1</span></a>
-    <a href="#game">Playground</a>
-    <a href="#activity">Activity</a>
-    <a href="/writing/">Writing</a>
-    <a href="/now/">Now</a>
-    <a href="/about/">About</a>
-    <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">GitHub ↗</a>
+
+  <nav class="masthead__nav" aria-label="主导航">
+    <a href="#about" data-nav="about"><sup>01</sup><span class="nav__en">About</span><span class="nav__zh">关于</span></a>
+    <a href="#work" data-nav="work"><sup>02</sup><span class="nav__en">Work</span><span class="nav__zh">作品</span></a>
+    <a href="#notes" data-nav="notes"><sup>03</sup><span class="nav__en">Notes</span><span class="nav__zh">笔记</span></a>
+    <a href="#contact" data-nav="contact"><sup>04</sup><span class="nav__en">Contact</span><span class="nav__zh">联系</span></a>
   </nav>
+
+  <div class="masthead__socials">
+    <a href="https://github.com/ShirakawaFM" target="_blank" rel="noopener" aria-label="GitHub（新标签页）">
+      <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
+    </a>
+    <a href="https://space.bilibili.com/209300529" target="_blank" rel="noopener" aria-label="Bilibili（新标签页）">
+      <svg class="icon" aria-hidden="true"><use href="#i-bilibili"/></svg>
+    </a>
+    <a href="mailto:shirakawafm@outlook.com" aria-label="写信给 ShirakawaFM">
+      <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+    </a>
+  </div>
+
+  <button class="masthead__contrast" type="button" data-contrast aria-pressed="false" aria-label="切换到高对比模式">
+    <svg class="icon" aria-hidden="true"><use href="#i-contrast"/></svg>
+  </button>
+
+  <div class="masthead__status">
+    <p><span class="status-dot" aria-hidden="true"></span>Coding from UTC+8.</p>
+    <p>Open for small projects → <a href="mailto:shirakawafm@outlook.com">写封信</a></p>
+  </div>
+
+  <div class="masthead__clock">
+    <span data-clock>--:--:--</span>
+    <em>UTC+8</em>
+  </div>
+
+  <a class="masthead__qr" href="mailto:shirakawafm@outlook.com" title="扫码或点击写信">
+    <img src="assets/qr.svg" alt="" width="58" height="58">
+    <span class="sr-only">写信给 ShirakawaFM</span>
+  </a>
+
+  <button class="menu-toggle" type="button" data-menu-open aria-expanded="false" aria-controls="site-menu">
+    <span>Menu</span>
+    <span class="menu-toggle__lines" aria-hidden="true"><i></i><i></i></span>
+  </button>
+</header>
+
+<div class="site-menu" id="site-menu" data-menu aria-hidden="true" inert>
+  <div class="site-menu__head">
+    <span class="site-menu__brand">Shirakawa<em>FM</em> — Index</span>
+    <button class="site-menu__close" type="button" data-menu-close aria-label="关闭菜单">Close <span aria-hidden="true">×</span></button>
+  </div>
+  <nav class="site-menu__nav" aria-label="移动导航">
+    <a href="#about" data-menu-link><sup>01</sup><span>关于</span><em>About</em></a>
+    <a href="#work" data-menu-link><sup>02</sup><span>作品</span><em>Work</em></a>
+    <a href="#notes" data-menu-link><sup>03</sup><span>笔记</span><em>Notes</em></a>
+    <a href="#contact" data-menu-link><sup>04</sup><span>联系</span><em>Contact</em></a>
+  </nav>
+  <div class="site-menu__foot">
+    <a class="site-menu__mail" href="mailto:shirakawafm@outlook.com">shirakawafm@outlook.com <span aria-hidden="true">↗</span></a>
+    <div class="site-menu__links">
+      <a href="https://github.com/ShirakawaFM" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://space.bilibili.com/209300529" target="_blank" rel="noopener">Bilibili ↗</a>
+      <a href="https://shirakawafm.github.io/writing/" target="_blank" rel="noopener">Writing ↗</a>
+    </div>
+    <p>UTC+8 · <span data-clock>--:--:--</span> · NO TRACKERS</p>
+  </div>
 </div>
 
 <main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <canvas class="hero__waves" data-waves aria-hidden="true"></canvas>
+    <div class="hero__side" aria-hidden="true">Portfolio 2026 — Shirakawa.FM</div>
 
-  <section class="letter" id="letter">
-    <div class="shell">
-      <div class="issue-head">
-        <div class="issue-head__title">
-          <span class="issue-state"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path></svg> Open</span>
-          <h1>致打开这个页面的人 <span class="issue-num">#1</span></h1>
-        </div>
-        <p class="issue-head__meta">
-          <span class="avatar avatar--tiny">S</span>
-          <strong>ShirakawaFM</strong> opened this issue · 1 comment ·
-          <span class="label">letter</span>
-          <span class="label label--green">good first read</span>
-          <span class="label">utc+8</span>
-        </p>
-      </div>
-
-      <div class="envelope" data-envelope>
-        <div class="envelope__flap" aria-hidden="true"></div>
-        <div class="envelope__face">
-          <span class="envelope__meta mono">FROM SHIRAKAWAFM · UTC+8 · 2026</span>
-          <p class="envelope__to">致打开这个页面的人</p>
-          <p class="envelope__teaser">一封不长的信。关于我在做什么，以及为什么这个站点长这样。</p>
-          <span class="envelope__hint mono" data-envelope-hint>点击火漆封印 · 拆开</span>
-        </div>
-        <button class="wax" type="button" data-open-letter aria-label="拆开这封信">
-          <span class="wax__monogram" aria-hidden="true">S</span>
-          <span class="wax__label">拆开</span>
-        </button>
-        <span class="envelope__shadow" aria-hidden="true"></span>
-      </div>
-
-      <article class="letter-body" id="letter-body" data-letter-body>
-        <header class="letter-body__head">
-          <span class="mono">00 / A LETTER</span>
-          <span class="mono">一页 · 约 1 分钟</span>
-        </header>
-
-        <p class="letter-body__salutation">致打开这个页面的人：</p>
-
-        <p>你可能不认识我。<strong>没关系。</strong></p>
-
-        <p>
-          我是 ShirakawaFM，一个把时间花在浏览器扩展、影像工具和 Minecraft 模组上的独立开发者。
-          多数时候在做减法：一个只申请三个权限的扩展、一条从打 tag 到 Release 的流水线、
-          一个不用框架的网站。
-        </p>
-
-        <p>
-          这封信没有目的。不是让你注册、购买或者订阅——只是想让你知道，
-          屏幕另一边有一个具体的人，在认真地做一些<strong>安静的东西</strong>，
-          并且愿意把它们摊开给你看。
-        </p>
-
-        <p>
-          如果你愿意，往下走几步：看看我最近在做什么，读一两篇写得很慢的文章，
-          或者，陪我玩一个十秒钟的小游戏。
-        </p>
-
-        <p class="letter-body__ps">
-          P.S. 信末有一张刮刮卡。刮开它，才算真的读完。
-        </p>
-
-        <footer class="letter-body__sign">
-          <p class="letter-body__name">ShirakawaFM</p>
-          <p class="mono">2026 · UTC+8 · 手写于一个普通的下午</p>
-        </footer>
-
-        <div class="letter-body__stamps" aria-hidden="true">
-          <span class="stamp stamp--a">NO FRAMEWORK<br>NO TRACKING</span>
-          <span class="stamp stamp--b">MADE BY HAND<br>100% HUMAN</span>
-        </div>
-
-        <div class="issue-foot" data-issue-foot>
-          <div class="reactions" data-reactions>
-            <button type="button" data-reaction="👍" aria-label="点赞">👍 <span>0</span></button>
-            <button type="button" data-reaction="❤️" aria-label="喜欢">❤️ <span>0</span></button>
-            <button type="button" data-reaction="🚀" aria-label="酷">🚀 <span>0</span></button>
-            <button type="button" data-reaction="👀" aria-label="在看">👀 <span>0</span></button>
-          </div>
-          <button class="gh-btn gh-btn--green" type="button" data-close-issue>Close as completed</button>
-        </div>
-
-        <div class="issue-comment">
-          <span class="avatar">S</span>
-          <div class="issue-comment__body">
-            <p class="issue-comment__meta"><strong>ShirakawaFM</strong> commented · just now</p>
-            <textarea data-comment rows="2" placeholder="Leave a comment（只保存在你的浏览器里）"></textarea>
-            <div class="issue-comment__actions">
-              <button class="gh-btn gh-btn--green" type="button" data-comment-save>Comment</button>
-              <span class="mono" data-comment-status></span>
-            </div>
-            <p class="issue-comment__saved" data-comment-saved hidden></p>
-          </div>
-        </div>
-      </article>
-
-      <p class="letter__sealed-note mono" data-sealed-note>信是封着的。火漆上有一个 S。</p>
+    <div class="hero__meta">
+      <span>Shirakawa FM <i>—</i> Portfolio 2026</span>
+      <span class="hero__meta-mid">Browser extensions · Video tools · Quiet software</span>
+      <span>Based in UTC+8</span>
     </div>
+
+    <div class="binary binary--top" data-binary aria-hidden="true"></div>
+
+    <div class="hero__stage">
+      <p class="hero__kicker">
+        <svg class="star star--small" aria-hidden="true"><use href="#i-star"/></svg>
+        独立开发者，手写安静的工具
+        <svg class="star star--small" aria-hidden="true"><use href="#i-star"/></svg>
+      </p>
+      <h1 class="hero__title" id="hero-title" aria-label="Independent Developer">
+        <span class="hero__line"><span class="hero__word" data-split aria-hidden="true">Independent</span></span>
+        <span class="hero__line hero__line--last">
+          <span class="hero__word" data-split aria-hidden="true">Developer</span>
+          <span class="hero__star" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></span>
+        </span>
+      </h1>
+      <p class="hero__sub">浏览器扩展 · 影像工具 · Minecraft 模组<br>把时间花在具体而安静的东西上。</p>
+    </div>
+
+    <div class="binary binary--bottom" data-binary aria-hidden="true"></div>
+
+    <div class="hero__foot">
+      <p class="hero__avail"><span class="status-dot" aria-hidden="true"></span>OPEN FOR SELECT PROJECTS</p>
+      <a class="hero__scroll" href="#about">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
+      <p class="hero__local">LOCAL <span data-clock>--:--:--</span> · HAND-WRITTEN</p>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="section-label">
+      <span>01 — About</span>
+      <span class="section-label__mid">A letter, unfolded.</span>
+      <span>Independent / UTC+8</span>
+    </div>
+
+    <div class="letter-wrap">
+      <div class="letter" data-parallax="0.045">
+        <article class="letter__card" data-reveal>
+          <header class="letter__bar">
+            <span>About / Shirakawa FM</span>
+            <span>01</span>
+          </header>
+          <div class="letter__body">
+            <p class="letter__hello">致打开这个页面的你：</p>
+            <p class="letter__lead">我是 <em>ShirakawaFM</em>，一名独立开发者。白天写浏览器扩展与自动化脚本，晚上研究 AI 影像工作流、Minecraft 模组，和一些没什么用但很好玩的东西。</p>
+            <p>多数时候，我在做减法：一个只申请必要权限的扩展，一条从打 tag 到 Release 的流水线，一个没有框架、没有追踪的网站。屏幕另一边有一个具体的人，在认真地做一些<strong>安静的东西</strong>，并且愿意把它们摊开给你看。</p>
+            <p>这封信没有目的。不让你注册，也不让你订阅。如果你愿意，往下走几步就好。</p>
+            <p class="letter__ps">P.S. 回信地址在最下面。</p>
+
+            <blockquote class="letter__quote">Make less,<br>but make it quiet.</blockquote>
+
+            <footer class="letter__sign">
+              <b>ShirakawaFM</b>
+              <span>2026 · UTC+8<br>手写于一个普通的下午</span>
+            </footer>
+
+            <ul class="letter__tags" aria-label="站点原则">
+              <li>No framework</li>
+              <li>No tracking</li>
+              <li>Minimal permissions</li>
+              <li>Hand-written</li>
+            </ul>
+          </div>
+          <span class="letter__seal" aria-hidden="true">S</span>
+        </article>
+      </div>
+    </div>
+
+    <ul class="facts" data-reveal>
+      <li>
+        <b>05</b>
+        <span>作品与实验</span>
+        <em>Projects &amp; experiments</em>
+      </li>
+      <li>
+        <b>22</b>
+        <span>扩展迭代次数</span>
+        <em>Iterations on douyin-auto-hd</em>
+      </li>
+      <li>
+        <b>03</b>
+        <span>扩展申请的权限</span>
+        <em>Only what the job needs</em>
+      </li>
+      <li>
+        <b>00</b>
+        <span>追踪脚本</span>
+        <em>No cookies · No telemetry</em>
+      </li>
+    </ul>
   </section>
 
   <div class="ticker" aria-hidden="true">
     <div class="ticker__track">
       <div class="ticker__group">
-        <span>A letter</span><span>Ten-second game</span><span>Scratch to reveal</span><span>Minimal permissions</span><span>Hand-written CSS</span><span>No third-party requests</span>
+        <span>Browser extensions</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>Video tools</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>Minecraft mods</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>Minimal permissions</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>No trackers</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>UTC+8</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
       </div>
       <div class="ticker__group">
-        <span>A letter</span><span>Ten-second game</span><span>Scratch to reveal</span><span>Minimal permissions</span><span>Hand-written CSS</span><span>No third-party requests</span>
+        <span>Browser extensions</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>Video tools</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>Minecraft mods</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>Minimal permissions</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>No trackers</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
+        <span>UTC+8</span><svg class="star" aria-hidden="true"><use href="#i-star"/></svg>
       </div>
     </div>
   </div>
 
-  <section class="gh-panel" id="activity">
-    <div class="shell">
-      <div class="gh-panel__head">
-        <h2><span class="mono">##</span> activity</h2>
-        <span class="mono">365 days · this repository only</span>
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="work__head">
+      <div class="section-label section-label--light">
+        <span>02 — Selected work</span>
+        <span class="section-label__mid">2025 — 2026</span>
+        <span>Open source, mostly</span>
       </div>
-      <div class="contrib" data-contrib aria-label="本仓库最近一年的提交热力图"></div>
-      <div class="contrib__legend mono">
-        <span>Less</span><i class="contrib__cell l0"></i><i class="contrib__cell l1"></i><i class="contrib__cell l2"></i><i class="contrib__cell l3"></i><i class="contrib__cell l4"></i><span>More</span>
+      <div class="work__title-row">
+        <h2 class="work__title" id="work-title" data-reveal>Work<sup>05</sup></h2>
+        <p class="work__note">在浏览器里做减法。<br>五件作品，四件开源；没做完的也摆在这里。</p>
       </div>
-      <p class="gh-note mono">只统计这个仓库的提交，不代表整个 GitHub 账号。数据生成于 <span data-generated>—</span>。</p>
     </div>
-  </section>
 
-  <section class="gh-panel" id="commits">
-    <div class="shell">
-      <div class="gh-panel__head">
-        <h2><span class="mono">##</span> recent commits</h2>
-        <span class="mono">main branch</span>
-      </div>
-      <ol class="commit-list" data-commits></ol>
-      <a class="gh-link mono" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io/commits/main">View all commits ↗</a>
-    </div>
-  </section>
-
-  <section class="section" id="work">
-    <div class="shell">
-      <header class="section__head" data-reveal>
-        <span class="section__index mono">01 / Enclosed</span>
-        <h2 class="section__title">随信附上<em>几件作品</em></h2>
-        <p class="section__meta">2025 — 2026<br>Open source</p>
-      </header>
-
-      <ol class="work-list">
-        <li>
-          <a class="work" href="https://github.com/ShirakawaFM/douyin-auto-hd" data-reveal style="--i:0">
-            <span class="work__idx">01</span>
-            <div class="work__body">
-              <div class="work__title">douyin-auto-hd <span class="zh">抖音网页版 · 自动最高画质</span></div>
-              <div class="work__detail">
-                <p>最小权限的 Manifest V3 扩展：靠文本锚定识别画质、直接点击 DOM 里的隐藏选项、适配 SPA 切换与直播跳过。22 次迭代，当前 v2.4.3。</p>
+    <div class="work__grid">
+      <article class="project project--wide" data-reveal style="--i:0">
+        <a class="project__link" href="https://github.com/ShirakawaFM/douyin-auto-hd" target="_blank" rel="noopener" data-cursor="OPEN REPO">
+          <div class="project__art art--browser" aria-hidden="true">
+            <div class="art__browser">
+              <div class="art__chrome">
+                <i></i><i></i><i></i>
+                <span>douyin.com/video/…</span>
+                <b>MV3</b>
+              </div>
+              <div class="art__video">
+                <span class="art__video-label">AUTO QUALITY</span>
+                <span class="art__badge">1080P</span>
+                <span class="art__play"></span>
+                <span class="art__anchor"></span>
+                <div class="art__quality">
+                  <span>自动</span>
+                  <span>高清 720P</span>
+                  <span class="is-on">超清 1080P</span>
+                  <span>蓝光 4K</span>
+                </div>
+                <span class="art__cursor"></span>
+                <span class="art__scan"></span>
               </div>
             </div>
-            <div class="work__meta"><b>Chrome Extension</b>2026 · v2.4.3</div>
-            <span class="work__arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a class="work" href="https://github.com/ShirakawaFM/ClassIsland.SleepWatch" data-reveal style="--i:1">
-            <span class="work__idx">02</span>
-            <div class="work__body">
-              <div class="work__title">SleepWatch <span class="zh">课堂睡意监测 · ClassIsland 插件</span></div>
-              <div class="work__detail">
-                <p>教室摄像头 + YOLOv8n-pose：认出趴桌与长时间闭眼，主界面只显示一个数字。下课按课表自动结算，弹一页 60fps 的课后总结。C# · Avalonia · ONNX，v1.3.0。</p>
-              </div>
-            </div>
-            <div class="work__meta"><b>ClassIsland plugin</b>2026 · v1.3.0</div>
-            <span class="work__arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a class="work" href="https://github.com/ShirakawaFM/family-lan-printer" data-reveal style="--i:2">
-            <span class="work__idx">03</span>
-            <div class="work__body">
-              <div class="work__title">family-lan-printer <span class="zh">家庭内网打印 · 微信扫码</span></div>
-              <div class="work__detail">
-                <p>让家里人也会用的打印入口：手机连同一个 WiFi，扫码、输密码、打字或选照片，预览后一键出纸。Flask 单服务，内容不出局域网，打印完 30 秒删临时文件。v1.0.2。</p>
-              </div>
-            </div>
-            <div class="work__meta"><b>Python · Flask</b>2026 · v1.0.2</div>
-            <span class="work__arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-
-        <li>
-          <a class="work" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" data-reveal style="--i:3">
-            <span class="work__idx">04</span>
-            <div class="work__body">
-              <div class="work__title">ShirakawaFM <span class="zh">本站 · 一封信</span></div>
-              <div class="work__detail">
-                <p>手写 HTML / CSS / JS 的个人站点。一封信、一个十秒游戏、一张刮刮卡；没有框架、没有构建、没有第三方请求。</p>
-              </div>
-            </div>
-            <div class="work__meta"><b>Static site</b>2026 · Ongoing</div>
-            <span class="work__arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-
-        <li>
-          <div class="work" data-reveal style="--i:4">
-            <span class="work__idx">05</span>
-            <div class="work__body">
-              <div class="work__title">Video Lab <span class="zh">AI 影像工作流</span></div>
-              <div class="work__detail">
-                <p>用 Remotion 与自建流水线做短片：脚本、分镜、配音、字幕、渲染。还在实验，暂时不公开仓库。</p>
-              </div>
-            </div>
-            <div class="work__meta"><b>In progress</b>Remotion · FFmpeg</div>
-            <span class="work__arrow" aria-hidden="true">·</span>
+            <span class="art__note">22 ITERATIONS · 3 PERMISSIONS</span>
           </div>
+          <div class="project__body">
+            <div class="project__top">
+              <span class="project__no">#0001 / 05</span>
+              <span class="project__status">Chrome extension</span>
+            </div>
+            <h3 class="project__title">douyin-auto-hd</h3>
+            <p class="project__zh">抖音网页版 · 自动最高画质</p>
+            <p class="project__desc">最小权限的 Manifest V3 扩展：靠文本锚定识别画质、直接点击 DOM 里的隐藏选项、适配 SPA 切换与直播跳过。</p>
+            <div class="project__foot">
+              <ul class="tags">
+                <li>Manifest V3</li>
+                <li>v2.4.3</li>
+                <li>2026</li>
+              </ul>
+              <span class="project__arrow" aria-hidden="true">↗</span>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <article class="project project--sleep" data-reveal style="--i:1">
+        <a class="project__link" href="https://github.com/ShirakawaFM/ClassIsland.SleepWatch" target="_blank" rel="noopener" data-cursor="OPEN REPO">
+          <div class="project__art art--sleep" aria-hidden="true">
+            <div class="art__watch">
+              <span class="art__eye"></span>
+              <strong>1</strong>
+              <small>ASLEEP / 60 FPS</small>
+            </div>
+            <div class="art__wave">
+              <i style="--h:8px"></i><i style="--h:18px"></i><i style="--h:12px"></i><i style="--h:26px"></i><i style="--h:15px"></i><i style="--h:32px"></i><i style="--h:20px"></i><i style="--h:10px"></i><i style="--h:24px"></i><i style="--h:14px"></i><i style="--h:28px"></i><i style="--h:18px"></i><i style="--h:8px"></i><i style="--h:22px"></i>
+            </div>
+            <span class="art__z art__z--a">z</span>
+            <span class="art__z art__z--b">z</span>
+            <span class="art__note art__note--dark">YOLOv8N-POSE / AVALONIA</span>
+          </div>
+          <div class="project__body">
+            <div class="project__top">
+              <span class="project__no">#0002 / 05</span>
+              <span class="project__status">ClassIsland plugin</span>
+            </div>
+            <h3 class="project__title">SleepWatch</h3>
+            <p class="project__zh">课堂睡意监测 · ClassIsland 插件</p>
+            <p class="project__desc">教室摄像头 + YOLOv8n-pose：认出趴桌与长时间闭眼，主界面只显示一个数字。下课按课表自动结算，弹一页 60fps 的课后总结。</p>
+            <div class="project__foot">
+              <ul class="tags">
+                <li>C# · Avalonia</li>
+                <li>v1.3.0</li>
+                <li>2026</li>
+              </ul>
+              <span class="project__arrow" aria-hidden="true">↗</span>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <article class="project project--small" data-reveal style="--i:2">
+        <a class="project__link" href="https://github.com/ShirakawaFM/family-lan-printer" target="_blank" rel="noopener" data-cursor="OPEN REPO">
+          <div class="project__art art--printer" aria-hidden="true">
+            <div class="art__machine">
+              <span class="art__wifi">WIFI · LAN ONLY</span>
+              <span class="art__slot"></span>
+              <div class="art__receipt">
+                <strong>FAMILY<br>LAN PRINT</strong>
+                <span class="art__receipt-line"></span>
+                <span class="art__receipt-line art__receipt-line--short"></span>
+                <span class="art__receipt-line"></span>
+                <div class="art__receipt-bottom">
+                  <span>SCAN · TYPE · PRINT</span>
+                  <span class="art__mini-qr" aria-hidden="true">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </span>
+                </div>
+                <b>PRINT READY ✓</b>
+              </div>
+            </div>
+            <span class="art__note art__note--dark">FLASK · 30S CLEANUP</span>
+          </div>
+          <div class="project__body">
+            <div class="project__top">
+              <span class="project__no">#0003 / 05</span>
+              <span class="project__status">Python · Flask</span>
+            </div>
+            <h3 class="project__title">family-lan-printer</h3>
+            <p class="project__zh">家庭内网打印 · 微信扫码</p>
+            <p class="project__desc">让家里人也会用的打印入口：同一个 WiFi、扫码、输密码、选照片，预览后一键出纸。内容不出局域网，打印完 30 秒删临时文件。</p>
+            <div class="project__foot">
+              <ul class="tags">
+                <li>Flask</li>
+                <li>v1.0.2</li>
+                <li>2026</li>
+              </ul>
+              <span class="project__arrow" aria-hidden="true">↗</span>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <article class="project project--small" data-reveal style="--i:3">
+        <a class="project__link" href="https://github.com/ShirakawaFM/ShirakawaFM.github.io" target="_blank" rel="noopener" data-cursor="OPEN REPO">
+          <div class="project__art art--letter" aria-hidden="true">
+            <div class="art__envelope">
+              <svg viewBox="0 0 320 210" aria-hidden="true" focusable="false">
+                <rect x="1" y="1" width="318" height="208" fill="#fff4ee" stroke="#120001" stroke-width="2"/>
+                <path d="M2 3 160 118 318 3" fill="none" stroke="#120001" stroke-width="1.5"/>
+                <path d="M2 207 108 120M318 207 212 120" fill="none" stroke="#120001" stroke-width="1" opacity=".2"/>
+                <rect x="24" y="30" width="58" height="4" fill="#120001" opacity=".7"/>
+                <rect x="24" y="40" width="42" height="4" fill="#120001" opacity=".4"/>
+                <rect x="24" y="50" width="50" height="4" fill="#120001" opacity=".22"/>
+                <rect x="232" y="30" width="52" height="36" fill="none" stroke="#120001" stroke-width="1" stroke-dasharray="3 3" opacity=".3"/>
+                <path d="M240 42h36M240 50h26M240 58h30" stroke="#120001" stroke-width="1" opacity=".22"/>
+                <circle cx="160" cy="146" r="27" fill="#f40c3f" stroke="#120001" stroke-width="2"/>
+                <text x="160" y="157" text-anchor="middle" font-family="Arial Black, Helvetica, sans-serif" font-size="26" fill="#120001">S</text>
+                <text x="160" y="192" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" letter-spacing="1.4" fill="#120001" opacity=".45">HAND-WRITTEN IN UTC+8</text>
+              </svg>
+            </div>
+            <span class="art__stamp">UTC+8<br>2026</span>
+            <span class="art__note">NO FRAMEWORK · NO BUILD</span>
+          </div>
+          <div class="project__body">
+            <div class="project__top">
+              <span class="project__no">#0004 / 05</span>
+              <span class="project__status">Static site</span>
+            </div>
+            <h3 class="project__title">ShirakawaFM</h3>
+            <p class="project__zh">本站 · 一封写给陌生人的信</p>
+            <p class="project__desc">手写 HTML / CSS / JS 的个人站点。一封信、几件作品和一些安静的边角；没有框架、没有构建、没有第三方请求。</p>
+            <div class="project__foot">
+              <ul class="tags">
+                <li>Static</li>
+                <li>Ongoing</li>
+                <li>2026</li>
+              </ul>
+              <span class="project__arrow" aria-hidden="true">↗</span>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <article class="project project--small" data-reveal style="--i:4">
+        <div class="project__link project__link--static">
+          <div class="project__art art--video" aria-hidden="true">
+            <div class="art__film">
+              <span class="art__frame"></span>
+              <span class="art__frame"></span>
+              <span class="art__frame"></span>
+            </div>
+            <span class="art__tc">00:00:60:00</span>
+            <div class="art__timeline"><i></i></div>
+            <span class="art__note">REMOTION · FFMPEG · IN PROGRESS</span>
+          </div>
+          <div class="project__body">
+            <div class="project__top">
+              <span class="project__no">#0005 / 05</span>
+              <span class="project__status">In progress</span>
+            </div>
+            <h3 class="project__title">Video Lab</h3>
+            <p class="project__zh">AI 影像工作流</p>
+            <p class="project__desc">用 Remotion 与自建流水线做短片：脚本、分镜、配音、字幕、渲染。还在实验，暂时不公开仓库。</p>
+            <div class="project__foot">
+              <ul class="tags">
+                <li>Remotion</li>
+                <li>FFmpeg</li>
+                <li>Lab</li>
+              </ul>
+              <span class="project__arrow" aria-hidden="true">·</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="work__more-wrap">
+      <a class="work__more" href="https://github.com/ShirakawaFM" target="_blank" rel="noopener" data-cursor="GITHUB">
+        <span>更多实验、半成品，以及没发版的小东西</span>
+        <b>GitHub <span aria-hidden="true">↗</span></b>
+      </a>
+    </div>
+  </section>
+
+  <section class="notes" id="notes" aria-labelledby="notes-title">
+    <div class="notes__head">
+      <div class="section-label">
+        <span>03 — Field notes</span>
+        <span class="section-label__mid">Now / Rules / Writing</span>
+        <span>Updated quietly</span>
+      </div>
+      <div class="notes__title-row">
+        <h2 class="notes__title" id="notes-title" data-reveal>
+          <span>Field</span>
+          <span class="outline">Notes<svg class="notes__star" aria-hidden="true"><use href="#i-star"/></svg></span>
+        </h2>
+        <p class="notes__lede">写得很慢，但还在写。这里放一些正在做的事、几条不肯让步的原则，和五篇写下来的笔记。</p>
+      </div>
+    </div>
+
+    <div class="board" data-board>
+      <div class="board__seal" aria-hidden="true"><span>慢</span></div>
+
+      <article class="note note--now" data-reveal data-speed="0.06" style="--rot:-2.4deg; --i:0">
+        <header><span>Now</span><time datetime="2026">2026</time></header>
+        <p>在打磨 <em>Video Lab</em> 的渲染流水线。慢，但每一帧都算数。</p>
+      </article>
+
+      <article class="note note--build" data-reveal data-speed="0.09" style="--rot:2.1deg; --i:1">
+        <header><span>Shipping</span><time datetime="2026">v1.3.0</time></header>
+        <p><em>SleepWatch</em> 已经能按课表结算。下一步是让课后总结更安静一点。</p>
+      </article>
+
+      <article class="note note--rules note--dark" data-reveal data-speed="0.05" style="--rot:1.6deg; --i:2">
+        <header><span>Rules</span><time>No. 03</time></header>
+        <p>只申请必要的权限。没有埋点，没有追踪，也没有“为了你好”的推荐。</p>
+      </article>
+
+      <article class="note note--stack" data-reveal data-speed="0.08" style="--rot:-1.8deg; --i:3">
+        <header><span>Stack</span><time>Daily</time></header>
+        <ul class="note__chips">
+          <li>TypeScript</li><li>Python</li><li>Java</li><li>Remotion</li><li>FFmpeg</li><li>Manifest V3</li>
+        </ul>
+      </article>
+
+      <article class="note note--site" data-reveal data-speed="0.04" style="--rot:-1deg; --i:4">
+        <header><span>This site</span><time>Hand-written</time></header>
+        <p>手写 HTML / CSS / JS。没有框架，没有构建，没有第三方请求。你看到的就是全部。</p>
+      </article>
+    </div>
+
+    <div class="writing">
+      <div class="writing__head">
+        <span>Selected writing</span>
+        <span>05 entries</span>
+      </div>
+      <ol class="writing__list">
+        <li>
+          <a href="https://shirakawafm.github.io/writing/sixty-frames.html" target="_blank" rel="noopener">
+            <time datetime="2026-10-31">2026.10.31</time>
+            <span class="writing__title">六十帧：把一节课的呼吸放进一个弹窗</span>
+            <span class="writing__tag">前端 · 9 分钟</span>
+            <span class="writing__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://shirakawafm.github.io/writing/ascii-alignment.html" target="_blank" rel="noopener">
+            <time datetime="2026-10-31">2026.10.31</time>
+            <span class="writing__title">等宽字体里的中文：一份 ASCII 图的故障记录</span>
+            <span class="writing__tag">排版 · 6 分钟</span>
+            <span class="writing__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://shirakawafm.github.io/writing/minimal-permissions.html" target="_blank" rel="noopener">
+            <time datetime="2026-10-25">2026.10.25</time>
+            <span class="writing__title">最小权限的代价：给抖音网页版做画质自动化的 22 次迭代</span>
+            <span class="writing__tag">工程 · 11 分钟</span>
+            <span class="writing__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://shirakawafm.github.io/writing/release-pipeline.html" target="_blank" rel="noopener">
+            <time datetime="2026-10-25">2026.10.25</time>
+            <span class="writing__title">让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线</span>
+            <span class="writing__tag">发布 · 8 分钟</span>
+            <span class="writing__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://shirakawafm.github.io/writing/escape-the-template.html" target="_blank" rel="noopener">
+            <time datetime="2026-10-25">2026.10.25</time>
+            <span class="writing__title">把博客从模板里救出来：一次反 AI 味的设计重写</span>
+            <span class="writing__tag">设计 · 7 分钟</span>
+            <span class="writing__arrow" aria-hidden="true">↗</span>
+          </a>
         </li>
       </ol>
+      <a class="writing__all" href="https://shirakawafm.github.io/writing/" target="_blank" rel="noopener">
+        <span>全部文章 / The archive</span>
+        <span>写得很慢，但都在这里 ↗</span>
+      </a>
     </div>
   </section>
 
-  <section class="section" id="writing">
-    <div class="shell">
-      <header class="section__head" data-reveal>
-        <span class="section__index mono">02 / Writing</span>
-        <h2 class="section__title">随手写的<em>几页</em></h2>
-        <p class="section__meta">Notes on craft<br>不定期更新</p>
-      </header>
-
-      <div class="write-list">
-        <a class="write" href="/writing/sixty-frames.html" data-reveal style="--i:0">
-          <time class="write__date" datetime="2026-10-31">2026-10-31</time>
-          <span class="write__title">六十帧：把一节课的呼吸放进一个弹窗</span>
-          <span class="write__tag">前端 · 9 分钟</span>
-          <span class="write__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="write" href="/writing/ascii-alignment.html" data-reveal style="--i:1">
-          <time class="write__date" datetime="2026-10-31">2026-10-31</time>
-          <span class="write__title">等宽字体里的中文：一份 ASCII 图的故障记录</span>
-          <span class="write__tag">排版 · 6 分钟</span>
-          <span class="write__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="write" href="/writing/minimal-permissions.html" data-reveal style="--i:2">
-          <time class="write__date" datetime="2026-10-25">2026-10-25</time>
-          <span class="write__title">最小权限的代价：给抖音网页版做画质自动化的 22 次迭代</span>
-          <span class="write__tag">工程 · 11 分钟</span>
-          <span class="write__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="write" href="/writing/release-pipeline.html" data-reveal style="--i:3">
-          <time class="write__date" datetime="2026-10-25">2026-10-25</time>
-          <span class="write__title">让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线</span>
-          <span class="write__tag">发布 · 8 分钟</span>
-          <span class="write__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="write" href="/writing/escape-the-template.html" data-reveal style="--i:4">
-          <time class="write__date" datetime="2026-10-25">2026-10-25</time>
-          <span class="write__title">把博客从模板里救出来：一次反 AI 味的设计重写</span>
-          <span class="write__tag">设计 · 7 分钟</span>
-          <span class="write__arrow" aria-hidden="true">↗</span>
-        </a>
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="contact__head" data-reveal>
+      <div>
+        <p class="eyebrow eyebrow--light">04 — Contact</p>
+        <h2 class="contact__title" id="contact-title">Say hello,<br><em>slowly.</em></h2>
       </div>
+      <p>如果你也在做一件安静的事，欢迎写信。回信地址一直是这个，读到这里的人不多。</p>
     </div>
-  </section>
 
-  <section class="section game-section" id="game">
-    <div class="shell">
-      <header class="section__head" data-reveal>
-        <span class="section__index mono">03 / Playground</span>
-        <h2 class="section__title">关闭十个<em>Bug</em></h2>
-        <p class="section__meta">10 bugs · no leaderboard<br>Run workflow</p>
-      </header>
+    <div class="say" data-say>
+      <p class="say__overline">Open for select projects<br>UTC+8 · Usually online at night</p>
+      <div class="say__disc">
+        <svg class="say__orbit" viewBox="0 0 300 300" aria-hidden="true">
+          <defs>
+            <path id="orbitPath" d="M150,150 m-124,0 a124,124 0 1,1 248,0 a124,124 0 1,1 -248,0"/>
+          </defs>
+          <text><textPath href="#orbitPath">SAY HELLO · SAY HELLO · SAY HELLO · SAY HELLO · </textPath></text>
+        </svg>
+        <button class="say__orb" type="button" data-say-open aria-expanded="false" aria-controls="say-panel" data-cursor="写回信">
+          <span>HI</span>
+          <svg class="say__orb-star" aria-hidden="true"><use href="#i-star"/></svg>
+        </button>
+      </div>
+      <p class="say__hint">Hover / tap the orb — 写一封回信</p>
 
-      <div class="game" data-game>
-        <div class="game__labels"><span class="label">bug</span><span class="label label--green">good first issue</span><span class="label">no backend</span></div>
-        <div class="game__hud">
-          <span class="mono">ELAPSED <strong data-game-time>0.00</strong></span>
-          <span class="mono">CLOSED <strong data-game-hit>0 / 10</strong></span>
-          <span class="mono">BEST <strong data-game-best>—</strong></span>
-        </div>
-
-        <div class="game__stage" data-game-stage>
-          <button class="game__start" type="button" data-game-start>
-            开始运行 · 关闭十个 bug
-            <span class="mono">点得越快越好，CI 不会等你</span>
-          </button>
-          <button class="game__dot" type="button" data-game-dot hidden aria-label="关闭 bug">×</button>
-          <div class="game__result" data-game-result hidden>
-            <p class="game__final"><strong data-game-final>0.00</strong><span>s</span></p>
-            <p class="game__verdict" data-game-verdict></p>
-            <button class="link-line" type="button" data-game-restart>再来一次 <span class="arrow" aria-hidden="true">↗</span></button>
+      <div class="say__panel" id="say-panel" data-say-panel aria-hidden="true" inert>
+        <button class="say__close" type="button" data-say-close aria-label="关闭回信面板">Close <span aria-hidden="true">×</span></button>
+        <div class="say__panel-inner">
+          <p class="say__panel-kicker">Let’s make something quiet.</p>
+          <p class="say__panel-title">写封<br><em>回信</em></p>
+          <a class="say__panel-mail" href="mailto:shirakawafm@outlook.com">shirakawafm@outlook.com <span aria-hidden="true">↗</span></a>
+          <div class="say__panel-links">
+            <a href="https://github.com/ShirakawaFM" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="https://space.bilibili.com/209300529" target="_blank" rel="noopener">Bilibili ↗</a>
+            <a href="https://shirakawafm.github.io/writing/" target="_blank" rel="noopener">Writing ↗</a>
           </div>
+          <p class="say__panel-foot">UTC+8 · 2026 · NO TRACKERS · HAND-WRITTEN</p>
         </div>
-
-        <p class="game__note mono">成绩只写入 localStorage。没有排行榜、没有 telemetry、也没有分享按钮。</p>
+        <svg class="say__panel-star" aria-hidden="true"><use href="#i-star"/></svg>
       </div>
     </div>
-  </section>
 
-  <section class="section scratch-section" id="scratch">
-    <div class="shell">
-      <header class="section__head" data-reveal>
-        <span class="section__index mono">04 / Secret gist</span>
-        <h2 class="section__title">刮开这个<em>gist</em></h2>
-        <p class="section__meta">scratch card<br>client-side only</p>
-      </header>
-
-      <div class="scratch" data-scratch>
-        <div class="scratch__reveal" data-scratch-reveal>
-          <span class="mono">YOU MADE IT</span>
-          <p class="scratch__message">谢谢你读到这里。<br>这封信没有附件，只有一句：<em>去做你真正想做的那件事。</em></p>
-          <span class="scratch__sign">— ShirakawaFM</span>
-        </div>
-        <canvas class="scratch__canvas" data-scratch-canvas aria-label="刮开涂层，查看隐藏的话"></canvas>
+    <div class="contact__bar">
+      <a class="contact__email" href="mailto:shirakawafm@outlook.com">shirakawafm@outlook.com <span aria-hidden="true">↗</span></a>
+      <button class="contact__copy" type="button" data-copy>
+        <span data-copy-label>COPY EMAIL</span>
+      </button>
+      <div class="contact__socials">
+        <a href="https://github.com/ShirakawaFM" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://space.bilibili.com/209300529" target="_blank" rel="noopener">Bilibili</a>
+        <a href="https://shirakawafm.github.io/writing/" target="_blank" rel="noopener">Writing</a>
       </div>
-
-      <p class="scratch__fallback">
-        <button class="link-line" type="button" data-scratch-skip>不刮了，直接揭开 <span class="arrow" aria-hidden="true">↗</span></button>
-      </p>
+      <p class="contact__clock">UTC+8 <span data-clock>--:--:--</span></p>
     </div>
-  </section>
 
-  <section class="section" id="about">
-    <div class="shell">
-      <header class="section__head" data-reveal>
-        <span class="section__index mono">05 / Contact</span>
-        <h2 class="section__title">回信<em>地址</em></h2>
-        <p class="section__meta">Independent<br>UTC+8</p>
-      </header>
+    <div class="wordmark" aria-hidden="true">
+      <span>Shirakawa</span>
+      <span class="wordmark__last">FM<svg class="star" aria-hidden="true"><use href="#i-star"/></svg></span>
+    </div>
 
-      <div class="reply">
-        <div class="reply__note" data-reveal>
-          <p class="reply__quote">“如果你也在做一件安静的事，欢迎写信告诉我。”</p>
-          <p class="reply__body">
-            我是 ShirakawaFM，一名独立开发者。白天写浏览器扩展与自动化脚本，
-            晚上研究 AI 影像工作流、Minecraft 模组和一些没什么用但很好玩的东西。
-            这封信写完了，回信地址在下面。
-          </p>
-          <a class="link-line" href="/about/">完整自述 <span class="arrow" aria-hidden="true">↗</span></a>
-        </div>
-
-        <div class="reply__card" data-reveal style="--i:1">
-          <a class="reply__mail" href="mailto:shirakawafm@outlook.com">
-            写回信<br><em>Say hi</em>
+    <footer class="footer">
+      <div class="footer__grid">
+        <div class="footer__col footer__brand">
+          <a class="footer__logo" href="#top" aria-label="回到顶部">
+            <svg class="logo-glyph" viewBox="0 0 20 20" aria-hidden="true"><path d="M0 0h20v4H4v4h16v12H0v-4h16v-4H0z"/></svg>
+            <span>Shirakawa<em>FM</em></span>
           </a>
-          <div class="reply__links">
-            <a href="https://github.com/ShirakawaFM">GitHub <span aria-hidden="true">↗</span></a>
-            <a href="https://space.bilibili.com/209300529">Bilibili <span aria-hidden="true">↗</span></a>
-            <a href="https://github.com/ShirakawaFM/ShirakawaFM.github.io">站点源码 <span aria-hidden="true">↗</span></a>
-          </div>
-          <span class="stamp stamp--c" aria-hidden="true">REPLY<br>INSIDE</span>
+          <p>Independent developer. Browser extensions, video tools, and things too quiet to explain.</p>
         </div>
-      </div>
-
-      <ul class="stack reply__stack" aria-label="常用技术">
-        <li>TypeScript</li>
-        <li>JavaScript</li>
-        <li>Python</li>
-        <li>Java</li>
-        <li>Remotion</li>
-        <li>FFmpeg</li>
-        <li>Next.js</li>
-        <li>Manifest V3</li>
-      </ul>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="shell">
-    <div class="footer__top">
-      <a class="footer__big" href="mailto:shirakawafm@outlook.com" data-magnetic="8">写封信<br><em>Say hi</em></a>
-
-      <div class="footer__cols">
-        <div class="footer__col">
+        <nav class="footer__col" aria-label="页脚导航">
           <h3>Index</h3>
-          <a href="/#work">作品</a>
-          <a href="/writing/">写作</a>
-          <a href="/now/">现在</a>
-          <a href="/#game">小游戏</a>
-          <a href="/about/">关于</a>
-        </div>
+          <a href="#about">关于 / About</a>
+          <a href="#work">作品 / Work</a>
+          <a href="#notes">笔记 / Notes</a>
+          <a href="#contact">联系 / Contact</a>
+        </nav>
         <div class="footer__col">
           <h3>Elsewhere</h3>
-          <a href="https://github.com/ShirakawaFM">GitHub</a>
-          <a href="https://space.bilibili.com/209300529">Bilibili</a>
-          <a href="mailto:shirakawafm@outlook.com">Email</a>
+          <a href="https://github.com/ShirakawaFM" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href="https://space.bilibili.com/209300529" target="_blank" rel="noopener">Bilibili ↗</a>
+          <a href="https://shirakawafm.github.io/writing/" target="_blank" rel="noopener">Writing ↗</a>
+          <a href="mailto:shirakawafm@outlook.com">Email ↗</a>
+        </div>
+        <div class="footer__col footer__status">
+          <h3>Status</h3>
+          <p><span class="status-dot" aria-hidden="true"></span>Open for select projects</p>
+          <p>Local time <span data-clock>--:--:--</span> · UTC+8</p>
+          <p>No cookies. No trackers.</p>
         </div>
       </div>
-    </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> ShirakawaFM</span>
+        <span>手写 HTML / CSS / JS · 自托管字体 · 无第三方请求</span>
+        <span>Made slowly, by hand.</span>
+        <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
+    </footer>
+  </section>
+</main>
 
-    <div class="footer__bottom">
-      <span>© <span data-year>2026</span> ShirakawaFM</span>
-      <span>手写 HTML / CSS / JS · 无框架 · 自托管字体</span>
-      <span>UTC+8 <span data-clock>--:--:--</span></span>
-    </div>
-  </div>
-</footer>
-
-<div class="palette" data-palette hidden>
-  <div class="palette__backdrop" data-palette-close></div>
-  <div class="palette__box" role="dialog" aria-modal="true" aria-label="命令面板">
-    <div class="palette__search">
-      <span class="mono">⌘K</span>
-      <input data-palette-input type="text" placeholder="搜索页面、链接、命令…" autocomplete="off" spellcheck="false">
-    </div>
-    <ul class="palette__list" data-palette-list></ul>
-    <div class="palette__foot mono">↑↓ 选择 · Enter 打开 · Esc 关闭</div>
-  </div>
-</div>
-
-<script src="/assets/js/site.js" defer></script>
-<script src="/assets/js/letter.js" defer></script>
-<script src="/assets/js/gh.js" defer></script>
+<script src="assets/js/redesign.js" defer></script>
 </body>
 </html>
