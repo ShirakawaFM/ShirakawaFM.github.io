@@ -11,7 +11,27 @@
 <meta property="og:description" content="为什么 16 毫秒的定时器做不出丝滑动画，以及换掉之后冒出来的新问题。">
 <meta property="og:url" content="https://shirakawafm.github.io/writing/sixty-frames.html">
 <meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta property="og:image:alt" content="六十帧：把一节课的呼吸放进一个弹窗 · 题图">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "六十帧：把一节课的呼吸放进一个弹窗",
+  "description": "一个课后总结弹窗的动画重写：为什么 16 毫秒的定时器做不出丝滑动画，垂直同步又是怎么救回来的。",
+  "url": "https://shirakawafm.github.io/writing/sixty-frames.html",
+  "mainEntityOfPage": "https://shirakawafm.github.io/writing/sixty-frames.html",
+  "datePublished": "2026-10-31",
+  "dateModified": "2026-10-31",
+  "inLanguage": "zh-CN",
+  "image": "https://shirakawafm.github.io/assets/og.png",
+  "author": {
+    "@type": "Person",
+    "name": "ShirakawaFM",
+    "url": "https://shirakawafm.github.io/about/"
+  }
+}
+</script>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://shirakawafm.github.io/writing/sixty-frames.html">
 <link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -222,23 +242,23 @@ _ui.BigUnit.IsVisible = big &amp;&amp; _unit.Length &gt; 0;</code></pre>
 
       <h2 id="s6">剩下的</h2>
       <p>
-        还有两件事是这一版才想清楚的。
+        还有两件事是这一版才想明白的。
       </p>
       <p>
-        第一，<strong>入场进度和翻页节奏必须是两个时间轴。</strong>
+        <strong>入场进度和翻页节奏得拆成两个时间轴。</strong>
         一开始只有一个 <code>age</code>，既决定什么时候翻页，也决定入场动画播到哪。
-        结果在设置面板里改一个勾选、重排一次内容，整个页面就从零重播一遍动画。
-        拆成 <code>_pageAge</code> 和 <code>_entrance</code> 之后，改配置只是改内容，不动时间。
+        结果在设置面板里改个勾选、重排一次内容，整个页面就从零重播一遍动画。
+        拆成 <code>_pageAge</code> 和 <code>_entrance</code> 之后，改配置只是改内容，不碰时间。
       </p>
       <p>
-        第二，<strong>末页自己关掉。</strong>
-        这个窗口本来就是为了「扫一眼」，看完了还杵在屏幕中间，就变成了打扰。
-        现在末页停 4.5 秒自动关闭，前面的页按 7 秒往下走——顺手也把「用户是不是读完了」这个问题丢掉了。
+        另一个是<strong>末页得自己关掉</strong>。
+        这窗口本来就是为了「扫一眼」，看完了还杵在屏幕中间，就成了打扰。
+        现在末页停 4.5 秒自动关闭，前面的页按 7 秒往下走。顺手也把「用户到底读没读完」这个问题丢掉了。
       </p>
       <p>
-        从外面看，这个改动只是「弹窗变顺了」。但真正动过的地方是驱动方式、时间基准、
-        错峰节奏和两个时间轴。写动画的时间大部分不在调参数，在于搞清楚
-        <strong>是谁在推动这次变化</strong>——如果不是垂直同步，那它就永远不可能匀。
+        外面看，这个改动就是「弹窗变顺了」。可实际动过的地方不少：驱动方式、时间基准、
+        错峰节奏，还有两个时间轴。写动画的时间大半不在调参数上，在搞清楚到底是谁在推动这次变化。
+        推动它的如果不是垂直同步，那它永远匀不了。
       </p>
 
       <div class="article-foot">

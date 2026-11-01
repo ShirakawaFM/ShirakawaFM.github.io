@@ -11,7 +11,27 @@
 <meta property="og:description" content="版本守卫、打包边界、本地预演，以及三个真实踩过的坑。">
 <meta property="og:url" content="https://shirakawafm.github.io/writing/release-pipeline.html">
 <meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta property="og:image:alt" content="让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线 · 题图">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线",
+  "description": "一个浏览器扩展的 GitHub Actions 流水线：版本守卫、打包边界、本地预演，以及三个真实踩过的坑。",
+  "url": "https://shirakawafm.github.io/writing/release-pipeline.html",
+  "mainEntityOfPage": "https://shirakawafm.github.io/writing/release-pipeline.html",
+  "datePublished": "2026-10-25",
+  "dateModified": "2026-10-25",
+  "inLanguage": "zh-CN",
+  "image": "https://shirakawafm.github.io/assets/og.png",
+  "author": {
+    "@type": "Person",
+    "name": "ShirakawaFM",
+    "url": "https://shirakawafm.github.io/about/"
+  }
+}
+</script>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://shirakawafm.github.io/writing/release-pipeline.html">
 <link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -96,7 +116,7 @@
         手动做过几次之后，我发现每次都会在某个环节出错，而且错法几乎是一样的。
       </p>
 
-      <h2 id="s1">手动发版的三个漏洞</h2>
+      <h2 id="s1">手动发版，错法几乎一样</h2>
       <ul>
         <li><strong>版本漂移</strong>：改了 <code>manifest.json</code>，忘了改 README 徽章，或者反过来；</li>
         <li><strong>包内旧文件</strong>：压缩时顺手把工作目录打进去，包里的内容和你以为的不一样；</li>
@@ -133,9 +153,9 @@ if [ "$TAG" != "$MANIFEST_VERSION" ]; then
   exit 1
 fi</code></pre>
       <p>
-        这条判断消灭了「tag 是 v2.4.4、包内还是 2.4.3」的问题。它也有一个副作用：
-        如果你先打标签、后改版本号，工作流会失败。这个副作用是好的——版本号必须在打标签之前就确定，
-        而不是在失败之后补。
+        这条判断消灭了「tag 是 v2.4.4、包内还是 2.4.3」的问题。它也有个副作用：
+        如果你先打标签、后改版本号，工作流会失败。这个副作用是好的。版本号必须在打 tag 之前就定下来，
+        而不是等失败了再补。
       </p>
 
       <h2 id="s4">只打包该打包的</h2>
@@ -194,13 +214,13 @@ for job in data["jobs"].values():
 
       <h2 id="s7">发布的成本决定发布频率</h2>
       <p>
-        流水线本身不产出功能，但它改变了一个更重要的东西：发版的边际成本。
-        当发布只需要 <code>git tag</code> 和一次推送，你会更愿意发小版本，而不是攒一个大的。
-        小版本意味着更小的变更面、更容易回滚、更少的「这次改了太多」。
+        流水线本身不产出功能，但它动了一件更要紧的事：发版的成本。发布只要打个标签推一次，
+        你就会愿意发小版本，而不是攒个大的。版本小，改动面就小，出了问题好回滚，
+        也不会有「这次改太多了」那种慌。
       </p>
       <p>
-        现在这个仓库的发布流程是：改版本号、写 CHANGELOG、提交、打标签、推送。
-        剩下的事情——校验、打包、算 SHA-256、创建 Release——都不需要我看着。
+        现在这个仓库的流程是：改版本号、写 CHANGELOG、提交、打标签、推送。
+        剩下的校验、打包、算 SHA-256、建 Release，都不用我盯着。
       </p>
 
       <div class="article-foot">
@@ -215,7 +235,7 @@ for job in data["jobs"].values():
     <aside class="article-aside">
       <h2>On this page</h2>
       <nav class="toc" aria-label="文章目录">
-        <a href="#s1">手动发版的三个漏洞</a>
+        <a href="#s1">手动发版，错法几乎一样</a>
         <a href="#s2">两个工作流，两种职责</a>
         <a href="#s3">版本守卫：让 tag 与文件互相证明</a>
         <a href="#s4">只打包该打包的</a>

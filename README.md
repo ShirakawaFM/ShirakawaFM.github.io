@@ -20,20 +20,20 @@
 
 ---
 
-## 👋 你好，我是 ShirakawaFM
+## 你好，我是 ShirakawaFM
 
-独立开发者，住在 **UTC+8**。写浏览器扩展、影像工具，和一些没有 deadline 的 Minecraft 模组。
+独立开发者，住在 **UTC+8**。写浏览器扩展和影像工具，也给 Minecraft 写点模组——没有 deadline 的那种。
 
-我喜欢把复杂的东西做小：一个只申请三个权限的 Chrome 扩展、一条从打 tag 到 Release 的自动化流水线、一个不用框架的个人网站。**把东西做出来不难，难的是做完之后还能把它解释清楚。**
+我有个毛病，总想把东西做小。扩展只申请三个权限；发版这件事交给一条流水线，打完 tag 就不用再管。这个站更省事，连构建步骤都没有。做出来不算难，难的是做完还讲得清楚自己为什么这么做。
 
-这个 GitHub 主要放正在维护的项目与实验。我的写作、设计笔记和完整作品索引在 **[shirakawafm.github.io](https://shirakawafm.github.io)**。
+这个 GitHub 放正在维护的项目和一些没成型的实验。写作、设计笔记和完整作品索引在 **[shirakawafm.github.io](https://shirakawafm.github.io)**。
 
-首页现在是一封可以拆开的信：火漆、Issue 头、真实的提交热力图、`⌘K` 命令面板，还有一个十秒关闭 bug 的小游戏。另有 [写作归档](https://shirakawafm.github.io/writing/) 与 [现在](https://shirakawafm.github.io/now/) —— 后者只写此刻在做什么，过期也不删。
+首页是一封能拆开的信，火漆、Issue 头、真实的提交热力图、`⌘K` 命令面板，还有一个十秒关 bug 的小游戏。另有 [写作归档](https://shirakawafm.github.io/writing/) 和 [现在](https://shirakawafm.github.io/now/)，后者只写此刻在做什么，过期也不删。
 
 <table>
   <tr>
     <td width="33%" valign="top">
-      <h3>🚀 现在</h3>
+      <h3>现在</h3>
       <ul>
         <li><b>SleepWatch</b><br />ClassIsland 课堂睡意监测插件</li>
         <li><b>douyin-auto-hd</b><br />抖音网页版自动最高画质</li>
@@ -42,7 +42,7 @@
       </ul>
     </td>
     <td width="33%" valign="top">
-      <h3>🧠 在意的事</h3>
+      <h3>在意的事</h3>
       <ul>
         <li>界面的秩序：字号、字距、留白</li>
         <li>工具的手感：速度、键盘、报错提示</li>
@@ -51,7 +51,7 @@
       </ul>
     </td>
     <td width="33%" valign="top">
-      <h3>🌱 最近在学</h3>
+      <h3>最近在学</h3>
       <ul>
         <li>高级前端动效与浏览器渲染</li>
         <li>AI Agent 与自动化工作流</li>
@@ -62,7 +62,7 @@
   </tr>
 </table>
 
-## 🛠️ 技术栈
+## 技术栈
 
 <div align="center">
 
@@ -86,7 +86,7 @@
 
 </div>
 
-## 📊 GitHub 数据
+## GitHub 数据
 
 <div align="center">
 
@@ -105,7 +105,7 @@
 
 </div>
 
-## 🧩 代表项目
+## 代表项目
 
 <div align="center">
 
@@ -132,7 +132,7 @@
 **[family-lan-printer](https://github.com/ShirakawaFM/family-lan-printer)** — 家庭内网打印：手机连同一 WiFi、微信扫码、打字或选照片，预览后出纸。内容不出局域网。  
 **Video Lab** — Remotion + FFmpeg 的影像实验：脚本、分镜、配音、字幕、渲染。还在实验阶段。
 
-## ✍️ 最近写作
+## 最近写作
 
 | 日期 | 文章 | 主题 |
 | --- | --- | --- |
@@ -142,16 +142,19 @@
 | 2026-10-25 | [让发版自己发生：一个浏览器扩展的 GitHub Actions 流水线](https://shirakawafm.github.io/writing/release-pipeline.html) | 发布 |
 | 2026-10-25 | [把博客从模板里救出来：一次反 AI 味的设计重写](https://shirakawafm.github.io/writing/escape-the-template.html) | 设计 |
 
-## 💭 我怎么做东西
+## 我怎么做东西
 
-1. **先问能不能不要。** 能少一个依赖、少一个权限、少一层抽象，就先减掉。
-2. **假设要能被验证。** 动手前先想清楚：如果这个判断错了，我多久会知道。
-3. **动效服务于理解。** 只动 `transform` 和 `opacity`，不劫持滚动，尊重 `prefers-reduced-motion`。
-4. **写下来。** 决定、代价、失败的原因都值得留档，否则下次会再犯一遍。
+每次动手前先问一句：这东西能不能不要。能少一个依赖、少一个权限、少一层抽象，就先减掉。
+
+然后是假设。任何判断在写下去之前都得能回答「如果我错了，多久会知道」。答得太久，这条路就先不走。
+
+动效只用来帮人看懂发生了什么。只碰 `transform` 和 `opacity`，不劫持滚动，`prefers-reduced-motion` 下一律退成静态。
+
+最后是写下来。决定、代价、失败的原因，都留个档，否则下次还会犯一遍。
 
 > 把复杂的东西，做得安静。
 
-## 📫 联系我
+## 联系我
 
 <div align="center">
 

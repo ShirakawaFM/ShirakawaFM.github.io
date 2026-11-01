@@ -11,7 +11,27 @@
 <meta property="og:description" content="框线是对的，字形却不是。一次由 Unicode 宽度引发的事故。">
 <meta property="og:url" content="https://shirakawafm.github.io/writing/ascii-alignment.html">
 <meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta property="og:image:alt" content="等宽字体里的中文：一份 ASCII 图的故障记录 · 题图">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "等宽字体里的中文：一份 ASCII 图的故障记录",
+  "description": "一份 README 里的 ASCII 示意图为什么会散架：块状字符在等宽字体里没有字形，回退成两列宽。",
+  "url": "https://shirakawafm.github.io/writing/ascii-alignment.html",
+  "mainEntityOfPage": "https://shirakawafm.github.io/writing/ascii-alignment.html",
+  "datePublished": "2026-10-31",
+  "dateModified": "2026-10-31",
+  "inLanguage": "zh-CN",
+  "image": "https://shirakawafm.github.io/assets/og.png",
+  "author": {
+    "@type": "Person",
+    "name": "ShirakawaFM",
+    "url": "https://shirakawafm.github.io/about/"
+  }
+}
+</script>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://shirakawafm.github.io/writing/ascii-alignment.html">
 <link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -78,8 +98,8 @@
       </div>
       <h1 class="article-title">等宽字体里的<em>中文</em></h1>
       <p class="article-deck">
-        我在 README 里画了一个窗口示意图。框线是齐的，第二行的右半边却散到了框外。
-        原因不是手算错了一条边——而是有一个字符，在中文字体里占了两格。
+        我在 README 里画了个窗口示意图。框线看着是齐的，第二行的右半边却散到了框外。
+        不是手算少算了一条边。是有个字符，在中文字体里占了两格。
       </p>
       <div class="article-meta">
         <span>作者 ShirakawaFM</span>
@@ -148,9 +168,9 @@ def pad(s, n):
         一次性看清还有多少地雷：结果 12 种，其中大部分是框线本身和箭头。
       </p>
 
-      <h2 id="s3">模型对了，渲染还是会歪</h2>
+      <h2 id="s3">宽度算对了，画出来还是歪</h2>
       <p>
-        这是整件事里最值得记的一段：<strong>算对宽度并不保证对齐。</strong>
+        这一段最值得记：<strong>算对宽度，不保证画出来就是对齐的。</strong>
       </p>
       <p>
         我算完宽度，开始怀疑另一件事——即使中文字符被当成 2 列算，浏览器是按字体的真实字形宽度绘制的。
@@ -165,7 +185,7 @@ def pad(s, n):
         <p>用「显示宽度」做计算，只能修掉明显的错位；要彻底对齐，得放弃「用字符画表格」这件事。</p>
       </blockquote>
 
-      <h2 id="s4">所以改成了表格</h2>
+      <h2 id="s4">干脆换成表格</h2>
       <p>
         最后的决定是把那张 ASCII 图整个删掉，换成 Markdown 表格：三列——位置、放什么、示例。
         表格由渲染器排版，跟字体、宽度、回退顺序全部无关；在手机、GitHub、编辑器预览里长得一样。
@@ -180,25 +200,24 @@ def pad(s, n):
         改动的收益小于风险。
       </p>
 
-      <h2 id="s5">三条可以带走的</h2>
+      <h2 id="s5">后来记住的几件事</h2>
       <ul>
         <li>
-          <strong>中文 README 里画多列框线图，别用 Block Elements 当图元。</strong>
-          <code>█ ▓ ▒ ░ ▁ ▂ ▃</code> 这些字在等宽字体里大概率没有字形，会回退成两列宽。
+          中文 README 里画多列框线图，别拿 Block Elements 当图元。
+          <code>█ ▓ ▒ ░ ▁ ▂ ▃</code> 这些在等宽字体里大概率没有字形，会回退成两列宽。
         </li>
         <li>
-          <strong>框线本身（<code>┌ ─ │ └</code>）是安全的。</strong>
-          Consolas、Menlo 自带这些字形，宽度固定为 1。它们属于 Box Drawing 区，和 Block Elements 不是一回事。
+          框线本身（<code>┌ ─ │ └</code>）是安全的。Consolas、Menlo 都自带，
+          宽度固定 1 格。它属于 Box Drawing 区，和 Block Elements 不是一回事。
         </li>
         <li>
-          <strong>要精确对齐，就别用字符排。</strong>
-          用表格、用图片，或者用真正的排版工具。字符对齐只适合「大概齐」的场合。
+          真要精确对齐，就别拿字符排。用表格、用图片，或者上真正的排版工具。
+          字符对齐只够「大概齐」的场合。
         </li>
       </ul>
       <p>
-        最后补一个自省的结论：这个 bug 之所以能上线，是因为我验证的时候看的是编辑器里的渲染结果，
-        而它恰好吃的是另一种字体回退顺序。<strong>对齐这种事，必须在你不能控制的渲染环境里检查</strong>——
-        对 README 来说，就是浏览器里的 GitHub。
+        这 bug 能上线，是因为我验证时看的是编辑器里的渲染结果，而它恰好吃的是另一种字体回退顺序。
+        对齐这种事，必须在你自己控制不了的渲染环境里检查。对 README 来说，就是浏览器里的 GitHub。
       </p>
 
       <div class="article-foot">
@@ -215,9 +234,9 @@ def pad(s, n):
       <nav class="toc" aria-label="文章目录">
         <a href="#s1">不是算错了，是字形不存在</a>
         <a href="#s2">先把模型算对</a>
-        <a href="#s3">模型对了，渲染还是会歪</a>
-        <a href="#s4">所以改成了表格</a>
-        <a href="#s5">三条可以带走的</a>
+        <a href="#s3">宽度算对了，画出来还是歪</a>
+        <a href="#s4">干脆换成表格</a>
+        <a href="#s5">后来记住的几件事</a>
       </nav>
     </aside>
   </div>

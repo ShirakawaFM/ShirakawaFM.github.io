@@ -237,10 +237,13 @@
     const canvas = $('[data-scratch-canvas]', scratch);
     const skip = $('[data-scratch-skip]');
     const ctx = canvas.getContext('2d');
+    // 缩略图只用来数「刮掉了多少」，不参与显示
+    const probe = doc.createElement('canvas');
     let drawing = false;
     let revealed = false;
-    let moves = 0;
     let last = null;
+    let lastCheck = 0;
+    let rect = null;
     const css = getComputedStyle(doc.documentElement);
 
     function palette() {
@@ -303,20 +306,25 @@
       const w = canvas.width;
       const h = canvas.height;
       if (!w || !h) return;
-      const data = ctx.getImageData(0, 0, w, h).data;
-      let clear = 0;
-      let total = 0;
-      for (let y = 0; y < h; y += 16) {
-        for (let x = 0; x < w; x += 16) {
-          total += 1;
-          if (data[(y * w + x) * 4 + 3] < 40) clear += 1;
-        }
+      // 整幅 getImageData 要拷好几兆像素，缩到 1/8 再数透明度，结果一样、开销小两个数量级
+      const pw = Math.max(1, Math.ceil(w / 8));
+      const ph = Math.max(1, Math.ceil(h / 8));
+      if (probe.width !== pw || probe.height !== ph) {
+        probe.width = pw;
+        probe.height = ph;
       }
-      if (total && clear / total > 0.42) reveal();
+      const pctx = probe.getContext('2d', { willReadFrequently: true });
+      pctx.clearRect(0, 0, pw, ph);
+      pctx.drawImage(canvas, 0, 0, pw, ph);
+      const data = pctx.getImageData(0, 0, pw, ph).data;
+      let clear = 0;
+      for (let i = 3, n = data.length; i < n; i += 4) {
+        if (data[i] < 40) clear += 1;
+      }
+      if (clear / (pw * ph) > 0.42) reveal();
     }
 
     function erase(e) {
-      const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       ctx.globalAlpha = 1;
@@ -335,14 +343,20 @@
       }
 
       last = { x, y };
-      moves += 1;
-      if (moves % 6 === 0) checkProgress();
+      // 每 6 次移动算一次太密了，按时间节流就够
+      const now = performance.now();
+      if (now - lastCheck > 140) {
+        lastCheck = now;
+        checkProgress();
+      }
     }
 
     canvas.addEventListener('pointerdown', (e) => {
       if (revealed) return;
       drawing = true;
       last = null;
+      // 手的每一次移动都读一次 rect 会反复触发布局，按下时量一次就够
+      rect = canvas.getBoundingClientRect();
       canvas.setPointerCapture(e.pointerId);
       erase(e);
     });

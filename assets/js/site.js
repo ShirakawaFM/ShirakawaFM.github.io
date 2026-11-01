@@ -55,14 +55,24 @@
       second: '2-digit',
       hour12: false,
     });
+    let timer = 0;
     const tick = () => {
       const time = fmt.format(new Date());
       clocks.forEach((el) => {
         el.textContent = time;
       });
     };
-    tick();
-    setInterval(tick, 1000);
+    // 切到别的标签页就没必要每秒格式化一次时间，回来时补一次就行
+    const startClock = () => {
+      window.clearInterval(timer);
+      tick();
+      timer = window.setInterval(tick, 1000);
+    };
+    startClock();
+    doc.addEventListener('visibilitychange', () => {
+      if (doc.hidden) window.clearInterval(timer);
+      else startClock();
+    });
   }
 
   const yearEls = $$('[data-year]');
@@ -168,7 +178,11 @@
       visible = false;
       cursor.classList.remove('is-visible');
       dot.classList.remove('is-visible');
+      window.cancelAnimationFrame(raf);
+      raf = 0;
     };
+
+    let raf = 0;
 
     window.addEventListener(
       'pointermove',
@@ -178,6 +192,7 @@
         my = e.clientY;
         dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
         show();
+        wake();
       },
       { passive: true }
     );
@@ -186,13 +201,21 @@
     window.addEventListener('blur', hide);
 
     const lerp = (a, b, n) => a + (b - a) * n;
-    const loop = () => {
+    const step = () => {
       rx = lerp(rx, mx, 0.16);
       ry = lerp(ry, my, 0.16);
       cursor.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      requestAnimationFrame(loop);
+      // 追到位就停，不用每秒 60 次地空转；鼠标一动再唤醒
+      if (Math.abs(rx - mx) < 0.15 && Math.abs(ry - my) < 0.15) {
+        raf = 0;
+        return;
+      }
+      raf = window.requestAnimationFrame(step);
     };
-    requestAnimationFrame(loop);
+    function wake() {
+      if (!raf) raf = window.requestAnimationFrame(step);
+    }
+    wake();
 
     const interactive = 'a, button, [data-magnetic], .work, .write';
     doc.addEventListener('pointerover', (e) => {

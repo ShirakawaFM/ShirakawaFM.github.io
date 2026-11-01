@@ -99,14 +99,31 @@
     });
   }
 
-  fetch('/assets/data/repo.json', { cache: 'no-cache' })
-    .then((r) => (r.ok ? r.json() : null))
-    .then((data) => {
-      if (!data) return;
-      if (contrib) renderContrib(data);
-      if (commitList) renderCommits(data);
-    })
-    .catch(() => {});
+  const DATA_KEY = 'fm-repo-data';
+  const DATA_TTL = 6 * 60 * 60 * 1000;
+
+  function paint(data) {
+    if (!data) return;
+    if (contrib) renderContrib(data);
+    if (commitList) renderCommits(data);
+  }
+
+  // 先用上次的结果把图画出来，再去问服务器有没有新的。
+  // 热力图要是每次都等一次往返，刷新一下页面就白屏半秒。
+  const cached = store.get(DATA_KEY, null);
+  if (cached && cached.data) paint(cached.data);
+
+  const fresh = cached && cached.at && Date.now() - cached.at < DATA_TTL;
+  if (!fresh) {
+    fetch('/assets/data/repo.json', { cache: 'no-cache' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        paint(data);
+        store.set(DATA_KEY, { at: Date.now(), data: data });
+      })
+      .catch(() => {});
+  }
 
   /* ---------------------------------------------------------------- */
   /* Reactions                                                         */

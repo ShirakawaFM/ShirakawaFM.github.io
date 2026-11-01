@@ -11,7 +11,27 @@
 <meta property="og:description" content="从概念、字体、网格到动效原则，以及为什么先删掉那些渐变。">
 <meta property="og:url" content="https://shirakawafm.github.io/writing/escape-the-template.html">
 <meta property="og:image" content="https://shirakawafm.github.io/assets/og.png">
+<meta property="og:image:alt" content="把博客从模板里救出来：一次反 AI 味的设计重写 · 题图">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "把博客从模板里救出来：一次反 AI 味的设计重写",
+  "description": "一次反 AI 味的设计重写：从概念、字体、网格到动效原则，以及为什么先删掉那些渐变。",
+  "url": "https://shirakawafm.github.io/writing/escape-the-template.html",
+  "mainEntityOfPage": "https://shirakawafm.github.io/writing/escape-the-template.html",
+  "datePublished": "2026-10-25",
+  "dateModified": "2026-10-25",
+  "inLanguage": "zh-CN",
+  "image": "https://shirakawafm.github.io/assets/og.png",
+  "author": {
+    "@type": "Person",
+    "name": "ShirakawaFM",
+    "url": "https://shirakawafm.github.io/about/"
+  }
+}
+</script>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://shirakawafm.github.io/writing/escape-the-template.html">
 <link rel="preload" href="/assets/fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -108,16 +128,13 @@
         每个标题前面一个 emoji，文案是「Developer · Creator · AI Explorer」。
       </p>
       <p>
-        这套东西之所以看起来「像 AI 做的」，不是因为它丑，而是因为它<strong>没有做选择</strong>：
+        这套东西之所以看着「像 AI 做的」，不是丑。是它<strong>一个选择都没做</strong>。
+        紫蓝渐变配青色高光，这套配色换到任何产品身上都成立；三张等宽卡片，好像在说内容天生就该分三列；
+        文案是「Developer · Creator · AI Explorer」，三个抽象名词摆成一排，翻遍全站找不到一个人名、
+        一件具体的事、一个版本号。动效多半也是捡来的，卡片上浮十像素，光斑慢慢呼吸。
       </p>
-      <ul>
-        <li>颜色是默认的：紫蓝渐变、青色高光，和任何产品都无关；</li>
-        <li>结构是默认的：三张等宽卡片，仿佛内容天然长成三列；</li>
-        <li>文案是默认的：三个抽象名词排成一行，没有具体的人、事、数字；</li>
-        <li>动效是默认的：卡片上浮十像素，或者一串模糊光斑缓慢呼吸。</li>
-      </ul>
       <p>
-        默认值堆出来的页面，不会犯错，但也不会被记住。反 AI 味的起点不是「手写」，而是「具体」。
+        默认值堆出来的页面不会犯错，也不会被记住。所以起点不是去手写，是去具体。
       </p>
 
       <h2 id="s2">先问这个站点是谁的</h2>
@@ -132,12 +149,12 @@
         设计越完整，这个错误越明显。
       </p>
       <p>
-        第三版先确认一件事：这个站点属于一个叫 ShirakawaFM 的开发者。于是结构从「身份」出发——
-        作品、写作、关于，三个索引；视觉从「证据」出发——真实项目、真实版本号、真实限制。
-        首页保留一条会随滚动和指针变化的线，但它不再假装是载波，只是页面自己的一点动静。
+        第三版先确认一件事：这站属于一个叫 ShirakawaFM 的开发者。结构就从身份出发，
+        作品、写作、关于三个索引；视觉从证据出发，真实项目、真实版本号、真实限制。
+        首页还留着一条随滚动和指针变化的线，但它不再假装是载波了，只是页面自己的一点动静。
       </p>
       <blockquote>
-        <p>概念不该从名字的谐音里长出来，而该从这个人正在做什么里长出来。</p>
+        <p>概念得从人正在做的事里长出来，不是从名字的谐音里。</p>
       </blockquote>
 
       <h2 id="s3">字体、网格、一个强调色</h2>
@@ -152,13 +169,13 @@
       </p>
       <p>
         网格是十二列，但刻意不对称：首页英雄区 8:4 分栏，作品列表把年份信息推到右侧，
-        关于页把身份卡做成 sticky 的窄栏。对齐是严格的，比例是不均匀的——这两件事同时成立，
-        页面才会有编辑感而不是模板感。
+        关于页把身份卡做成 sticky 的窄栏。对齐严格，比例不均匀，两件事同时成立，
+        页面才有编辑感，不像模板。
       </p>
 
-      <h2 id="s4">动效只做三件事</h2>
+      <h2 id="s4">动效，克制到只剩几条</h2>
       <p>
-        「丝滑」不是动画多，而是动画不打断人。我给自己定了三条规矩：
+        「丝滑」跟动画数量没什么关系。动画不打断人，才叫顺。我给自己定了几条：
       </p>
       <ul>
         <li><strong>只动 transform 和 opacity</strong>，避免触发布局与重绘；</li>
@@ -205,8 +222,8 @@
         首页的 canvas 在低端设备上需要限制像素比。
       </p>
       <p>
-        但至少现在，这个站点看起来像一个具体的人做的：它有名字、有证据、有纸的质感，
-        也有说得清楚的限制。模板可以生成一个「不错的网站」，但生成不了这些。
+        但至少现在，这站看起来像某个具体的人做的。有名字，有真项目可查，纸的质感也在，
+        限制也说得清。模板能拼出一个「还不错的网站」，拼不出这些。
       </p>
 
       <div class="article-foot">
@@ -224,7 +241,7 @@
         <a href="#s1">AI 味的配方</a>
         <a href="#s2">先问这个站点是谁的</a>
         <a href="#s3">字体、网格、一个强调色</a>
-        <a href="#s4">动效只做三件事</a>
+        <a href="#s4">动效，克制到只剩几条</a>
         <a href="#s5">无框架的工程</a>
         <a href="#s6">取舍</a>
       </nav>
