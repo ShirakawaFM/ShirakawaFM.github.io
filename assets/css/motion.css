@@ -1,0 +1,939 @@
+/* ==========================================================================
+   ShirakawaFM — Motion Kit & Unified Crimson Editorial Theme
+   Loaded LAST on every page so it can (re)theme subpages to match the
+   homepage and layer shared SVG motion on top. Hand-written, no build.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Archivo Black";
+  src: url("../fonts/archivo-black.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   Motion tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --sfx-red: #f40c3f;
+  --sfx-red-bright: #ff274f;
+  --sfx-ink: #120001;
+  --sfx-deep: #0c0001;
+  --sfx-cream: #fff4ee;
+  --sfx-cream-2: #f4e4dc;
+  --sfx-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --sfx-ease-soft: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ==========================================================================
+   0. Keyframes
+   ========================================================================== */
+@keyframes sfx-spin { to { transform: rotate(360deg); } }
+@keyframes sfx-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes sfx-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+@keyframes sfx-float-x {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(10px, -6px, 0); }
+}
+@keyframes sfx-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50% { opacity: 0.9; transform: scale(1); }
+}
+@keyframes sfx-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.35); opacity: 0; }
+}
+@keyframes sfx-scan {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  8% { opacity: 0.7; }
+  92% { opacity: 0.7; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+@keyframes sfx-grain {
+  0% { transform: translate3d(0, 0, 0); }
+  10% { transform: translate3d(-3%, -2%, 0); }
+  20% { transform: translate3d(2%, -4%, 0); }
+  30% { transform: translate3d(-1%, 3%, 0); }
+  40% { transform: translate3d(3%, 1%, 0); }
+  50% { transform: translate3d(-2%, 4%, 0); }
+  60% { transform: translate3d(1%, -3%, 0); }
+  70% { transform: translate3d(-4%, 2%, 0); }
+  80% { transform: translate3d(2%, -1%, 0); }
+  90% { transform: translate3d(-1%, -2%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+@keyframes sfx-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes sfx-dash {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes sfx-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes sfx-shine {
+  0% { transform: translateX(-120%) skewX(-18deg); }
+  60%, 100% { transform: translateX(220%) skewX(-18deg); }
+}
+@keyframes sfx-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes sfx-rise {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ==========================================================================
+   1. Global SVG stage — grain / scanline / constellation
+   ========================================================================== */
+.sfx-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sfx-bg > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sfx-bg .sfx-rings circle {
+  fill: none;
+  stroke: rgba(18, 0, 1, 0.16);
+  stroke-width: 1;
+  stroke-dasharray: 2 10;
+  transform-origin: 50% 50%;
+  animation: sfx-spin 90s linear infinite;
+}
+.sfx-bg .sfx-rings circle:nth-child(2) {
+  stroke: rgba(244, 12, 63, 0.35);
+  stroke-dasharray: 1 7;
+  animation: sfx-spin-rev 60s linear infinite;
+}
+.sfx-bg .sfx-rings circle:nth-child(3) {
+  stroke: rgba(18, 0, 1, 0.1);
+  animation-duration: 140s;
+}
+
+.sfx-bg .sfx-star {
+  fill: var(--sfx-red);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sfx-twinkle var(--tw, 6s) ease-in-out infinite;
+  animation-delay: var(--td, 0s);
+}
+
+.sfx-bg .sfx-line {
+  stroke: rgba(18, 0, 1, 0.12);
+  stroke-width: 1;
+}
+
+.sfx-scan {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: clamp(120px, 22vh, 260px);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(244, 12, 63, 0.06) 55%,
+    rgba(244, 12, 63, 0.16) 88%,
+    rgba(255, 244, 238, 0.5) 100%
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  animation: sfx-scan 16s linear infinite;
+  will-change: transform;
+}
+
+.sfx-grain {
+  position: absolute;
+  inset: -30%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+  animation: sfx-grain 0.9s steps(1) infinite;
+  will-change: transform;
+}
+
+/* ==========================================================================
+   2. Scroll progress + shared star / underline
+   ========================================================================== */
+.sfx-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 400;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--sfx-red), var(--sfx-ink));
+  pointer-events: none;
+}
+
+.sfx-star-spin {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  fill: var(--sfx-red);
+  vertical-align: 0.06em;
+  animation: sfx-spin 9s linear infinite;
+}
+
+.sfx-underline {
+  display: block;
+  width: min(100%, 34rem);
+  height: auto;
+  margin-top: 1.1rem;
+  overflow: visible;
+}
+.sfx-underline path {
+  fill: none;
+  stroke: var(--sfx-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pathLength: 1;
+}
+.sfx-underline.is-drawn path {
+  animation: sfx-dash 1.6s var(--sfx-ease) forwards;
+}
+
+/* diag hatch strip, reused under heroes */
+.sfx-hatch {
+  height: 12px;
+  border-block: 1.5px solid var(--sfx-ink);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--sfx-ink) 0 1px,
+    transparent 1px 6px
+  );
+  background-color: var(--sfx-red);
+}
+
+/* ==========================================================================
+   3. Marquee ribbon (shared)
+   ========================================================================== */
+.sfx-ribbon {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  padding: 0.72rem 0;
+  border-block: 1.5px solid var(--sfx-ink);
+  background:
+    repeating-linear-gradient(-45deg, rgba(18, 0, 1, 0.9) 0 1px, transparent 1px 7px),
+    var(--sfx-red);
+  color: var(--sfx-cream);
+}
+
+.sfx-ribbon__track {
+  display: flex;
+  width: max-content;
+  animation: sfx-marquee 26s linear infinite;
+  will-change: transform;
+}
+.sfx-ribbon:hover .sfx-ribbon__track { animation-play-state: paused; }
+
+.sfx-ribbon__group {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding-right: 1.4rem;
+  white-space: nowrap;
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.sfx-ribbon__group svg {
+  width: 0.7rem;
+  height: 0.7rem;
+  fill: var(--sfx-cream);
+  flex: none;
+  animation: sfx-spin 7s linear infinite;
+}
+
+/* ==========================================================================
+   4. Section dividers (animated SVG, drawn on scroll)
+   ========================================================================== */
+.sfx-divider {
+  display: block;
+  width: 100%;
+  height: clamp(56px, 8vw, 96px);
+  overflow: visible;
+  color: var(--sfx-ink);
+}
+.sfx-divider path,
+.sfx-divider polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.5;
+}
+.sfx-divider .sfx-divider__draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pathLength: 1;
+  opacity: 0.85;
+  stroke-width: 2;
+  stroke: var(--sfx-red);
+}
+.sfx-divider.is-drawn .sfx-divider__draw {
+  animation: sfx-dash 2.2s var(--sfx-ease) forwards;
+}
+
+/* ==========================================================================
+   5. Underline wordmark / animated footer strip
+   ========================================================================== */
+.sfx-wordmark {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.4rem, 4vw, 3rem) var(--gutter);
+  border-top: 1.5px solid var(--sfx-ink);
+  background: var(--sfx-deep);
+  color: var(--sfx-cream);
+}
+.sfx-wordmark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.sfx-wordmark text {
+  font-family: "Archivo Black", var(--sans, sans-serif);
+  font-size: 120px;
+  letter-spacing: -0.05em;
+  fill: transparent;
+  stroke: rgba(255, 244, 238, 0.55);
+  stroke-width: 1;
+}
+.sfx-wordmark text.sfx-wordmark__solid {
+  fill: var(--sfx-red);
+  stroke: none;
+}
+.sfx-wordmark.is-drawn text {
+  animation: sfx-dash 3s var(--sfx-ease) forwards;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pathLength: 1;
+}
+
+/* ==========================================================================
+   6. Reveal / stagger for injected nodes
+   ========================================================================== */
+.sfx-reveal {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity 0.85s var(--sfx-ease), transform 0.85s var(--sfx-ease);
+  transition-delay: var(--sfx-delay, 0ms);
+}
+.sfx-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+.sfx-rise {
+  animation: sfx-rise 0.9s var(--sfx-ease) both;
+}
+
+/* shine sweep on hover for cards */
+.sfx-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.sfx-shine::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: 0;
+  width: 42%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 244, 238, 0.35),
+    transparent
+  );
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+}
+.sfx-shine:hover::after {
+  opacity: 1;
+  animation: sfx-shine 0.9s var(--sfx-ease-soft);
+}
+
+/* tilt */
+.sfx-tilt {
+  transition: transform 0.5s var(--sfx-ease), box-shadow 0.5s var(--sfx-ease);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ==========================================================================
+   7. SUBPAGE THEME — cream paper + crimson bands + ink chrome
+   ========================================================================== */
+html[data-page="sub"] {
+  color-scheme: light;
+  --paper: #fff4ee;
+  --paper-2: #f4e4dc;
+  --ink: #120001;
+  --ink-soft: #3a1512;
+  --muted: #6b3a33;
+  --faint: #8a5a52;
+  --line: rgba(18, 0, 1, 0.2);
+  --line-strong: rgba(18, 0, 1, 0.42);
+  --accent: #f40c3f;
+  --accent-ink: #fff4ee;
+  --accent-wash: rgba(244, 12, 63, 0.1);
+  --selection: rgba(244, 12, 63, 0.22);
+  --shadow: 16px 16px 0 #120001;
+  --red: #f40c3f;
+  --cream: #fff4ee;
+  --deep: #0c0001;
+  --display: "Archivo Black", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  --serif-cn: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
+}
+
+html[data-page="sub"] body {
+  background:
+    radial-gradient(rgba(18, 0, 1, 0.16) 0.8px, transparent 0.8px) 0 0 / 26px 26px,
+    var(--paper-2);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+html[data-page="sub"] main {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- header: ink bar --- */
+html[data-page="sub"] .site-header {
+  background: rgba(12, 0, 1, 0.94);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border-bottom: 1px solid rgba(255, 244, 238, 0.16);
+  color: var(--cream);
+}
+html[data-page="sub"] .site-header.is-scrolled {
+  border-bottom-color: rgba(255, 244, 238, 0.28);
+}
+html[data-page="sub"] .brand__mark {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--cream);
+  font-size: 1.05rem;
+}
+html[data-page="sub"] .brand__mark em {
+  font-style: normal;
+  color: var(--red);
+}
+html[data-page="sub"] .brand__sub {
+  color: rgba(255, 244, 238, 0.5);
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+html[data-page="sub"] .nav a {
+  color: rgba(255, 244, 238, 0.72);
+}
+html[data-page="sub"] .nav a:hover,
+html[data-page="sub"] .nav a[aria-current="page"] {
+  color: var(--cream);
+}
+html[data-page="sub"] .nav a sup {
+  color: var(--red);
+}
+html[data-page="sub"] .clock,
+html[data-page="sub"] .tool-btn,
+html[data-page="sub"] .menu-btn {
+  color: rgba(255, 244, 238, 0.8);
+  border-color: rgba(255, 244, 238, 0.24);
+}
+html[data-page="sub"] .theme-btn { display: none; }
+
+/* --- crimson page band --- */
+html[data-page="sub"] .page-head,
+html[data-page="sub"] .article-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--red);
+  color: var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+}
+html[data-page="sub"] .page-head::after,
+html[data-page="sub"] .article-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(rgba(18, 0, 1, 0.35) 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+  opacity: 0.18;
+  pointer-events: none;
+}
+html[data-page="sub"] .page-head > .shell,
+html[data-page="sub"] .article-hero > .shell {
+  position: relative;
+  z-index: 2;
+}
+html[data-page="sub"] .page-head__top,
+html[data-page="sub"] .article-hero__kicker {
+  color: rgba(18, 0, 1, 0.72);
+}
+html[data-page="sub"] .page-head__top .mono,
+html[data-page="sub"] .article-hero__kicker .mono {
+  color: rgba(18, 0, 1, 0.72);
+}
+html[data-page="sub"] .article-hero__kicker .tag {
+  background: var(--ink);
+  color: var(--cream);
+  border: 0;
+}
+html[data-page="sub"] .page-title,
+html[data-page="sub"] .article-title {
+  font-family: var(--display), var(--sans);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  color: var(--ink);
+}
+html[data-page="sub"] .page-title {
+  font-size: clamp(3.2rem, 12vw, 9rem);
+}
+html[data-page="sub"] .page-title em,
+html[data-page="sub"] .article-title em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--cream);
+  font-weight: 400;
+}
+html[data-page="sub"] .page-deck,
+html[data-page="sub"] .article-deck {
+  color: rgba(18, 0, 1, 0.82);
+}
+html[data-page="sub"] .article-meta {
+  color: rgba(18, 0, 1, 0.7);
+  border-top-color: rgba(18, 0, 1, 0.25);
+}
+html[data-page="sub"] .article-meta a { color: var(--ink); }
+
+/* floating ornament injected into page bands */
+.sfx-band-orn {
+  position: absolute;
+  right: clamp(0.5rem, 4vw, 4rem);
+  top: 50%;
+  translate: 0 -50%;
+  width: clamp(120px, 22vw, 300px);
+  height: clamp(120px, 22vw, 300px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.sfx-band-orn circle,
+.sfx-band-orn path,
+.sfx-band-orn line {
+  fill: none;
+  stroke: rgba(18, 0, 1, 0.55);
+  stroke-width: 1;
+}
+.sfx-band-orn .sfx-orn-star {
+  fill: var(--ink);
+  stroke: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sfx-spin 18s linear infinite;
+}
+.sfx-band-orn .sfx-orn-ring {
+  stroke-dasharray: 3 8;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sfx-spin 32s linear infinite;
+}
+
+/* --- content on cream paper: cards --- */
+html[data-page="sub"] .about-id {
+  padding: clamp(1.2rem, 2.4vw, 1.8rem);
+  background: var(--cream);
+  border: 1.5px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+html[data-page="sub"] .about-id__name em { color: var(--red); }
+html[data-page="sub"] .about-id dl > div {
+  border-top-color: var(--line);
+}
+
+html[data-page="sub"] .about-body > section {
+  position: relative;
+  padding: clamp(1.1rem, 2.6vw, 1.8rem) clamp(1.1rem, 2.6vw, 2rem);
+  background: var(--cream);
+  border: 1.5px solid var(--ink);
+  box-shadow: 8px 8px 0 rgba(18, 0, 1, 0.9);
+  transition: transform 0.5s var(--sfx-ease), box-shadow 0.5s var(--sfx-ease);
+}
+html[data-page="sub"] .about-body > section + section {
+  margin-top: clamp(1.2rem, 3vw, 2rem);
+}
+html[data-page="sub"] .about-body > section:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 12px 12px 0 var(--red);
+}
+html[data-page="sub"] .about-body h2 {
+  font-family: var(--display), var(--sans);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+html[data-page="sub"] .about-body h2 em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--red);
+}
+html[data-page="sub"] .about-list > li {
+  border-top-color: var(--line);
+}
+html[data-page="sub"] .colophon div { border-top-color: var(--line); }
+html[data-page="sub"] .colophon b { color: var(--red); }
+html[data-page="sub"] .link-line { color: var(--ink); }
+html[data-page="sub"] .link-line .arrow { color: var(--red); }
+
+/* --- writing archive --- */
+html[data-page="sub"] .archive__year {
+  border-bottom-color: var(--ink);
+  color: var(--ink);
+}
+html[data-page="sub"] .archive__row {
+  border-bottom-color: var(--line);
+  transition: background-color 0.35s var(--sfx-ease), padding-left 0.35s var(--sfx-ease);
+}
+html[data-page="sub"] .archive__row:hover {
+  background: var(--cream);
+  padding-left: 12px;
+}
+html[data-page="sub"] .archive__row a { color: var(--ink); }
+html[data-page="sub"] .archive__row a:hover { color: var(--red); }
+
+/* --- article prose --- */
+html[data-page="sub"] .prose {
+  padding: clamp(1.4rem, 3.4vw, 3rem);
+  background: var(--cream);
+  border: 1.5px solid var(--ink);
+  box-shadow: 14px 14px 0 var(--ink);
+  color: var(--ink-soft);
+}
+html[data-page="sub"] .prose h2,
+html[data-page="sub"] .prose h3 {
+  color: var(--ink);
+}
+html[data-page="sub"] .prose h2::before {
+  background: var(--red);
+}
+html[data-page="sub"] .prose blockquote {
+  border-left-color: var(--red);
+  background: var(--accent-wash);
+}
+html[data-page="sub"] .prose pre {
+  background: var(--deep);
+  color: var(--cream);
+  border: 1.5px solid var(--ink);
+}
+html[data-page="sub"] .prose code {
+  background: rgba(244, 12, 63, 0.1);
+  color: #a3061f;
+}
+html[data-page="sub"] .prose pre code {
+  background: none;
+  color: inherit;
+}
+html[data-page="sub"] .prose a {
+  color: #a3061f;
+  text-decoration-color: var(--red);
+}
+html[data-page="sub"] .toc {
+  padding: clamp(1rem, 2.4vw, 1.6rem);
+  background: var(--cream);
+  border: 1.5px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+html[data-page="sub"] .toc a { color: var(--muted); }
+html[data-page="sub"] .toc a:hover,
+html[data-page="sub"] .toc a.is-active { color: var(--red); }
+html[data-page="sub"] .article-foot { border-top-color: var(--line); }
+
+/* --- footer: deep ink --- */
+html[data-page="sub"] .site-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(2.4rem, 5vw, 4rem);
+  background: var(--deep);
+  color: var(--cream);
+  border-top: 1.5px solid var(--ink);
+  padding-top: clamp(48px, 7vw, 90px);
+}
+html[data-page="sub"] .site-footer .shell { position: relative; z-index: 2; }
+html[data-page="sub"] .footer__big {
+  color: var(--cream);
+  text-decoration: none;
+}
+html[data-page="sub"] .footer__big em { color: var(--red); }
+html[data-page="sub"] .footer__col h3 { color: rgba(255, 244, 238, 0.55); }
+html[data-page="sub"] .footer__col a { color: rgba(255, 244, 238, 0.8); }
+html[data-page="sub"] .footer__col a:hover { color: var(--red); }
+html[data-page="sub"] .footer__bottom {
+  color: rgba(255, 244, 238, 0.6);
+  border-top-color: rgba(255, 244, 238, 0.16);
+}
+html[data-page="sub"] .footer__bottom a { color: var(--red); }
+
+/* --- 404 --- */
+html[data-page="sub"] .error-page__code {
+  font-family: var(--display), var(--sans);
+  font-weight: 900;
+  color: var(--red);
+}
+html[data-page="sub"] .error-page {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   8. Homepage extras (scoped)
+   ========================================================================== */
+html[data-page="home"] .sfx-divider { color: rgba(255, 244, 238, 0.28); }
+html[data-page="home"] .hero .sfx-hero-orn {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+html[data-page="home"] .hero__stage,
+html[data-page="home"] .hero__meta,
+html[data-page="home"] .hero__foot,
+html[data-page="home"] .hero__side,
+html[data-page="home"] .binary { position: relative; z-index: 1; }
+
+html[data-page="home"] .notes .sfx-divider { color: var(--ink); }
+html[data-page="home"] .work + .notes .sfx-divider { color: var(--ink); }
+
+/* animated star riding the wordmark */
+.wordmark .sfx-orbit-star {
+  display: inline-block;
+  animation: sfx-spin 12s linear infinite;
+}
+
+/* ==========================================================================
+   9. Reduced motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .sfx-bg,
+  .sfx-scan,
+  .sfx-grain,
+  .sfx-ribbon__track,
+  .sfx-bg .sfx-star,
+  .sfx-bg .sfx-rings circle,
+  .sfx-star-spin,
+  .sfx-orn-star,
+  .sfx-orn-ring,
+  .sfx-wordmark text,
+  .wordmark .sfx-orbit-star {
+    animation: none !important;
+  }
+  .sfx-reveal { opacity: 1 !important; transform: none !important; }
+  .sfx-underline path,
+  .sfx-divider .sfx-divider__draw {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   10. Responsive
+   ========================================================================== */
+@media (max-width: 900px) {
+  .sfx-band-orn { opacity: 0.45; width: 150px; height: 150px; }
+  html[data-page="sub"] .about-id { position: static; }
+}
+@media (max-width: 640px) {
+  html[data-page="sub"] .prose,
+  html[data-page="sub"] .about-id,
+  html[data-page="sub"] .toc { box-shadow: 6px 6px 0 var(--ink); }
+  .sfx-scan { display: none; }
+}
+
+/* ==========================================================================
+   11. Extra flourishes — glow, corner brackets, shines, drawn underlines
+   ========================================================================== */
+
+/* hero glow behind the giant title */
+html[data-page="home"] .hero__stage { position: relative; }
+html[data-page="home"] .hero__stage::before {
+  content: "";
+  position: absolute;
+  inset: -14% -8% -6%;
+  z-index: -1;
+  background:
+    radial-gradient(38% 46% at 28% 42%, rgba(255, 244, 238, 0.4), transparent 70%),
+    radial-gradient(34% 42% at 76% 62%, rgba(18, 0, 1, 0.22), transparent 68%),
+    radial-gradient(30% 38% at 55% 88%, rgba(255, 39, 79, 0.55), transparent 72%);
+  filter: blur(34px);
+  animation: sfx-glow 14s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sfx-glow {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
+  50% { transform: translate3d(2%, -2%, 0) scale(1.06); opacity: 1; }
+}
+
+/* corner brackets drawn as SVG overlays */
+.sfx-frame { position: relative; }
+.sfx-corners {
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  z-index: 3;
+}
+.sfx-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  overflow: visible;
+}
+.sfx-corner--tl { top: 0; left: 0; }
+.sfx-corner--tr { top: 0; right: 0; transform: scaleX(-1); }
+.sfx-corner--bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.sfx-corner--br { bottom: 0; right: 0; transform: scale(-1, -1); }
+.sfx-corners path {
+  fill: none;
+  stroke: var(--sfx-red);
+  stroke-width: 2;
+  stroke-linecap: square;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pathLength: 1;
+  transition: stroke-dashoffset 0.7s var(--sfx-ease);
+}
+.sfx-frame:hover .sfx-corners path,
+.sfx-frame.is-in .sfx-corners path { stroke-dashoffset: 0; }
+
+/* shine sweep on project cards */
+html[data-page="home"] .project__link { position: relative; overflow: hidden; }
+html[data-page="home"] .project__link .sfx-sweep {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 244, 238, 0.22), transparent);
+  transform: translateX(-140%) skewX(-16deg);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+}
+html[data-page="home"] .project__link:hover .sfx-sweep {
+  opacity: 1;
+  animation: sfx-shine 1s var(--sfx-ease-soft);
+}
+html[data-page="home"] .project__title { transition: color 0.35s ease; }
+html[data-page="home"] .project:hover .project__title { color: var(--red); }
+html[data-page="home"] .project__arrow { transition: transform 0.4s var(--sfx-ease); }
+html[data-page="home"] .project:hover .project__arrow { transform: translate(3px, -3px); }
+
+/* wordmark sweep on the giant footer type */
+.wordmark { position: relative; overflow: hidden; }
+.wordmark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 244, 238, 0.22) 50%, transparent 70%);
+  transform: translateX(-120%) skewX(-14deg);
+  animation: sfx-shine 7s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* drawn underline under big section titles (homepage) */
+.sfx-head-line {
+  display: block;
+  width: min(100%, 30rem);
+  height: 18px;
+  margin-top: 0.6rem;
+  overflow: visible;
+}
+.sfx-head-line path {
+  fill: none;
+  stroke: var(--sfx-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pathLength: 1;
+}
+.sfx-head-line.is-drawn path { animation: sfx-dash 1.5s var(--sfx-ease) forwards; }
+.sfx-head-line--cream path { stroke: var(--sfx-cream); }
+.sfx-head-line--ink path { stroke: var(--sfx-ink); }
+
+/* subpage section heading underline grow */
+html[data-page="sub"] .about-body h2 {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.4rem;
+}
+html[data-page="sub"] .about-body h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.9s var(--sfx-ease) 0.15s;
+}
+html[data-page="sub"] .about-body > section.is-in h2::after,
+html[data-page="sub"] .about-body > section:hover h2::after { transform: scaleX(1); }
+
+/* article h2 marker pulse */
+html[data-page="sub"] .prose h2::before {
+  content: "";
+  position: absolute;
+  left: -1.1em;
+  top: 0.62em;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.5);
+  animation: sfx-pulse 2.6s ease-out infinite;
+}
+
+/* ribbon on homepage sits between hero and about */
+html[data-page="home"] .sfx-ribbon { position: relative; z-index: 3; }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-page="home"] .hero__stage::before,
+  .wordmark::after,
+  html[data-page="sub"] .prose h2::before { animation: none !important; }
+  .sfx-corners path,
+  .sfx-head-line path { stroke-dashoffset: 0 !important; animation: none !important; }
+}
